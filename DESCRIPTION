@@ -1,0 +1,29 @@
+Package: grove
+Title: Package for visualizing gene-level phylogenies
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Sarah",
+           family = "Teichman",
+           role = c("aut", "cre"),
+           email = "teichs@uw.edu")
+Description: Implements functions to use for phylogenetic tree visualization. 
+License: GPL-3
+Imports: 
+    ape,
+    ggplot2,
+    treespace,
+    magrittr,
+    phangorn,
+    dplyr,
+    TreeTools,
+    rJava,
+    ggtree,
+    stats,
+    smacof,
+    R.utils,
+    ade4,
+    readr,
+    adephylo
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.2
