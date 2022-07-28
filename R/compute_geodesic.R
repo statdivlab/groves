@@ -7,7 +7,7 @@
 #' @export
 compute_geodesic <- function(tree_path) {
   output <- paste0("-o gtp_output.txt")
-  code_path <- system.file("java", "gtp.jar", package = "TreeVizPackage")
+  code_path <- system.file("java", "gtp.jar", package = "grove")
   system2('java',
           args = c('-jar', code_path, "-d", output,
                    tree_path),
