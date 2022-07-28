@@ -21,7 +21,7 @@ compute_logmap <- function(cons_path, tree_paths, jar_path = NULL, other_cons_pa
                            add_pendant_branches = FALSE, cons_tree = NULL,
                            trees_complete = NULL, cons_in_tree_paths = FALSE) {
   if (is.null(jar_path)) {
-    jar_path <- system.file("java", "logmap.jar", package = "TreeVizPackage")
+    jar_path <- system.file("java", "logmap.jar", package = "grove")
   }
 
   n <- length(tree_paths) # number of trees
