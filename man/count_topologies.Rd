@@ -22,3 +22,8 @@ Count topologies
 Count number of distinct topologies present in group of phylogenetic trees on the same set of
 tips.
 }
+\examples{
+gene_trees <- read.tree("data/gene_trees.txt")
+count_topologies(gene_trees)
+
+}

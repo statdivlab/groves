@@ -8,7 +8,11 @@
 #' @return A list containing the number of distinct topologies and a dataframe with topology
 #' information.
 #'
+#' @importFrom ape read.tree
 #'
+#' @examples 
+#' gene_trees <- read.tree("data/gene_trees.txt")
+#' count_topologies(gene_trees)
 #'
 #' @export
 count_topologies <- function(trees, names = NULL) {
