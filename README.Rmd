@@ -1,10 +1,24 @@
 ---
-output: github_document
+output:
+  md_document:
+    variant: gfm
+    pandoc_args: ["--wrap=none"]
 ---
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+
+---
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
 ```
+
+<!-- badges: start -->
+  [![R-CMD-check](https://github.com/statdivlab/groves/workflows/R-CMD-check/badge.svg)](https://github.com/statdivlab/groves/actions)
+  [![codecov.io](https://codecov.io/gh/statdivlab/groves/coverage.svg?branch=main)](https://codecov.io/gh/statdivlab/groves?branch=main)
+  <!-- badges: end -->
+
 <span style="font-family:Arial; font-size:2em;"> **G**ene t**R**ee **O**rdination **V**isualization for **E**xploration**S**</span>
 
 `groves` is an `R` package for visualizing a set of gene-level phylogenies. 
