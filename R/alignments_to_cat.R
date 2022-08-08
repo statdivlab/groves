@@ -10,7 +10,9 @@
 #'
 #' @export
 alignments_to_cat <- function(target_genes, path_from = "", tail = ".fa", path_to = "") {
+  # make new directory
   dir.create(path_to)
+  # copy files in
   for (curr_gene in target_genes) {
     file.copy(from = paste0(path_from,curr_gene,tail),
               to = paste0(path_to))

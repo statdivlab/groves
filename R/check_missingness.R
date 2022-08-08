@@ -16,6 +16,7 @@ check_missingness <- function(gene_names, tip_names, path = "", tail = ".fa") {
 
   command1 <- "while read i; do echo $i | wc -m; done <"
   command2 <- "while read i; do echo $i | grep -o '-'| wc -l; done <"
+  
   indices <- (1:length(tip_names))*2
   for (i in 1:length(gene_names)) {
     filename <- paste0(path, gene_names[i], tail)

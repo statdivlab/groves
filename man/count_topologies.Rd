@@ -23,7 +23,8 @@ Count number of distinct topologies present in group of phylogenetic trees on th
 tips.
 }
 \examples{
-gene_trees <- read.tree("data/gene_trees.txt")
-count_topologies(gene_trees)
+path <- system.file("txt", "gene_trees.txt", package = "groves")
+gene_trees <- ape::read.tree(path)
+count_topologies(gene_trees)$count
 
 }
