@@ -5,9 +5,9 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-<span style="font-family:Arial; font-size:2em;"> **G**ene t**R**ee **O**rdination **V**isualization for **E**xploration</span>
+<span style="font-family:Arial; font-size:2em;"> **G**ene t**R**ee **O**rdination **V**isualization for **E**xploration**S**</span>
 
-`grove` is an `R` package for visualizing a set of gene-level phylogenies. 
+`groves` is an `R` package for visualizing a set of gene-level phylogenies. 
 
 ## Installation
 

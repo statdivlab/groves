@@ -2,9 +2,9 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 <span style="font-family:Arial; font-size:2em;"> **G**ene t**R**ee
-**O**rdination **V**isualization for **E**xploration</span>
+**O**rdination **V**isualization for **E**xploration**S**</span>
 
-`grove` is an `R` package for visualizing a set of gene-level
+`groves` is an `R` package for visualizing a set of gene-level
 phylogenies.
 
 ## Installation
