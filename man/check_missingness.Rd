@@ -5,7 +5,13 @@
 \title{Check missingness
 Compute the proportion of missingness for each genome and gene combination.}
 \usage{
-check_missingness(gene_names, tip_names, path = "", tail = ".fa")
+check_missingness(
+  gene_names,
+  tip_names,
+  path = "",
+  tail = ".fa",
+  missing_char = "-"
+)
 }
 \arguments{
 \item{gene_names}{A list of names of genes.}
@@ -15,6 +21,8 @@ check_missingness(gene_names, tip_names, path = "", tail = ".fa")
 \item{path}{The path to the fasta file.}
 
 \item{tail}{The end of the path to the fasta file.}
+
+\item{missing_char}{The character used in the alignment to denote a missing base. "-" by default.}
 }
 \value{
 A matrix with the proportion of missingness for each genome and gene combination.
@@ -22,4 +30,14 @@ A matrix with the proportion of missingness for each genome and gene combination
 \description{
 Check missingness
 Compute the proportion of missingness for each genome and gene combination.
+}
+\examples{
+genes <- c("BacA", "CorA")
+tips <- c("GCA_000025925.1", "GCA_000144405.1")
+path <- paste0(system.file("faa/", package = "groves"), "/")
+miss <- check_missingness(gene_names = genes,
+                         tip_names = tips, 
+                         path = path, 
+                         tail = "_aln.faa")
+
 }

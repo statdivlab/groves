@@ -10,7 +10,7 @@ genes_missing_outgroup(gene_names, presence, outgroup)
 \arguments{
 \item{gene_names}{List of genes of interest}
 
-\item{presence}{Matrix of presence data for genes and genomes (TRUE if row gene is
+\item{presence}{Matrix of presence data for genes and genomes (an entry is TRUE if row gene is
 present in column genome).}
 
 \item{outgroup}{Name of the outgroup genome.}

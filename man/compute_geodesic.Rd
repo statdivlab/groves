@@ -17,3 +17,7 @@ A matrix containing distances between each tree in the multiPhylo object. Self d
 Geodesic implementation
 Calculates the geodesic distance between each tree
 }
+\examples{
+compute_geodesic(system.file("txt", "small_tree_set.txt", package = "groves"))
+
+}

@@ -4,10 +4,15 @@
 #' @param tree_path The file path to a txt file containing phylogenetic trees in a multiPhylo object.
 #'
 #' @return A matrix containing distances between each tree in the multiPhylo object. Self distances are set to 0.
+#' 
+#' @examples 
+#' compute_geodesic(system.file("txt", "small_tree_set.txt", package = "groves"))
+#' 
 #' @export
 compute_geodesic <- function(tree_path) {
+  # run gtp.jar to compute geodesic between all input trees
   output <- paste0("-o gtp_output.txt")
-  code_path <- system.file("java", "gtp.jar", package = "grove")
+  code_path <- system.file("java", "gtp.jar", package = "groves")
   system2('java',
           args = c('-jar', code_path, "-d", output,
                    tree_path),
@@ -15,6 +20,7 @@ compute_geodesic <- function(tree_path) {
   geodesic <- utils::read.table("gtp_output.txt")
   system2("rm", args = "gtp_output.txt")
   n_pair <- 1+max(geodesic$V2)
+  # save output into a matrix 
   dist_mat <- matrix(data = 0, nrow = n_pair, ncol = n_pair)
   for (i in 1:nrow(geodesic)) {
     a <- geodesic$V1[i]

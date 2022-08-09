@@ -20,3 +20,11 @@ a support proportion for each internal branch of main_tree.
 Check support
 Check the proportion of trees that support splits in a single tree.
 }
+\examples{
+path1 <- system.file("txt", "gene_trees.txt", package = "groves")
+path2 <- system.file("txt", "concat_tree.txt", package = "groves")
+gene_trees <- ape::read.tree(path1)
+concat_tree <- ape::read.tree(path2)
+check_support(concat_tree, gene_trees)
+
+}

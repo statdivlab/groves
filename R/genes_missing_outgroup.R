@@ -2,7 +2,7 @@
 #' Provides a subset of genes from a list that are missing in the outgroup.
 #'
 #' @param gene_names List of genes of interest
-#' @param presence Matrix of presence data for genes and genomes (TRUE if row gene is
+#' @param presence Matrix of presence data for genes and genomes (an entry is TRUE if row gene is
 #' present in column genome).
 #' @param outgroup Name of the outgroup genome.
 #'
