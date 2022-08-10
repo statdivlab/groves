@@ -5,18 +5,17 @@
 \title{Recodes outgroup edge.
 Recodes the branch going to an outgroup to the value provided.}
 \usage{
-recode_outgroup(tree, outgroup, value = NULL)
+recode_outgroup(tree, outgroup, value = 1)
 }
 \arguments{
-\item{tree}{The tree of interest.}
+\item{tree}{The tree or trees of interest.}
 
 \item{outgroup}{The name of the outgroup in the tree of interest.}
 
-\item{value}{The value to make the outgroup edge. If null, defaults to the second largest
-length on the tree of interest.}
+\item{value}{The value to make the outgroup edge. If not given, defaults to 1.}
 }
 \value{
-The tree of interest with the outgroup edge changed to the value provided.
+The tree or trees of interest with the outgroup edge changed to the value provided.
 }
 \description{
 Recodes outgroup edge.
