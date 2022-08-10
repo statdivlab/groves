@@ -8,16 +8,22 @@ Recodes the branch going to an outgroup to the value provided.}
 recode_outgroup(tree, outgroup, value = 1)
 }
 \arguments{
-\item{tree}{The tree or trees of interest.}
+\item{tree}{The tree or set of trees of interest.}
 
 \item{outgroup}{The name of the outgroup in the tree of interest.}
 
 \item{value}{The value to make the outgroup edge. If not given, defaults to 1.}
 }
 \value{
-The tree or trees of interest with the outgroup edge changed to the value provided.
+The tree or set of trees with the outgroup edge changed to the value provided.
 }
 \description{
 Recodes outgroup edge.
 Recodes the branch going to an outgroup to the value provided.
+}
+\examples{
+path <- system.file("txt", "small_tree_set.txt", package = "groves")
+tree_set <- ape::read.tree(path)
+new_tree_set <- recode_outgroup(tree = tree_set, outgroup = "t1")
+
 }

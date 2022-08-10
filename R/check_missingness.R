@@ -34,7 +34,6 @@ check_missingness <- function(gene_names, tip_names,
   command2 <- paste0("while read i; do echo $i | grep -o '", missing_char, 
                      "'| wc -l; done <")
   
-  indices <- (1:length(tip_names))*2
   # loop over genes
   for (i in 1:length(gene_names)) {
     filename <- paste0(path, gene_names[i], tail)
@@ -54,10 +53,10 @@ check_missingness <- function(gene_names, tip_names,
       } 
     }
     
-    full_command <- paste0(command1, filename)
+    full_command <- paste0(command1, "'", filename, "'")
     # get total number of characters in each line
     tot <- readr::parse_number(system(full_command, intern = T))
-    full_command <- paste0(command2, filename)
+    full_command <- paste0(command2, "'", filename, "'")
     # get total number of missing characters in each line
     miss <- readr::parse_number(system(full_command, intern = T))
     # get proportion of missingness
