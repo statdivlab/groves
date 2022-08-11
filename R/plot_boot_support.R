@@ -2,13 +2,19 @@
 #' Plot a tree with bootstrap support values on each edge.
 #'
 #' @param main_tree A tree to plot edge information for.
-#' @param support A list of node values for each branch of main_tree.
+#' @param support A list of values for each branch of main_tree.
 #' @param lab_size The size of the tip labels, default is 2.
 #' @param supp_size The size of the support labels, default is 2.
 #' @param xlim_max The length of the x axis.
 #' @param hjust Horizontal adjustment for support labels.
 #'
 #' @return A ggtree object.
+#'
+#' @examples 
+#' path <- system.file("txt", "tree1.txt", package = "groves")
+#' tree <- ape::read.tree(path)
+#' support <- rep(80, 8)
+#' plot_boot_support(main_tree = tree, support = support, xlim_max = 2.5)
 #'
 #' @import ggtree
 #'

@@ -19,6 +19,6 @@ check_support <- function(main_tree, trees) {
   # use function from TreeTools to return number of splits in main tree that appear
   # in set trees
   support <- TreeTools::SplitFrequency(main_tree, trees)
-  prop <- sum(support)/(length(trees)*length(support))
-  return(list(support_prop = prop, branch_support = support/length(trees)))
+  prop <- round(sum(support)/(length(trees)*length(support)), 2)
+  return(list(support_prop = prop, branch_support = round(support/length(trees), 2)))
 }

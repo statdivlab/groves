@@ -5,7 +5,13 @@
 \title{Removes empty lines
 Removes empty lines from a fasta file (so it can be run with IQTREE).}
 \usage{
-remove_empty_lines(target_genes, path = "", tail = ".fa")
+remove_empty_lines(
+  target_genes,
+  path = "",
+  tail = ".fa",
+  missing_char = "-",
+  new_file_suffix = ""
+)
 }
 \arguments{
 \item{target_genes}{A list of gene names for alignment files to remove empty lines from.}
@@ -13,8 +19,21 @@ remove_empty_lines(target_genes, path = "", tail = ".fa")
 \item{path}{Path to the alignment files.}
 
 \item{tail}{Ending of alignment files.}
+
+\item{missing_char}{The character used in the alignment to denote a missing base. "-" by default.}
+
+\item{new_file_suffix}{A suffix to amend to alignment files after empty lines are removed.
+By default this is "", which means that the new file will replace the old file.}
 }
 \description{
 Removes empty lines
 Removes empty lines from a fasta file (so it can be run with IQTREE).
+}
+\examples{
+gene_set <- c("BacA", "CorA")
+faa_path <- paste0(system.file("faa/", package = "groves"), "/")
+faa_tail <- "_aln_tips_miss.faa"
+remove_empty_lines(target_genes = gene_set, path = faa_path, tail = faa_tail, 
+                   new_file_suffix = "_clean")
+
 }

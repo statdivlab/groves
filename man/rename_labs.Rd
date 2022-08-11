@@ -10,7 +10,7 @@ rename_labs(match_df, tree, old_label = "oldlab", new_label = "newlab")
 \arguments{
 \item{match_df}{A dataframe with matched columns for the old and new labels.}
 
-\item{tree}{A tree to rename tip labels for.}
+\item{tree}{A tree or set of trees to rename tip labels for.}
 
 \item{old_label}{The name of the column in match_df containing the old tip labels.}
 
@@ -22,4 +22,12 @@ The tree with renamed tip labels.
 \description{
 Rename labels
 Given a set of old and new labels, switch between the two.
+}
+\examples{
+path <- system.file("txt", "small_tree_set.txt", package = "groves")
+tree_set <- ape::read.tree(path)
+name_df <- data.frame(old = paste0("t", 1:10), new = paste0("tip", 1:10))
+new_tree_set <- rename_labs(match_df = name_df, tree = tree_set, old_label = "old", 
+                           new_label = "new")
+
 }

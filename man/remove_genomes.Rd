@@ -5,18 +5,36 @@
 \title{Removes genomes
 Removes genome lines from a fasta file.}
 \usage{
-remove_genomes(target_genes, missing_genomes, path = "", tail = ".fa")
+remove_genomes(
+  target_genes,
+  target_genomes,
+  path = "",
+  tail = ".fa",
+  new_file_suffix = ""
+)
 }
 \arguments{
 \item{target_genes}{A list of gene names for alignment files to remove empty lines from.}
 
-\item{missing_genomes}{A list of genome names to remove from alignment files}
+\item{target_genomes}{A list of genome names to remove from alignment files}
 
 \item{path}{Path to the alignment files.}
 
 \item{tail}{Ending of alignment files.}
+
+\item{new_file_suffix}{A suffix to amend to alignment files after empty lines are removed.
+By default this is "", which means that the new file will replace the old file.}
 }
 \description{
 Removes genomes
 Removes genome lines from a fasta file.
+}
+\examples{
+gene_set <- c("BacA", "CorA")
+genome_set <- c("GCA_000025925.1", "GCA_000144405.1", "fake_tip")
+faa_path <- paste0(system.file("faa/", package = "groves"), "/")
+faa_tail <- "_aln.faa"
+remove_genomes(target_genes = gene_set, target_genomes = genome_set,
+               path = faa_path, tail = faa_tail, new_file_suffix = "_fewer_tips")
+
 }

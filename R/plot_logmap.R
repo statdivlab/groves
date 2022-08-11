@@ -3,11 +3,10 @@
 #'
 #' @param vectors A matrix of logmap vectors for each tree.
 #' @param base_name The name of the base tree in the log map.
-#' @param other_cons_name An optional other consensus tree name.
 #' @param gene_names An optional list of gene names. If no names are given, numbers will be used
 #' to identify trees.
 #' @param col An optional list of gene attributes to color the points of the scatterplot by.
-#' @param col_name An optional name for the color attribute
+#' @param col_name An optional name for the color attribute.
 #' @param show_legend If true, the color legend is shown, if false it is hidden.
 #' @param cons_exists True if plot includes a consensus tree, false if not.
 #'
@@ -15,7 +14,7 @@
 #'
 #'
 #' @export
-plot_logmap <- function(vectors, base_name, other_cons_name = NULL, gene_names = NULL, col = NULL,
+plot_logmap <- function(vectors, base_name, gene_names = NULL, col = NULL,
                         col_name = NULL, show_legend = TRUE, cons_exists = TRUE) {
   if (cons_exists) {
     pca <- stats::prcomp(vectors, rank. = 2)
