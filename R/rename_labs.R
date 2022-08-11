@@ -17,10 +17,10 @@
 #' 
 #' @export
 rename_labs <- function(match_df, tree, old_label = "oldlab", new_label = "newlab") {
-  if (class(tree) == "phylo") {
+  if (inherits(tree, "phylo")) {
     tip_places <- base::match(tree$tip.label, unlist(match_df[old_label]))
     tree$tip.label <- as.character(match_df[tip_places,new_label])
-  } else if (class(tree) == "multiPhylo") {
+  } else if (inherits(tree, "multiPhylo")) {
     for (i in 1:length(tree)) {
       tip_places <- base::match(tree[[i]]$tip.label, unlist(match_df[old_label]))
       tree[[i]]$tip.label <- as.character(match_df[tip_places,new_label])

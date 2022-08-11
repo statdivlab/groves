@@ -3,7 +3,6 @@
 #'
 #' @param main_tree A rooted tree to plot edge information for.
 #' @param support A list of values for each branch of main_tree.
-#' @param edge_second_node Second node in the edge for each support value.
 #' @param lab_size The size of the tip labels, default is 2.
 #' @param supp_size The size of the support labels, default is 2.
 #' @param xlim_max The length of the x axis.
@@ -15,7 +14,7 @@
 #' path <- system.file("txt", "small_tree_set.txt", package = "groves")
 #' trees <- ape::read.tree(path)
 #' support <- check_support(trees[[1]], trees)$branch_support
-#' plot_gene_support(main_tree = tree, support = support, xlim_max = 2.5)
+#' plot_gene_support(main_tree = trees[[1]], support = support, xlim_max = 4)
 #'
 #' @import ggtree
 #'

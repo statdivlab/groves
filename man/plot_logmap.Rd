@@ -8,7 +8,6 @@ Plot logmap coordinates using the first two principal components.}
 plot_logmap(
   vectors,
   base_name,
-  other_cons_name = NULL,
   gene_names = NULL,
   col = NULL,
   col_name = NULL,
@@ -21,14 +20,12 @@ plot_logmap(
 
 \item{base_name}{The name of the base tree in the log map.}
 
-\item{other_cons_name}{An optional other consensus tree name.}
-
 \item{gene_names}{An optional list of gene names. If no names are given, numbers will be used
 to identify trees.}
 
 \item{col}{An optional list of gene attributes to color the points of the scatterplot by.}
 
-\item{col_name}{An optional name for the color attribute}
+\item{col_name}{An optional name for the color attribute.}
 
 \item{show_legend}{If true, the color legend is shown, if false it is hidden.}
 

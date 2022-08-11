@@ -15,7 +15,7 @@
 #' @export
 recode_outgroup <- function(tree, outgroup, value = 1) {
   # if tree input is a single tree 
-  if (class(tree) == "phylo") {
+  if (inherits(tree, "phylo")) {
     # check the outgroup exists in tree 
     outgroup_ind <- which(tree$tip.label == outgroup)
     if (length(outgroup_ind) == 0) {
@@ -28,7 +28,7 @@ recode_outgroup <- function(tree, outgroup, value = 1) {
     new_tree$edge.length[edge_ind] <- value
     return(new_tree)
   # if tree input is a set of trees 
-  } else if (class(tree) == "multiPhylo") {
+  } else if (inherits(tree, "multiPhylo")) {
     # check that outgroup exists in first tree 
     outgroup_ind <- which(tree[[1]]$tip.label == outgroup)
     if (length(outgroup_ind) == 0) {

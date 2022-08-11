@@ -7,8 +7,7 @@
 #' a list of lists of tips that are children of the longest branch of each tree (for a multiPhylo object).
 #' @export
 list_long_branch_tips <- function(tree) {
-  #num <- vector(length = length(tree))
-  if (class(tree) == "phylo") {
+  if (inherits(tree, "phylo")) {
     long_branch <- which.max(tree$edge.length)
     branch_node <- tree$edge[long_branch,2]
     if (branch_node <= length(tree$tip.label)) {
@@ -17,7 +16,7 @@ list_long_branch_tips <- function(tree) {
       ind <- branch_node - length(tree$tip.label)
       tips <- list(adephylo::listTips(tree)[[ind]])
     }
-  } else if (class(tree) == "multiPhylo") {
+  } else if (inherits(tree, "multiPhylo")) {
     tips <- list()
     for (i in 1:length(tree)) {
       temp_tree <- tree[[i]]

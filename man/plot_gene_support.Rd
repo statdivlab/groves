@@ -7,10 +7,7 @@ Plot a tree with gene tree support values on each edge.}
 \usage{
 plot_gene_support(
   main_tree,
-  n_trees,
   support,
-  edge_second_node = (length(main_tree$tip.label) + main_tree$Nnode - length(support) +
-    1):(length(main_tree$tip.label) + main_tree$Nnode),
   lab_size = 2,
   supp_size = 2,
   xlim_max = 0.5,
@@ -18,13 +15,9 @@ plot_gene_support(
 )
 }
 \arguments{
-\item{main_tree}{A tree to plot edge information for.}
+\item{main_tree}{A rooted tree to plot edge information for.}
 
-\item{n_trees}{The number of trees providing support for the main tree.}
-
-\item{support}{A list of node values for each branch of main_tree.}
-
-\item{edge_second_node}{Second node in the edge for each support value.}
+\item{support}{A list of values for each branch of main_tree.}
 
 \item{lab_size}{The size of the tip labels, default is 2.}
 
@@ -40,4 +33,11 @@ A ggtree object.
 \description{
 Plot gene tree support
 Plot a tree with gene tree support values on each edge.
+}
+\examples{
+path <- system.file("txt", "small_tree_set.txt", package = "groves")
+trees <- ape::read.tree(path)
+support <- check_support(trees[[1]], trees)$branch_support
+plot_gene_support(main_tree = trees[[1]], support = support, xlim_max = 4)
+
 }
