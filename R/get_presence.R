@@ -11,7 +11,7 @@
 #' 
 #' @examples 
 #' gene_set <- paste0("gene_", 1:3)
-#' faa_path <- paste0(system.file("faa/", package = "groves"), "/")
+#' faa_path <- system.file("faa/", package = "groves")
 #' get_presence(gene_names = gene_set, path = faa_path, tail = ".faa")
 #'
 #' @export
@@ -22,26 +22,16 @@ get_presence <- function(gene_names = gene_set, path = "", tail = ".fa") {
   first_text <- readLines(first_fasta)
   num_tips <- length(first_text)/2
   tip_names_full <- first_text[seq(1, length(first_text), 2)]
-  tip_names <- substr(tip_names_full, 2, nchar(tip_names_tmp))
-  
-  # if exclude_outgroup = TRUE, make sure outgroup isn't NULL and matches one of the tip names
-  if (exclude_outgroup) {
-    if (is.null(outgroup)) {
-      stop("Please include outgroup name.")
-    }
-    outgroup_ind <- which(tip_names == outgroup)
-    if (length(outgroup_ind) == 0) {
-      stop("Please enter an outgroup that appears in your data.")
-    }
-  }
+  tip_names <- substr(tip_names_full, 2, nchar(tip_names_full))
   
   # initialize matrix
-  presence <- matrix(data = TRUE, nrow = length(gene_names), ncol = num_tips)
+  presence <- matrix(data = 0, nrow = length(gene_names), ncol = num_tips + 10)
   rownames(presence) <- gene_names
-  colnames(presence) <- tip_names
+  colnames(presence) <- c(tip_names, rep("tmp", 10))
+  curr_col <- num_tips + 1
   
   # iterating through genes
-  for ( i in 1:length(gene_names) ) {
+  for (i in 1:length(gene_names)) {
     
     # get current gene
     curr_gene <- gene_names[i]
@@ -49,29 +39,49 @@ get_presence <- function(gene_names = gene_set, path = "", tail = ".fa") {
     # setting path to alignment fasta
     curr_fasta <- paste0(path, curr_gene, tail)
     
+    # read text 
+    text <- readLines(curr_fasta)
+    
+    # get tips 
+    tip_names_full <- text[seq(1, length(text), 2)]
+    tip_names <- substr(tip_names_full, 2, nchar(tip_names_full))
+    
+    # check that tip names are included in presence matrix 
+    new_tips <- which(!(tip_names %in% colnames(presence))) 
+    nt_len <- length(new_tips)
+    if (nt_len > 0) {
+      # if new tips in alignment, add to presence matrix 
+      for (nt in 1:nt_len) {
+        colnames(presence)[curr_col] <- tip_names[new_tips[nt]]
+        curr_col <- curr_col + 1
+        # if no more additional columns to add, make matrix wider 
+        if (curr_col > ncol(presence)) {
+          new_pres <- matrix(0, nrow = nrow(presence), 
+                             ncol = ncol(presence) + 10)
+          new_pres[, 1:ncol(presence)] <- presence 
+          rownames(new_pres) <- gene_names
+          colnames(new_pres) <- c(colnames(presence), rep("tmp", 10))
+          presence <- new_pres 
+        }
+      }
+    }
+    
     # getting length of current gene's alignment
     curr_alignment_length <- nchar(readLines(curr_fasta, n = 2)[2])
     
-    # # adding gene to target gene list if there are no entries that are all gaps
-    # if ( ! any(readLines(curr_fasta) == paste0(rep("-", curr_alignment_length), collapse = "")) ) {
-    #   target_genes <- c(target_genes, curr_gene)
-    # }
-    
     # check if each line is filled with dashes
-    gene_res <- readLines(curr_fasta) != paste0(rep("-", curr_alignment_length), collapse = "")
-    # take the even numbered lines (that contain alignment data)
-    presence[i,] <- gene_res[seq(2, length(gene_res), 2)]
-    
+    gene_res <- 1*(text != 
+                     paste0(rep("-", curr_alignment_length), 
+                            collapse = ""))[seq(2, 2*length(tip_names), 2)]
+    # fill in ith row of presence matrix 
+    presence[i, match(tip_names, colnames(presence))] <- gene_res
   }
   
-  # get target genes from presence mat
-  if (!exclude_outgroup) {
-    target_genes <- gene_names[which(rowSums(!presence) == 0)]
-  } else {
-    presence_tmp <- presence[,-outgroup_ind]
-    target_genes <- gene_names[which(rowSums(!presence_tmp) == 0)]
+  # remove extra columns 
+  col_to_rm <- which(colnames(presence) == "tmp")
+  if (length(col_to_rm) > 0) {
+    presence <- presence[, -col_to_rm]
   }
   
-  
-  return(list(target = target_genes, presence = presence))
+  return(presence = presence)
 }

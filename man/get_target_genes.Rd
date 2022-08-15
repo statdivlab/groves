@@ -16,11 +16,11 @@ get_target_genes(
 \arguments{
 \item{gene_names}{A list of gene names that correspond with alignments to examine}
 
-\item{path}{The file path to the gene alignments, default is "}
+\item{path}{The file path to the gene alignments, default is ""}
 
-\item{tail}{The extension to the gene alignments, default is ".fa}
+\item{tail}{The extension to the gene alignments, default is ".fa"}
 
-\item{exclude_outgroup}{Binary variable, if true target genes will not need to be in the
+\item{exclude_outgroup}{Binary variable, if true, target genes will not need to be in the
 outgroup genome.}
 
 \item{outgroup}{Name of the outgroup, required if \code{exclude_outgroup = T}.}
