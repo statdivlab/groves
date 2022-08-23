@@ -38,37 +38,60 @@ subsample <- function(gene_names, path = "", tail = ".fa",
   if (is.null(genes_to_keep)) {
     gene_set <- c()
   } else {
+    if (sum(genes_to_keep %in% rownames(presence)) < length(genes_to_keep)) {
+      stop("Some genes in genes_to_keep do not appear in your presence matrix. 
+           Check gene_names to see which genes appear in your data.")
+    }
     gene_set <- genes_to_keep
     # check that any genomes match all genes_to_keep
     rows_to_keep <- rownames(presence) %in% genes_to_keep 
     gene_set_mat <- presence[rows_to_keep, ]
-    if (max(rowSums(gene_set_mat)) < length(genes_to_keep)) {
-      stop("There are no genomes that share all genes provided as 
+    if (length(gene_set) > 1) {
+      if (max(colSums(gene_set_mat)) < length(genes_to_keep)) {
+        stop("There are no genomes that share all genes provided as 
            genes_to_keep.")
+      }
+      # find which genomes don't include chosen genes 
+      col_to_rm <- which(colSums(gene_set_mat) < length(genes_to_keep))
+    } else {
+      # find which genomes don't include chosen genes 
+      col_to_rm <- which(gene_set_mat == 0)
     }
     up_next <- -1 
-    # find which genomes don't include chosen genes 
-    col_to_rm <- which(colSums(gene_set_mat) < length(genes_to_keep))
     # remove genomes that don't include chosen genes
-    upd_presence <- upd_presence[, -col_to_rm]
+    if (length(col_to_rm) > 0) {
+      upd_presence <- upd_presence[, -col_to_rm]
+    }
   }
   
   # list of genomes to retain 
   if (is.null(genomes_to_keep)) {
     genome_set <- c()
   } else {
+    # check that all genomes are in presence matrix 
+    if (sum(genomes_to_keep %in% colnames(presence)) < length(genomes_to_keep)) {
+      stop("Some genomes in genomes_to_keep do not appear in your presence matrix. 
+           You can run get_presence() to identify genomes that appear in your data.")
+    }
     genome_set <- genomes_to_keep
     # check that any genes are in all genomes to keep 
     cols_to_keep <- colnames(presence) %in% genomes_to_keep
     genome_set_mat <- presence[, cols_to_keep]
-    if (max(colSums(genome_set_mat)) < length(genomes_to_keep)) {
-      stop("There are no genes in all genomes provided as 
+    if (length(genomes_to_keep) > 1) {
+      if (max(rowSums(genome_set_mat)) < length(genomes_to_keep)) {
+        stop("There are no genes in all genomes provided as 
            genomes_to_keep.")
+      }
+      # find which genes aren't in chosen genomes
+      row_to_rm <- which(rowSums(genome_set_mat) < length(genomes_to_keep))
+    } else {
+      # find which genes aren't in chosen genomes
+      row_to_rm <- which(genome_set_mat == 0)
     }
-    # find which genes aren't in chosen genomes
-    row_to_rm <- which(rowSums(genome_set_mat) < length(genomes_to_keep))
     # remove genes not in chosen genomes
-    upd_presence <- upd_presence[-row_to_rm, ]
+    if (length(row_to_rm) > 0) {
+      upd_presence <- upd_presence[-row_to_rm, ]
+    } 
   }
   
   # continue to add genes and genomes until a complete set is found
@@ -93,17 +116,19 @@ subsample <- function(gene_names, path = "", tail = ".fa",
           rows_left <- !(rownames(upd_presence) %in% gene_set)
           # find gene included in the most number of genomes
           if (is.matrix(upd_presence[rows_left, ])) {
-            row_to_add <- which.max(rowMeans(upd_presence[rows_left, ]))[1]
+            gene_to_add <- names(which.max(rowMeans(upd_presence[rows_left, ]))[1])
           } else {
-            row_to_add <- which(rows_left)
+            gene_to_add <- rownames(upd_presence)[rows_left]
           }
           
           # save gene in gene set 
-          gene_set <- c(gene_set, rownames(upd_presence)[row_to_add])
+          gene_set <- c(gene_set, gene_to_add)
           # find which genomes don't include chosen gene 
-          col_to_rm <- which(upd_presence[row_to_add, ] == 0)
+          col_to_rm <- which(upd_presence[rownames(upd_presence) == gene_to_add, ] == 0)
           # remove genomes that don't include chosen gene
-          upd_presence <- upd_presence[, -col_to_rm]
+          if (length(col_to_rm) > 0) {
+            upd_presence <- upd_presence[, -col_to_rm]
+          }
         }
       } else {
         # add genomes 
@@ -112,19 +137,21 @@ subsample <- function(gene_names, path = "", tail = ".fa",
           cols_left <- !(colnames(upd_presence) %in% genome_set)
           # find genome that contains the most genes 
           if (is.matrix(upd_presence[, cols_left])) {
-            col_to_add <- which.max(colMeans(upd_presence[, !(colnames(upd_presence) 
-                                                              %in% genome_set)]))[1]
+            genome_to_add <- names(which.max(colMeans(upd_presence[, !(colnames(upd_presence) 
+                                                              %in% genome_set)]))[1])
           } else {
-            col_to_add <- cols_left
+            genome_to_add <- colnames(upd_presence)[cols_left]
           }
         }
         
         # save genome in genome set
-        genome_set <- c(genome_set, colnames(upd_presence)[col_to_add])
+        genome_set <- c(genome_set, genome_to_add)
         # find which genes aren't in chosen genome
-        row_to_rm <- which(upd_presence[, col_to_add] == 0)
+        row_to_rm <- which(upd_presence[, colnames(upd_presence) == genome_to_add] == 0)
         # remove genes that aren't in chosen genome
-        upd_presence <- upd_presence[-row_to_rm, ]
+        if (length(row_to_rm) > 0) {
+          upd_presence <- upd_presence[-row_to_rm, ]
+        }
       }
     }
     # switch from gene to genome or vice versa for next update 
