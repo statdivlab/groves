@@ -11,11 +11,11 @@
 #' 
 #' @examples 
 #' gene_set <- paste0("gene_", 1:3)
-#' faa_path <- system.file("faa/", package = "groves")
+#' faa_path <- paste0(system.file("faa/", package = "groves"), "/")
 #' get_presence(gene_names = gene_set, path = faa_path, tail = ".faa")
 #'
 #' @export
-get_presence <- function(gene_names = gene_set, path = "", tail = ".fa") {
+get_presence <- function(gene_names, path = "", tail = ".fa") {
   
   # get first gene alignment to get number of tips per file and tip names
   first_fasta <- paste0(path, gene_names[1], tail)

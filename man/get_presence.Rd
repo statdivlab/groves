@@ -6,7 +6,7 @@
 Takes a list of genes and returns a presence/absence matrix for genomes that included
 as tips in the alignment for each gene.}
 \usage{
-get_presence(gene_names = gene_set, path = "", tail = ".fa")
+get_presence(gene_names, path = "", tail = ".fa")
 }
 \arguments{
 \item{gene_names}{A list of gene names that correspond with alignments to examine}
@@ -26,7 +26,7 @@ as tips in the alignment for each gene.
 }
 \examples{
 gene_set <- paste0("gene_", 1:3)
-faa_path <- system.file("faa/", package = "groves")
+faa_path <- paste0(system.file("faa/", package = "groves"), "/")
 get_presence(gene_names = gene_set, path = faa_path, tail = ".faa")
 
 }
