@@ -47,3 +47,8 @@ test_that("compute_MDS gives error with wrong mds_type", {
   expect_error(compute_MDS(trees_path, mds_type = "classical"), 
                "Please input either 'metric' or 'nonmetric' for mds_type.")
 })
+
+test_that("compute_MDS gives error when trees_path and dist_matrix both null", {
+  expect_error(compute_MDS(), 
+               "Please submit either tree_paths or dist_matrix to compute distances between trees.")
+})

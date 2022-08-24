@@ -61,7 +61,7 @@ compute_MDS <- function(trees_path = NULL, nf = 2, dist_metric = "BHV",
   }
   # make dataframe to save MDS coordinates 
   df <- data.frame(matrix(data = NA, nrow = nrow(dist_mat), ncol = nf))
-  if (is.null(names)) {
+  if (is.null(tree_names)) {
     row.names(dist_mat) <- paste0("tree", 1:nrow(dist_mat))
     row.names(df) <- paste0("tree", 1:nrow(dist_mat))
   } else {
