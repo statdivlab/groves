@@ -103,11 +103,7 @@ subsample <- function(gene_names, path = "", tail = ".fa",
       } else if (length(genome_set) < 2) {
         stop("Only one genome selected. You can look manually for a complete set but
              this dataset may not be well-suited for gene tree exploration.")
-      } else {
-        stop("There is an error with the subsample function. You can look manually
-             for a complete set but this dataset may not be well-suited for gene
-             tree exploration.")
-      }
+      } 
     } else {
       if (up_next == 1) {
         # add genes 

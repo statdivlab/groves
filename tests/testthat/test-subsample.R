@@ -33,6 +33,24 @@ test_that("subsample throws error when gene not in set", {
            Check gene_names to see which genes appear in your data.")
 })
 
+test_that("subsample works with a single gene_to_keep", {
+  gene_set <- paste0("gene_", 1:3)
+  faa_path <- paste0(system.file("faa/", package = "groves"), "/")
+  expect_warning(subsample(gene_names = gene_set, path = faa_path, tail = ".faa",
+                         genes_to_keep = c("gene_2")),
+                  "Only one genome selected. You can look manually for a complete set but
+             this dataset may not be well-suited for gene tree exploration.")
+})
+
+test_that("subsample works with a single genome_to_keep", {
+  gene_set <- paste0("gene_", 1:3)
+  faa_path <- paste0(system.file("faa/", package = "groves"), "/")
+  expect_warning(subsample(gene_names = gene_set, path = faa_path, tail = ".faa",
+                           genomes_to_keep = c("tip_1")),
+                 "Only one gene selected. You can look manually for a complete set but
+             this dataset may not be well-suited for gene tree exploration.")
+})
+
 test_that("subsample throws error when genome not in set", {
   gene_set <- paste0("gene_", 1:3)
   faa_path <- paste0(system.file("faa/", package = "groves"), "/")

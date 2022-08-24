@@ -21,7 +21,8 @@ Imports:
     R.utils,
     ade4,
     readr,
-    adephylo
+    adephylo,
+    stringr
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.1

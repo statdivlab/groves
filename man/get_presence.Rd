@@ -6,7 +6,7 @@
 Takes a list of genes and returns a presence/absence matrix for genomes that included
 as tips in the alignment for each gene.}
 \usage{
-get_presence(gene_names, path = "", tail = ".fa")
+get_presence(gene_names, path = "", tail = ".fa", extra_col = 10)
 }
 \arguments{
 \item{gene_names}{A list of gene names that correspond with alignments to examine}
@@ -14,6 +14,9 @@ get_presence(gene_names, path = "", tail = ".fa")
 \item{path}{The file path to the gene alignments, default is ""}
 
 \item{tail}{The extension to the gene alignments, default is ".fa"}
+
+\item{extra_col}{The number of extra columns added to presence matrix to account for 
+tips that are in some genes but not others. Defaults to 10.}
 }
 \value{
 A matrix with rows for each gene and columns for each genome (tip). Entries 

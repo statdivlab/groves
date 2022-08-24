@@ -6,17 +6,17 @@
 Calculates the distance between each tree and performs MDS}
 \usage{
 compute_MDS(
-  trees_path,
+  trees_path = NULL,
   nf = 2,
   dist_metric = "BHV",
   dist_matrix = NULL,
-  mds_package = "ade4",
+  mds_type = "metric",
   tree_names = NULL
 )
 }
 \arguments{
 \item{trees_path}{The file path to a txt file containing the set of phylogenetic trees in a 
-multiPhylo object.}
+multiPhylo object, required unless a dist_matrix is not NULL.}
 
 \item{nf}{The number of axes in the MDS to keep. Defaults to 2.}
 
@@ -26,8 +26,8 @@ Billera et al. (2001). Defaults to 'BHV'. Ignore this argument if using argument
 \item{dist_matrix}{If you would like to submit your own distance matrix computed with a different
 metric, use this argument. In this case, do not include the dist_metric argument.}
 
-\item{mds_package}{The default is to run classical MDS using ade4. To change this to metric MDS using the
-package smacof, use the argument mds_package = "smacof".}
+\item{mds_type}{MDS is performed with the package smacof. Default is metric scaling, otherwise
+use value "nonmetric".}
 
 \item{tree_names}{Optional tree names to use.}
 }
@@ -41,7 +41,7 @@ Calculates the distance between each tree and performs MDS
 }
 \examples{
 trees_path <- system.file("txt", "small_tree_set.txt", package = "groves")
-compute_MDS(trees_path, tree_names = paste0("tree", 1:3))
+compute_MDS(trees_path = trees_path, tree_names = paste0("tree", 1:3))
 
 
 }

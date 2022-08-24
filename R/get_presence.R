@@ -5,6 +5,8 @@
 #' @param gene_names A list of gene names that correspond with alignments to examine
 #' @param path The file path to the gene alignments, default is ""
 #' @param tail The extension to the gene alignments, default is ".fa"
+#' @param extra_col The number of extra columns added to presence matrix to account for 
+#' tips that are in some genes but not others. Defaults to 10. 
 #'
 #' @return A matrix with rows for each gene and columns for each genome (tip). Entries 
 #' equal to 1 mean the gene alignment includes that tip. 
@@ -15,7 +17,7 @@
 #' get_presence(gene_names = gene_set, path = faa_path, tail = ".faa")
 #'
 #' @export
-get_presence <- function(gene_names, path = "", tail = ".fa") {
+get_presence <- function(gene_names, path = "", tail = ".fa", extra_col = 10) {
   
   # get first gene alignment to get number of tips per file and tip names
   first_fasta <- paste0(path, gene_names[1], tail)
@@ -25,9 +27,9 @@ get_presence <- function(gene_names, path = "", tail = ".fa") {
   tip_names <- substr(tip_names_full, 2, nchar(tip_names_full))
   
   # initialize matrix
-  presence <- matrix(data = 0, nrow = length(gene_names), ncol = num_tips + 10)
+  presence <- matrix(data = 0, nrow = length(gene_names), ncol = num_tips + extra_col)
   rownames(presence) <- gene_names
-  colnames(presence) <- c(tip_names, rep("tmp", 10))
+  colnames(presence) <- c(tip_names, rep("tmp", extra_col))
   curr_col <- num_tips + 1
   
   # iterating through genes
@@ -57,10 +59,10 @@ get_presence <- function(gene_names, path = "", tail = ".fa") {
         # if no more additional columns to add, make matrix wider 
         if (curr_col > ncol(presence)) {
           new_pres <- matrix(0, nrow = nrow(presence), 
-                             ncol = ncol(presence) + 10)
+                             ncol = ncol(presence) + extra_col)
           new_pres[, 1:ncol(presence)] <- presence 
           rownames(new_pres) <- gene_names
-          colnames(new_pres) <- c(colnames(presence), rep("tmp", 10))
+          colnames(new_pres) <- c(colnames(presence), rep("tmp", extra_col))
           presence <- new_pres 
         }
       }

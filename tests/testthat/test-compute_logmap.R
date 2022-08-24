@@ -8,6 +8,15 @@ test_that("compute_logmap has a row for each tree", {
   expect_equal(nrow(logmap), length(tree_paths))
 })
 
+test_that("compute_logmap works without tree_names", {
+  path <- paste0(system.file("txt", package = "groves"), "/")
+  tree_paths <- paste0(path, "tree", 1:3, ".txt")
+  logmap <- compute_logmap(base_path = paste0(path, "tree1.txt"),
+                           tree_paths = tree_paths,
+                           base_in_tree_paths = TRUE)
+  expect_equal(nrow(logmap), length(tree_paths))
+})
+
 test_that("compute_logmap has a row for each tree still", {
   path <- paste0(system.file("txt", package = "groves"), "/")
   tree_paths <- paste0(path, "tree", 2:3, ".txt")

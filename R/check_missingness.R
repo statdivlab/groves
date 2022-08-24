@@ -27,12 +27,6 @@ check_missingness <- function(gene_names, tip_names,
   miss_prop <- matrix(data = NA, nrow = length(gene_names), ncol = length(tip_names))
   rownames(miss_prop) <- gene_names
   colnames(miss_prop) <- tip_names
-
-  # get total number of characters on each line
-  command1 <- "while read i; do echo $i | wc -m; done <"
-  # get total number of missing characters on each line 
-  command2 <- paste0("while read i; do echo $i | grep -o '", missing_char, 
-                     "'| wc -l; done <")
   
   # loop over genes
   for (i in 1:length(gene_names)) {
@@ -42,8 +36,10 @@ check_missingness <- function(gene_names, tip_names,
                   gene_names[i], 
                   " doesn't exist in the given directory."))
     }
+    # read file 
+    file <- readLines(filename)
     # get tips from gene alignment 
-    tips <- gsub(">", "", system(paste0("awk 'NR % 2 == 1' ", filename), intern = T))
+    tips <- substring(file, 2)[seq(1, length(file), 2)]
     # match desired tip names to tips in alignment
     indices <- rep(NA, length(tip_names))
     for (j in 1:length(indices)) {
@@ -53,12 +49,10 @@ check_missingness <- function(gene_names, tip_names,
       } 
     }
     
-    full_command <- paste0(command1, "'", filename, "'")
     # get total number of characters in each line
-    tot <- readr::parse_number(system(full_command, intern = T))
-    full_command <- paste0(command2, "'", filename, "'")
+    tot <- nchar(file)
     # get total number of missing characters in each line
-    miss <- readr::parse_number(system(full_command, intern = T))
+    miss <- stringr::str_count(file, missing_char)
     # get proportion of missingness
     prop <- miss/tot
     miss_prop[i, ] <- prop[indices]
