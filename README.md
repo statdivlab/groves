@@ -12,13 +12,13 @@
 
     if (!require("remotes", quietly = TRUE))
         install.packages("remotes") # check that devtools is installed
-    remotes::install_github("statdivlab/grove") 
-    library(grove)
+    remotes::install_github("statdivlab/groves") 
+    library(groves)
 
 ## Usage
 
-This package is still in development. Vignettes are coming soon, with instructions and examples of how to use `grove` to analysis your gene trees.
+This package is still in development. Vignettes are coming soon, with instructions and examples of how to use `groves` to analysis your gene trees.
 
 ## Issues/Requests
 
-If you have any issues using our software or further questions please submit an issue [here](https://github.com/statdivlab/grove/issues).
+If you have any issues using our software or further questions please submit an issue [here](https://github.com/statdivlab/groves/issues).
