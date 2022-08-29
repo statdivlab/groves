@@ -2,79 +2,114 @@
 #' Plots MDS results of trees for each distance.
 #'
 #' @param df A dataframe with the first two MDS coordinates for a set of trees and distances.
-#' @param consensus An optional argument specifying whether the first tree is a consensus tree, and
-#' if so the name of the consensus tree.
-#' @param group An optional variable to color points by.
-#' @param title An optional paramater to change the plot title.
-#' @param x_dim The name of the variable within the dataframe that specifies the value on the x axis.
-#' @param y_dim The name of the variable within the dataframe that specifies the value on the y axis.
-#' @param show_legend A boolean about whether or not to show a legend.
-#' @param legend_lab A label for the legend (NULL if not specified).
-#' @param scales_arg An optional argument about whether the scales should be fixed or free. Set to
-#' free by default.
-#' @param single_method True if the dataframe only includes data from a single distance metric.
-#' @param gene_names An optional variable to label genes by.
+#' It should include variables named \code{MDS1} and \code{MDS2}. 
+#' @param phylogenomic An optional argument, if included gives the index of the dataframe that
+#' corresponds to the phylogenomic tree, which will then be noted in the plot. 
+#' @param group An optional variable to color points by. This should either be a vector the same
+#' length as the number of rows in \code{df} or a name in quotes of a variable in \code{df}.
+#' @param title An optional parameter to change the plot title.
+#' @param show_legend A boolean about whether or not to show a legend for grouping variable.
+#' @param legend_lab A label for the legend for the grouping variable. Enter "" to hide
+#' the legend label.
+#' @param tree_names An optional variable to label trees by. This should either be a vector
+#' the same length as the number of rows in \code{df} or a name in quotes of a variable in 
+#' \code{df}.
+#' @param alpha Transparency of the points, defaults to 1 (fully opaque).
+#' @param use_plotly If true, the output will be a plotly object, with labels
+#' when points are moused over, if false the output will be a ggplot object.
 #'
 #' @return A ggplot2 object.
 #' @import ggplot2
-#' @import dplyr
-#'
+#' 
+#' @examples 
+#' trees_path <- system.file("txt", "small_tree_set.txt", package = "groves")
+#' plot_df <- compute_MDS(trees_path = trees_path, tree_names = paste0("tree", 1:3))$df
+#' plot_df$names <- paste0("tree", 1:3)
+#' plot_df$type <- c("ribosomal", "ribosomal", "other")
+#' plot_df$med_branch <- c(1, 5, 2)
+#' plot_MDS(df = plot_df, phylogenomic = 1, group = "med_branch", title = "MDS plot",
+#'          show_legend = TRUE, legend_lab = "Branch median", tree_names = names,
+#'          alpha = 0.9, use_plotly = FALSE)
 #'
 #' @export
-plot_MDS <- function(df, consensus = NULL, group = NULL,
+plot_MDS <- function(df, phylogenomic = NULL, group = NULL,
                      title = "MDS of Gene Tree Distances",
-                     x_dim = "scale_x_dim", y_dim = "scale_y_dim",
-                     show_legend = FALSE, legend_lab = NULL, scales_arg = "free",
-                     single_method = FALSE, gene_names = NULL) {
-  if (single_method) { df$method = rep("distance",nrow(df))}
-  if (is.null(gene_names)) {gene_names = x_dim}
-  gene_trees <- df %>% filter(tree_type == "gene")
-  cons_tree <- df %>% filter(tree_type != "gene")
-  if (is.null(group)) {
-    plot <- ggplot(gene_trees, aes(x = get(x_dim), y = get(y_dim), name = get(gene_names))) +
-      geom_point(color = "black") +
-      geom_point(data = cons_tree, color = "red") +
-      facet_wrap(~method, scales = scales_arg) +
-      ggtitle(title) +
-      xlab("MDS Dimension 1") +
-      ylab("MDS Dimension 2") +
-      theme(plot.title = element_text(hjust = 0.5))
-  }
-  else {
-    legend_pos = "none"
-    if (show_legend) { legend_pos = "right"}
-    if (is.numeric(gene_trees[,group])) {
-      plot <- ggplot(gene_trees, aes(x = get(x_dim), y = get(y_dim), color = get(group),
-                                     name = get(gene_names))) +
-        geom_point() +
-        #scale_color_manual(values = c("black","blue","green","purple","yellow","orange","pink",
-        #                              "brown","aquamarine","darkgreen","darkgray","plum")) +
-        geom_point(data = cons_tree, color = "red") +
-        facet_wrap(~method, scales = "free") +
-        ggtitle(title) +
-        xlab("MDS Dimension 1") +
-        ylab("MDS Dimension 2") +
-        theme(plot.title = element_text(hjust = 0.5),
-              legend.position = legend_pos) +
-        labs(color = legend_lab)
+                     show_legend = TRUE, legend_lab = NULL, 
+                     tree_names = NULL, alpha = 1, use_plotly = FALSE) {
+  ### start by organizing df 
+  if (is.null(tree_names)) {
+    # label trees by number if no names given 
+    df$Name <- 1:nrow(df)
+  } else {
+    if (length(tree_names) > 1) {
+      # if tree_names is a vector, add it to df with name `Name`
+      df <- dplyr::mutate(df, "Name" = tree_names)
     } else {
-        gene_trees[,group] <- as.factor(gene_trees[,group])
-        plot <- ggplot(gene_trees, aes(x = get(x_dim), y = get(y_dim), color = get(group),
-                                       name = get(gene_names))) +
-        geom_point() +
-        scale_color_manual(values = c("black","blue","green","purple","yellow","orange","pink",
-                                      "brown","aquamarine","darkgreen","darkgray","plum")) +
-        geom_point(data = cons_tree, color = "red") +
-        facet_wrap(~method, scales = "free") +
-        ggtitle(title) +
-        xlab("MDS Dimension 1") +
-        ylab("MDS Dimension 2") +
-        theme(plot.title = element_text(hjust = 0.5),
-              legend.position = legend_pos) +
-        labs(color = legend_lab)
+      # if tree_names is a variable in df, copy it into variable with name `Name`
+      df <- dplyr::mutate(df, "Name" = df[, tree_names])
     }
   }
-  return(plot)
+  if (!is.null(group)) {
+    if (length(group) > 1) {
+      # if group is a vector, add it to df with name `group`
+      df <- dplyr::mutate(df, "group" = group)
+    } else {
+      # if group is a variable in df, copy into variable with name `group`
+      df <- dplyr::mutate(df, "group" = df[, group])
+    }
+    if (!is.numeric(df$group)) {
+      df$group <- as.factor(df$group)
+    } 
+    legend_pos = "right"
+    if (!show_legend) { legend_pos = "none"}
+  }
+  
+  ### plotting 
+  # No phylogenomic tree 
+  if (is.null(phylogenomic)) {
+    # No grouping variable 
+    if (is.null(group)) {
+      plot <- ggplot(df, aes(x = MDS1, y = MDS2, label = Name)) + 
+        geom_point(alpha = alpha) 
+    # Grouping variable 
+    } else {
+      plot <- ggplot(df, aes(x = MDS1, y = MDS2, label = Name, color = group)) + 
+        geom_point(alpha = alpha) +
+        labs(color = ifelse(is.null(legend_lab), "Group", legend_lab)) +
+        theme(legend.position = legend_pos)
+    }
+  # Including phylogenomic tree 
+  } else {
+    # if phylogenomic tree is included, make separate phylogenomic df 
+    genom_df <- df[phylogenomic, ]
+    df$tree_type <- rep("gene tree", nrow(df))
+    df$tree_type[phylogenomic] <- "phylogenomic"
+    if (is.null(group)) {
+      plot <- ggplot(df, aes(x = MDS1, y = MDS2, color = tree_type, label = Name)) + 
+        geom_point(alpha = alpha) + 
+        scale_color_manual(values = c("black", "red")) +
+        labs(color = "Tree Type")
+        geom_point(data = genom_df, color = "red") 
+    # Grouping variable 
+    } else {
+      plot <- ggplot(df, aes(x = MDS1, y = MDS2, label = Name, color = group,
+                             shape = tree_type)) + 
+        geom_point(alpha = alpha) +
+        labs(color = ifelse(is.null(legend_lab), "Group", legend_lab),
+             shape = "Tree Type") +
+        theme(legend.position = legend_pos)
+    }
+  }
+  # add details 
+  full_plot <- plot +
+    labs(x = 'Dimension 1',
+         y = 'Dimension 2') +
+    ggtitle(title) + 
+    theme(plot.title = element_text(hjust = 0.5))
+  # use plotly if asked for 
+  if (use_plotly) {
+    return(plotly::ggplotly(full_plot, tooltip = "Name"))
+  } else {
+    return(full_plot)
+  }
 }
-
-

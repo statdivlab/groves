@@ -7,42 +7,41 @@ Plots MDS results of trees for each distance.}
 \usage{
 plot_MDS(
   df,
-  consensus = NULL,
+  phylogenomic = NULL,
   group = NULL,
   title = "MDS of Gene Tree Distances",
-  x_dim = "scale_x_dim",
-  y_dim = "scale_y_dim",
-  show_legend = FALSE,
+  show_legend = TRUE,
   legend_lab = NULL,
-  scales_arg = "free",
-  single_method = FALSE,
-  gene_names = NULL
+  tree_names = NULL,
+  alpha = 1,
+  use_plotly = FALSE
 )
 }
 \arguments{
-\item{df}{A dataframe with the first two MDS coordinates for a set of trees and distances.}
+\item{df}{A dataframe with the first two MDS coordinates for a set of trees and distances.
+It should include variables named \code{MDS1} and \code{MDS2}.}
 
-\item{consensus}{An optional argument specifying whether the first tree is a consensus tree, and
-if so the name of the consensus tree.}
+\item{phylogenomic}{An optional argument, if included gives the index of the dataframe that
+corresponds to the phylogenomic tree, which will then be noted in the plot.}
 
-\item{group}{An optional variable to color points by.}
+\item{group}{An optional variable to color points by. This should either be a vector the same
+length as the number of rows in \code{df} or a name in quotes of a variable in \code{df}.}
 
-\item{title}{An optional paramater to change the plot title.}
+\item{title}{An optional parameter to change the plot title.}
 
-\item{x_dim}{The name of the variable within the dataframe that specifies the value on the x axis.}
+\item{show_legend}{A boolean about whether or not to show a legend for grouping variable.}
 
-\item{y_dim}{The name of the variable within the dataframe that specifies the value on the y axis.}
+\item{legend_lab}{A label for the legend for the grouping variable. Enter "" to hide
+the legend label.}
 
-\item{show_legend}{A boolean about whether or not to show a legend.}
+\item{tree_names}{An optional variable to label trees by. This should either be a vector
+the same length as the number of rows in \code{df} or a name in quotes of a variable in 
+\code{df}.}
 
-\item{legend_lab}{A label for the legend (NULL if not specified).}
+\item{alpha}{Transparency of the points, defaults to 1 (fully opaque).}
 
-\item{scales_arg}{An optional argument about whether the scales should be fixed or free. Set to
-free by default.}
-
-\item{single_method}{True if the dataframe only includes data from a single distance metric.}
-
-\item{gene_names}{An optional variable to label genes by.}
+\item{use_plotly}{If true, the output will be a plotly object, with labels
+when points are moused over, if false the output will be a ggplot object.}
 }
 \value{
 A ggplot2 object.
@@ -50,4 +49,15 @@ A ggplot2 object.
 \description{
 Plots MDS results
 Plots MDS results of trees for each distance.
+}
+\examples{
+trees_path <- system.file("txt", "small_tree_set.txt", package = "groves")
+plot_df <- compute_MDS(trees_path = trees_path, tree_names = paste0("tree", 1:3))$df
+plot_df$names <- paste0("tree", 1:3)
+plot_df$type <- c("ribosomal", "ribosomal", "other")
+plot_df$med_branch <- c(1, 5, 2)
+plot_MDS(df = plot_df, phylogenomic = 1, group = "med_branch", title = "MDS plot",
+         show_legend = TRUE, legend_lab = "Branch median", tree_names = names,
+         alpha = 0.9, use_plotly = FALSE)
+
 }

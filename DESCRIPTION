@@ -22,7 +22,8 @@ Imports:
     ade4,
     readr,
     adephylo,
-    stringr
+    stringr,
+    plotly
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.1

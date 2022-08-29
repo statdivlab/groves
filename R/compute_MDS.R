@@ -19,7 +19,6 @@
 #' trees_path <- system.file("txt", "small_tree_set.txt", package = "groves")
 #' compute_MDS(trees_path = trees_path, tree_names = paste0("tree", 1:3))
 #' 
-#' 
 #' @export
 compute_MDS <- function(trees_path = NULL, nf = 2, dist_metric = "BHV",
                          dist_matrix = NULL, mds_type = "metric", 

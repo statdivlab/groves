@@ -43,5 +43,4 @@ Calculates the distance between each tree and performs MDS
 trees_path <- system.file("txt", "small_tree_set.txt", package = "groves")
 compute_MDS(trees_path = trees_path, tree_names = paste0("tree", 1:3))
 
-
 }
