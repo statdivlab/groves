@@ -28,7 +28,7 @@
 #' plot_df$type <- c("ribosomal", "ribosomal", "other")
 #' plot_df$med_branch <- c(1, 5, 2)
 #' plot_MDS(df = plot_df, phylogenomic = 1, group = "med_branch", title = "MDS plot",
-#'          show_legend = TRUE, legend_lab = "Branch median", tree_names = names,
+#'          show_legend = TRUE, legend_lab = "Branch median", tree_names = "names",
 #'          alpha = 0.9, use_plotly = FALSE)
 #'
 #' @export

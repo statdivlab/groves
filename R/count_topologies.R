@@ -41,8 +41,8 @@ count_topologies <- function(trees, names = NULL) {
   }
   # make dataframe with count for each topology
   count_df <- top_df %>%
-    group_by(topology) %>%
-    mutate(count = n()) %>%
-    ungroup()
+    dplyr::group_by(topology) %>%
+    dplyr::mutate(count = dplyr::n()) %>%
+    dplyr::ungroup()
   return(list(count = length(unique(count_df$topology)), df = count_df))
 }
