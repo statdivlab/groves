@@ -8,7 +8,8 @@ test_that("plot_MDS works without phylogenomic with group", {
   trees_path <- system.file("txt", "small_tree_set.txt", package = "groves")
   plot_df <- compute_MDS(trees_path = trees_path, tree_names = paste0("tree", 1:3))$df
   plot_df$med_branch <- c(1, 5, 2)
-  expect_type(plot_MDS(df = plot_df, group = "med_branch", tree_names = plot_df$names), "list")
+  expect_type(plot_MDS(df = plot_df, group = "med_branch", tree_names = plot_df$names), 
+              "list")
 })
 
 test_that("plot_MDS works with phylogenomic without group", {

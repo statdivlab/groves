@@ -2,39 +2,63 @@
 % Please edit documentation in R/plot_logmap.R
 \name{plot_logmap}
 \alias{plot_logmap}
-\title{Plot logmap
-Plot logmap coordinates using the first two principal components.}
+\title{Plots PCA of log map results
+Plots PCA of log map results of trees for each distance.}
 \usage{
 plot_logmap(
   vectors,
-  base_name,
-  gene_names = NULL,
-  col = NULL,
-  col_name = NULL,
+  phylogenomic = NULL,
+  group = NULL,
+  title = "MDS of Gene Tree Distances",
   show_legend = TRUE,
-  cons_exists = TRUE
+  legend_lab = NULL,
+  tree_names = NULL,
+  alpha = 1,
+  use_plotly = FALSE
 )
 }
 \arguments{
-\item{vectors}{A matrix of logmap vectors for each tree.}
+\item{vectors}{A matrix with a row for the log map coordinate of each tree. The output
+from compute_logmap.}
 
-\item{base_name}{The name of the base tree in the log map.}
+\item{phylogenomic}{An optional argument, if included gives the index of the \code{vectors} 
+matrix that corresponds to the phylogenomic tree, which will then be noted in the plot.}
 
-\item{gene_names}{An optional list of gene names. If no names are given, numbers will be used
-to identify trees.}
+\item{group}{An optional vector to color points by. This should be same length as the 
+number of rows in \code{vector}.}
 
-\item{col}{An optional list of gene attributes to color the points of the scatterplot by.}
+\item{title}{An optional parameter to change the plot title.}
 
-\item{col_name}{An optional name for the color attribute.}
+\item{show_legend}{A boolean about whether or not to show a legend for grouping variable.}
 
-\item{show_legend}{If true, the color legend is shown, if false it is hidden.}
+\item{legend_lab}{A label for the legend for the grouping variable. Enter "" to hide
+the legend label.}
 
-\item{cons_exists}{True if plot includes a consensus tree, false if not.}
+\item{tree_names}{An optional variable to label trees by. This should be same length as the 
+number of rows in \code{vector}.}
+
+\item{alpha}{Transparency of the points, defaults to 1 (fully opaque).}
+
+\item{use_plotly}{If true, the output will be a plotly object, with labels
+when points are moused over, if false the output will be a ggplot object.}
 }
 \value{
-A ggplot object.
+A ggplot2 object.
 }
 \description{
-Plot logmap
-Plot logmap coordinates using the first two principal components.
+Plots PCA of log map results
+Plots PCA of log map results of trees for each distance.
+}
+\examples{
+path <- paste0(system.file("txt", package = "groves"), "/")
+lm_vectors <- compute_logmap(base_path = paste0(path, "tree1.txt"),
+               tree_paths = paste0(path, "tree", 1:3, ".txt"),
+               base_in_tree_paths = TRUE,
+               tree_names = c("tree1", "tree2", "tree3"))
+names <- paste0("tree", 1:3)
+med_branch <- c(1, 5, 2)
+plot_logmap(vectors = lm_vectors, phylogenomic = 1, group = med_branch, title = "PCA plot",
+         show_legend = TRUE, legend_lab = "Branch median", tree_names = names,
+         alpha = 0.9, use_plotly = FALSE)
+
 }

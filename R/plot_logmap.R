@@ -1,103 +1,108 @@
-#' Plot logmap
-#' Plot logmap coordinates using the first two principal components.
+#' Plots PCA of log map results
+#' Plots PCA of log map results of trees for each distance.
 #'
-#' @param vectors A matrix of logmap vectors for each tree.
-#' @param base_name The name of the base tree in the log map.
-#' @param gene_names An optional list of gene names. If no names are given, numbers will be used
-#' to identify trees.
-#' @param col An optional list of gene attributes to color the points of the scatterplot by.
-#' @param col_name An optional name for the color attribute.
-#' @param show_legend If true, the color legend is shown, if false it is hidden.
-#' @param cons_exists True if plot includes a consensus tree, false if not.
+#' @param vectors A matrix with a row for the log map coordinate of each tree. The output
+#' from compute_logmap.
+#' @param phylogenomic An optional argument, if included gives the index of the \code{vectors} 
+#' matrix that corresponds to the phylogenomic tree, which will then be noted in the plot. 
+#' @param group An optional vector to color points by. This should be same length as the 
+#' number of rows in \code{vector}.
+#' @param title An optional parameter to change the plot title.
+#' @param show_legend A boolean about whether or not to show a legend for grouping variable.
+#' @param legend_lab A label for the legend for the grouping variable. Enter "" to hide
+#' the legend label.
+#' @param tree_names An optional variable to label trees by. This should be same length as the 
+#' number of rows in \code{vector}.
+#' @param alpha Transparency of the points, defaults to 1 (fully opaque).
+#' @param use_plotly If true, the output will be a plotly object, with labels
+#' when points are moused over, if false the output will be a ggplot object.
 #'
-#' @return A ggplot object.
-#'
+#' @return A ggplot2 object.
+#' @import ggplot2
+#' 
+#' @examples 
+#' path <- paste0(system.file("txt", package = "groves"), "/")
+#' lm_vectors <- compute_logmap(base_path = paste0(path, "tree1.txt"),
+#'                tree_paths = paste0(path, "tree", 1:3, ".txt"),
+#'                base_in_tree_paths = TRUE,
+#'                tree_names = c("tree1", "tree2", "tree3"))
+#' names <- paste0("tree", 1:3)
+#' med_branch <- c(1, 5, 2)
+#' plot_logmap(vectors = lm_vectors, phylogenomic = 1, group = med_branch, title = "PCA plot",
+#'          show_legend = TRUE, legend_lab = "Branch median", tree_names = names,
+#'          alpha = 0.9, use_plotly = FALSE)
 #'
 #' @export
-plot_logmap <- function(vectors, base_name, gene_names = NULL, col = NULL,
-                        col_name = NULL, show_legend = TRUE, cons_exists = TRUE) {
-  if (cons_exists) {
-    pca <- stats::prcomp(vectors, rank. = 2)
-    if (is.null(gene_names)) {
-      gene_names <- 1:(nrow(vectors)-1)
-    }
-    n <- length(gene_names) + 1
-    pca_gene <- data.frame(dim1 = pca$x[2:n,1],
-                           dim2 = pca$x[2:n,2],
-                           name = gene_names)
-    pca_consen <- data.frame(dim1 = pca$x[1,1],
-                             dim2 = pca$x[1,2],
-                             name = paste0(base_name," Tree"))
-    title <- paste0('Log Map of Gene Trees with Respect to ', base_name, ' Tree')
-    pca_plot <- ggplot(pca_gene, aes(x = dim1, y = dim2, Gene = name)) +
-      geom_point(color = "black") +
-      geom_point(data = pca_consen, color = "red") +
-      ggtitle(title) +
-      theme(plot.title = element_text(hjust = 0.5, size = 12)) +
-      xlab("First Principal Component") + ylab("Second Principal Component")
-    if (!is.null(col)) {
-      if (is.null(col_name)) {show_legend = FALSE}
-      legend_pos = "none"
-      if (show_legend) { legend_pos = "right"}
-      pca_gene$gradient <- col
-      if (is.numeric(col)) {
-        pca_consen$gradient <- NA
-        pca_plot <- ggplot(pca_gene, aes(x = dim1, y = dim2, Gene = name, color = gradient)) +
-          geom_point() +
-          geom_point(data = pca_consen, color = "red") +
-          ggtitle(title) + labs(color = col_name) +
-          theme(plot.title = element_text(hjust = 0.5, size = 12)) +
-          xlab("First Principal Component") + ylab("Second Principal Component")
-      } else {
-        pca_consen$gradient <- NA
-        pca_plot <- ggplot(pca_gene, aes(x = dim1, y = dim2, Gene = name, color = gradient)) +
-          geom_point() +
-          geom_point(data = pca_consen, color = "red") +
-          ggtitle(title) + labs(color = col_name) +
-          theme(plot.title = element_text(hjust = 0.5, size = 12)) +
-          xlab("First Principal Component") + ylab("Second Principal Component") +
-          scale_color_manual(values = c("black","blue","green","purple","yellow","orange","pink",
-                                        "brown","aquamarine","darkgreen","darkgray","plum"))
-
-      }
-    }
-    return(list(df = rbind(pca_gene, pca_consen), plot = pca_plot))
+plot_logmap <- function(vectors, phylogenomic = NULL, group = NULL,
+                     title = "MDS of Gene Tree Distances",
+                     show_legend = TRUE, legend_lab = NULL, 
+                     tree_names = NULL, alpha = 1, use_plotly = FALSE) {
+  ### start by organizing df 
+  # get first two pca coordinates
+  pca <- stats::prcomp(vectors, rank. = 2)
+  df <- data.frame(PC1 = pca$x[ ,1],
+                   PC2 = pca$x[ ,2])
+  if (is.null(tree_names)) {
+    # label trees by number if no names given 
+    df$Name <- 1:nrow(df)
   } else {
-    pca <- stats::prcomp(vectors, rank. = 2)
-    if (is.null(gene_names)) {
-      gene_names <- 1:(nrow(vectors)-1)
+    df <- dplyr::mutate(df, "Name" = tree_names)
+  }
+  if (!is.null(group)) {
+    df <- dplyr::mutate(df, "group" = group)
+    if (!is.numeric(df$group)) {
+      df$group <- as.factor(df$group)
+    } 
+    legend_pos = "right"
+    if (!show_legend) { legend_pos = "none"}
+  }
+  
+  ### plotting 
+  # No phylogenomic tree 
+  if (is.null(phylogenomic)) {
+    # No grouping variable 
+    if (is.null(group)) {
+      plot <- ggplot(df, aes(x = PC1, y = PC2, label = Name)) + 
+        geom_point(alpha = alpha) 
+      # Grouping variable 
+    } else {
+      plot <- ggplot(df, aes(x = PC1, y = PC2, label = Name, color = group)) + 
+        geom_point(alpha = alpha) +
+        labs(color = ifelse(is.null(legend_lab), "Group", legend_lab)) +
+        theme(legend.position = legend_pos)
     }
-    n <- length(gene_names) + 1
-    pca_gene <- data.frame(dim1 = pca$x[,1],
-                           dim2 = pca$x[,2],
-                           name = gene_names)
-    title <- paste0('Log Map of Gene Trees with Respect to ', base_name, ' Tree')
-    pca_plot <- ggplot(pca_gene, aes(x = dim1, y = dim2, Gene = name)) +
-      geom_point(color = "black") +
-      ggtitle(title) +
-      theme(plot.title = element_text(hjust = 0.5, size = 12)) +
-      xlab("First Principal Component") + ylab("Second Principal Component")
-    if (!is.null(col)) {
-      if (is.null(col_name)) {show_legend = FALSE}
-      legend_pos = "none"
-      if (show_legend) { legend_pos = "right"}
-      pca_gene$gradient <- col
-      if (is.numeric(col)) {
-        pca_plot <- ggplot(pca_gene, aes(x = dim1, y = dim2, Gene = name, color = gradient)) +
-          geom_point() +
-          ggtitle(title) + labs(color = col_name) +
-          theme(plot.title = element_text(hjust = 0.5, size = 12)) +
-          xlab("First Principal Component") + ylab("Second Principal Component")
-      } else {
-        pca_plot <- ggplot(pca_gene, aes(x = dim1, y = dim2, Gene = name, color = gradient)) +
-          geom_point() +
-          ggtitle(title) + labs(color = col_name) +
-          theme(plot.title = element_text(hjust = 0.5, size = 12)) +
-          xlab("First Principal Component") + ylab("Second Principal Component") +
-          scale_color_manual(values = c("black","blue","green","purple","yellow","orange","pink",
-                                        "brown","aquamarine","darkgreen","darkgray","plum"))
-      }
+    # Including phylogenomic tree 
+  } else {
+    # if phylogenomic tree is included, make separate phylogenomic df 
+    genom_df <- df[phylogenomic, ]
+    df$tree_type <- rep("gene tree", nrow(df))
+    df$tree_type[phylogenomic] <- "phylogenomic"
+    if (is.null(group)) {
+      plot <- ggplot(df, aes(x = PC1, y = PC2, color = tree_type, label = Name)) + 
+        geom_point(alpha = alpha) + 
+        scale_color_manual(values = c("black", "red")) +
+        labs(color = "Tree Type")
+      geom_point(data = genom_df, color = "red") 
+      # Grouping variable 
+    } else {
+      plot <- ggplot(df, aes(x = PC1, y = PC2, label = Name, color = group,
+                             shape = tree_type)) + 
+        geom_point(alpha = alpha) +
+        labs(color = ifelse(is.null(legend_lab), "Group", legend_lab),
+             shape = "Tree Type") +
+        theme(legend.position = legend_pos)
     }
-    return(list(df = pca_gene, plot = pca_plot))
+  }
+  # add details 
+  full_plot <- plot +
+    labs(x = 'Principal Component 1',
+         y = 'Principal Component 2') +
+    ggtitle(title) + 
+    theme(plot.title = element_text(hjust = 0.5))
+  # use plotly if asked for 
+  if (use_plotly) {
+    return(plotly::ggplotly(full_plot, tooltip = "Name"))
+  } else {
+    return(full_plot)
   }
 }
