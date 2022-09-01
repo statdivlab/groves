@@ -1,11 +1,12 @@
 #' Standardizes branch lengths
 #' Divides each branch length by the sum of branch lengths or maximum branch length
-#' for that tree. 
+#' for that tree or sets each branch length to \code{1}. 
 #'
 #' @param tree The tree or set of trees of interest.
 #' @param denom The quantity to standardize by. Default is \code{branch_sum}, which is
-#' the sum of branch lengths in that tree. The other option is \code{max_branch}, which
-#' will divide each branch length by the maximum branch length in that tree. 
+#' the sum of branch lengths in that tree. Another option is \code{max_branch}, which
+#' will divide each branch length by the maximum branch length in that tree. The last 
+#' option is \code{one}, which recodes all branches to have length \code{1}.
 #'
 #' @return The standardized tree or set of trees. 
 #'
@@ -17,8 +18,8 @@
 #' @export
 standardize_branches <- function(tree, denom = "branch_sum") {
   # check that denom is either "branch_sum" or "max_branch" 
-  if (!(denom %in% c("branch_sum", "max_branch"))) {
-    stop("Please enter either 'branch_sum' or 'max_branch' for 'denom'.")
+  if (!(denom %in% c("branch_sum", "max_branch", "one"))) {
+    stop("Please enter either 'branch_sum' or 'max_branch' or 'one' for 'denom'.")
   }
   # if tree input is a single tree 
   if (inherits(tree, "phylo")) {

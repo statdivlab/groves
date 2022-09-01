@@ -5,6 +5,13 @@ test_that("standardize_branches works for single tree", {
   expect_equal(sum(new_tree$edge.length), 1)
 })
 
+test_that("standardize_branches works for single tree setting branch lengths to 1", {
+  path <- system.file("txt", "small_tree_set.txt", package = "groves")
+  tree_set <- ape::read.tree(path)
+  new_tree <- standardize_branches(tree_set[[1]], "one")
+  expect_equal(new_tree$edge.length[1], 1)
+})
+
 test_that("standardize_branches works for multiple trees", {
   path <- system.file("txt", "small_tree_set.txt", package = "groves")
   tree_set <- ape::read.tree(path)
