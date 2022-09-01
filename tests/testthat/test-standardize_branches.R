@@ -25,6 +25,11 @@ test_that("standardize_branches throws error for non-tree object", {
                fixed = TRUE)
 })
 
+test_that("standardize_branches throws error for ineligible 'denom' input", {
+  expect_error(standardize_branches("tree_set", "sum"), 
+               "Please enter either 'branch_sum' or 'max_branch' or 'one' for 'denom'.")
+})
+
 test_that("standardize_branches throws error for tree with all branch lengths of 0", {
   path <- system.file("txt", "small_tree_set.txt", package = "groves")
   tree_set <- ape::read.tree(path)
