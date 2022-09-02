@@ -1,40 +1,73 @@
 #' Plot support
-#' Plot a tree with support values on each internal branch.
+#' Plot a tree with support values for each internal node. These can be gene tree 
+#' support or bootstrap support values. 
 #'
-#' @param main_tree A tree to check support for.
-#' @param n_trees The number of trees providing support for main_tree.
-#' @param branch_support A list of branch support values for each internal branch of main_tree.
-#' @param rooted A boolean, TRUE if the main tree is rooted
-#' @param lab_size The size of the tip labels, default is 2.
+#' @param main_tree A rooted tree to plot edge information for.
+#' @param support A list of values for each internal node of main_tree. Each value should be
+#' a proportion between 0 and 1. 
+#' @param support_type Enter \code{"gene"} if \code{support} are gene tree support values,
+#' \code{"boot"} if \code{support} are bootstrap support values, and \code{"other"} if 
+#' \code{support} values are neither. Defaults to \code{"gene"}.
+#' @param lab_size The size of the tip labels, default is 2. Set this to 0 to suppress
+#' tip labels.
 #' @param supp_size The size of the support labels, default is 2.
 #' @param xlim_max The length of the x axis.
-#' @param boot A logical value, TRUE is the support values are bootstrap support.
+#' @param hjust Horizontal adjustment for support labels.
+#' @param title An optional parameter to change the plot title. Enter NULL to remove
+#' the title. 
+#' @param show_legend A boolean about whether or not to show a legend for support.
+#' @param color_branch If TRUE, each branch is colored with the support of the internal node
+#' it leads to. If FALSE, branch support is displayed with a number between 0 and 1.
 #'
-#' @return A ggtree object.
+#' @return A ggtree object. Note this function will also provide a warning about rows
+#' containing missing values if \code{color_branch = TRUE}. These rows correspond with
+#' the branches that lead to tips, which all have 100% support. 
 #'
+#' @examples 
+#' trees <- ape::rmtree(100, 5, rooted = TRUE)
+#' support <- check_gene_support(trees[[1]], trees[2:100], rooted = TRUE)
+#' plot_support(main_tree = trees[[1]], support = support, xlim_max = 2)
+#' 
 #' @import ggtree
 #'
 #' @export
-plot_support <- function(main_tree, n_trees, branch_support, rooted = TRUE, boot = FALSE,
-                         lab_size = 2, supp_size = 2, xlim_max = 0.5) {
-  n_tips <- length(main_tree$tip.label)
-  num <- n_tips + 2
-  if (!rooted) {num <- n_tips+1}
-  #support_val <- round(c(rep(n_trees,num),branch_support)/n_trees,2)
-  if (!boot) {
-    trans_supp <- round(branch_support/n_trees, 2)
-  } else {
-    trans_supp <- round(as.integer(branch_support)/100, 2)
+plot_support <- function(main_tree, support, support_type = "gene", lab_size = 2,
+                              supp_size = 2, xlim_max = 0.5, hjust = 1, 
+                              color_branch = FALSE, show_legend = TRUE, title = "") {
+  if (title == "") {
+    if (support_type == "gene") {
+      title <- "Gene Tree Support"
+    } else if (support_type == "boot") {
+      title <- "Bootstrap Support"
+    } else if (support_type == "other") {
+      title <- "Support"
+    } else {
+      stop("Please enter 'gene', 'boot', or 'other' for support_type.")
+    }
   }
-  support_val <- c(rep(NA,num),trans_supp)
-  support_lab <- paste0(support_val)
-  plot <- main_tree %>%
-    ggtree +
-    geom_tiplab(size = lab_size) +
-    geom_text2(aes(subset=!isTip, label=support_lab, color = support_val),
-               hjust=1, vjust = -0.7, size = supp_size) +
-    scale_colour_gradient(low = "red", high = "blue") +
-    theme(legend.position = 'none') +
-    ggplot2::xlim(0, xlim_max)
-  return(plot)
+  # save support values as part of tree object with treeio::as.treedata 
+  tree <- treeio::as.treedata(main_tree, support)
+  # determine if legend is shown
+  legend_pos = "right"
+  if (!show_legend) { legend_pos = "none"}
+  # add support values and colors 
+  col.range <- c(0, 1)
+  
+  # plot with support as a number on each branch leading to an internal node
+  if (!color_branch) {
+    plot <- tree %>% ggtree(aes(label = bootstrap)) + 
+      geom_text(aes(color = bootstrap), vjust = -0.3, hjust = hjust, size = supp_size) +
+      scale_color_gradientn(colors = RColorBrewer::brewer.pal(11, "Spectral")[c(1:4,8:11)], limits = col.range) 
+  # plot with branches leading to an internal node colored based on support values 
+  } else {
+    plot <- tree %>% ggtree(aes(label = bootstrap, color = bootstrap)) + 
+      scale_color_gradientn(colors = RColorBrewer::brewer.pal(11, "Spectral")[c(1:5,7:11)], limits = col.range) 
+  }
+  full_plot <- plot + geom_tiplab(size = lab_size, color = "black") + 
+    ggplot2::xlim(0, xlim_max) +
+    labs(color = "Support",
+         title = title) + 
+    theme(legend.position = legend_pos, 
+          plot.title = element_text(hjust = 0.5))
+  return(full_plot)
 }

@@ -4,7 +4,7 @@
 \alias{standardize_tree}
 \title{Standardizes branch lengths for a single tree
 For a single tree, divides each branch length by the sum of branch lengths or 
-maximum branch length for that tree.}
+maximum branch length for that tree or sets all branch lengths to \code{1}.}
 \usage{
 standardize_tree(tree, denom = "branch_sum")
 }
@@ -12,8 +12,9 @@ standardize_tree(tree, denom = "branch_sum")
 \item{tree}{The tree of interest.}
 
 \item{denom}{The quantity to standardize by. Default is \code{branch_sum}, which is
-the sum of branch lengths in that tree. The other option is \code{max_branch}, which
-will divide each branch length by the maximum branch length in that tree.}
+the sum of branch lengths in that tree. Another option is \code{max_branch}, which
+will divide each branch length by the maximum branch length in that tree. The last 
+option is \code{one}, which recodes all branches to have length \code{1}.}
 }
 \value{
 The standardized tree.
@@ -21,7 +22,7 @@ The standardized tree.
 \description{
 Standardizes branch lengths for a single tree
 For a single tree, divides each branch length by the sum of branch lengths or 
-maximum branch length for that tree.
+maximum branch length for that tree or sets all branch lengths to \code{1}.
 }
 \examples{
 path <- system.file("txt", "small_tree_set.txt", package = "groves")
