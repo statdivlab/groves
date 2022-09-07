@@ -2,7 +2,7 @@ test_that("plot_support works", {
   trees <- ape::rmtree(100, 5, rooted = TRUE)
   support <- check_gene_support(trees[[1]], trees[2:100], rooted = TRUE)
   expect_type(plot_support(main_tree = trees[[1]], support = support, 
-                           xlim_max = 2), "list")
+                           xlim_max = 2, show_legend = FALSE), "list")
 })
 
 test_that("plot_support works with coloring branches", {
