@@ -11,7 +11,7 @@
 ## Installation
 
     if (!require("remotes", quietly = TRUE))
-        install.packages("remotes") # check that devtools is installed
+        install.packages("remotes") # check that remotes is installed
     remotes::install_github("statdivlab/groves") 
     library(groves)
 
