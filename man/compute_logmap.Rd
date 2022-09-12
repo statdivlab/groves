@@ -6,27 +6,26 @@
 Compute the logmap centered at one tree for all other trees.}
 \usage{
 compute_logmap(
-  base_path,
   tree_paths,
   add_tip_branches = TRUE,
-  base_in_tree_paths = FALSE,
-  tree_names = NULL
+  tree_names = NULL,
+  base_lab = NULL
 )
 }
 \arguments{
-\item{base_path}{The file path to the tree to center the log map.}
-
 \item{tree_paths}{A list of file paths to all other trees.}
 
 \item{add_tip_branches}{A boolean. When true, the lengths of branches ending in tips will be added
 to the log map coordinates. Default to TRUE.}
 
-\item{base_in_tree_paths}{A logical value, TRUE if the base tree is included in the tree
-paths vector.}
-
 \item{tree_names}{An optional vector of names of trees. This should be the same length and order
 as tree_paths. If base_in_tree_paths = FALSE, this vector should not include the base tree name. 
 If this is not given, trees in tree_paths will be named numerically based on their order.}
+
+\item{base_lab}{An optional label to specify the base tree. If this argument is ignored, \code{groves}
+will set the base tree to be the tree in the tree set with the smallest mean BHV distance from the
+other trees. If included, base_lab can either be a name included in \code{tree_names} or a number 
+corresponding with the desired tree's order in \code{tree_paths}.}
 }
 \value{
 A matrix with log map coordinates for all trees. Row names give the name of each tree, or
@@ -38,9 +37,7 @@ Compute the logmap centered at one tree for all other trees.
 }
 \examples{
 path <- paste0(system.file("txt", package = "groves"), "/")
-compute_logmap(base_path = paste0(path, "tree1.txt"),
-               tree_paths = paste0(path, "tree", 1:3, ".txt"),
-               base_in_tree_paths = TRUE,
+compute_logmap(tree_paths = paste0(path, "tree", 1:3, ".txt"),
                tree_names = c("tree1", "tree2", "tree3"))
 
 }

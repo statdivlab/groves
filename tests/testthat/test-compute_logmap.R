@@ -1,42 +1,43 @@
-test_that("compute_logmap has a row for each tree", {
+test_that("compute_logmap runs with no errors", {
   path <- paste0(system.file("txt", package = "groves"), "/")
   tree_paths <- paste0(path, "tree", 1:3, ".txt")
-  logmap <- compute_logmap(base_path = paste0(path, "tree1.txt"),
-                tree_paths = tree_paths,
-                base_in_tree_paths = TRUE,
+  logmap <- compute_logmap(tree_paths = tree_paths,
                 tree_names = c("tree1", "tree2", "tree3"))
-  expect_equal(nrow(logmap), length(tree_paths))
+  expect_equal(nrow(logmap$vectors), length(tree_paths))
 })
 
 test_that("compute_logmap works without tree_names", {
   path <- paste0(system.file("txt", package = "groves"), "/")
   tree_paths <- paste0(path, "tree", 1:3, ".txt")
-  logmap <- compute_logmap(base_path = paste0(path, "tree1.txt"),
-                           tree_paths = tree_paths,
-                           base_in_tree_paths = TRUE)
-  expect_equal(nrow(logmap), length(tree_paths))
+  logmap <- compute_logmap(tree_paths = tree_paths)
+  expect_equal(nrow(logmap$vectors), length(tree_paths))
 })
 
-test_that("compute_logmap has a row for each tree still", {
-  path <- paste0(system.file("txt", package = "groves"), "/")
-  tree_paths <- paste0(path, "tree", 2:3, ".txt")
-  logmap <- compute_logmap(base_path = paste0(path, "tree1.txt"),
-                           tree_paths = tree_paths,
-                           base_in_tree_paths = FALSE,
-                           tree_names = c("tree2", "tree3"))
-  expect_equal(nrow(logmap), length(tree_paths) + 1)
-})
-
-test_that("compute_logmap has the right number of columns", {
+test_that("compute_logmap works with base_lab as name", {
   path <- paste0(system.file("txt", package = "groves"), "/")
   tree_paths <- paste0(path, "tree", 1:3, ".txt")
-  base_path <- paste0(path, "tree1.txt")
-  base_tree <- ape::read.tree(base_path)
-  n_tips <- length(base_tree$tip.label)
-  exp_col <- (n_tips - 3)*2 + 3
-  logmap <- compute_logmap(base_path = base_path,
-                           tree_paths = tree_paths,
-                           base_in_tree_paths = TRUE,
+  logmap <- compute_logmap(tree_paths = tree_paths,
+                           base_lab = "tree1",
                            tree_names = c("tree1", "tree2", "tree3"))
-  expect_equal(ncol(logmap), exp_col)
+  expect_equal(nrow(logmap$vectors), length(tree_paths))
+})
+
+test_that("compute_logmap works with base_lab as number", {
+  path <- paste0(system.file("txt", package = "groves"), "/")
+  tree_paths <- paste0(path, "tree", 1:3, ".txt")
+  logmap <- compute_logmap(tree_paths = tree_paths,
+                           base_lab = 1,
+                           tree_names = c("tree1", "tree2", "tree3"))
+  expect_equal(nrow(logmap$vectors), length(tree_paths))
+})
+
+test_that("compute_logmap gives error if non-numeric base_lab isn't in tree_names", {
+  path <- paste0(system.file("txt", package = "groves"), "/")
+  tree_paths <- paste0(path, "tree", 1:3, ".txt")
+  expect_error(compute_logmap(tree_paths = tree_paths,
+                              base_lab = "tree_1",
+                              tree_names = c("tree1", "tree2", "tree3")),
+            "base_lab given does not appear in tree_names vector. Please let groves
+             calculate a base tree for you, input a number corresponding your desired
+             base tree's position in tree_paths, or a name that appears in tree_paths.")
 })

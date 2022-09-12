@@ -51,10 +51,8 @@ Plots PCA of log map results of trees for each distance.
 }
 \examples{
 path <- paste0(system.file("txt", package = "groves"), "/")
-lm_vectors <- compute_logmap(base_path = paste0(path, "tree1.txt"),
-               tree_paths = paste0(path, "tree", 1:3, ".txt"),
-               base_in_tree_paths = TRUE,
-               tree_names = c("tree1", "tree2", "tree3"))
+lm_vectors <- compute_logmap(tree_paths = paste0(path, "tree", 1:3, ".txt"),
+               tree_names = c("tree1", "tree2", "tree3"))$vectors
 names <- paste0("tree", 1:3)
 med_branch <- c(1, 5, 2)
 plot_logmap(vectors = lm_vectors, phylogenomic = 1, group = med_branch, title = "PCA plot",

@@ -1,60 +1,89 @@
 #' Compute logmap
 #' Compute the logmap centered at one tree for all other trees.
 #'
-#' @param base_path The file path to the tree to center the log map.
 #' @param tree_paths A list of file paths to all other trees.
 #' @param add_tip_branches A boolean. When true, the lengths of branches ending in tips will be added
 #' to the log map coordinates. Default to TRUE. 
-#' @param base_in_tree_paths A logical value, TRUE if the base tree is included in the tree
-#' paths vector.
 #' @param tree_names An optional vector of names of trees. This should be the same length and order
 #' as tree_paths. If base_in_tree_paths = FALSE, this vector should not include the base tree name. 
 #' If this is not given, trees in tree_paths will be named numerically based on their order. 
+#' @param base_lab An optional label to specify the base tree. If this argument is ignored, \code{groves}
+#' will set the base tree to be the tree in the tree set with the smallest mean BHV distance from the
+#' other trees. If included, base_lab can either be a name included in \code{tree_names} or a number 
+#' corresponding with the desired tree's order in \code{tree_paths}.
 #'
 #' @return A matrix with log map coordinates for all trees. Row names give the name of each tree, or
 #' the order from tree_paths if tree_names are not provided. 
 #' 
 #' @examples 
 #' path <- paste0(system.file("txt", package = "groves"), "/")
-#' compute_logmap(base_path = paste0(path, "tree1.txt"),
-#'                tree_paths = paste0(path, "tree", 1:3, ".txt"),
-#'                base_in_tree_paths = TRUE,
+#' compute_logmap(tree_paths = paste0(path, "tree", 1:3, ".txt"),
 #'                tree_names = c("tree1", "tree2", "tree3"))
 #'
 #' @export
-compute_logmap <- function(base_path, tree_paths, add_tip_branches = TRUE, 
-                           base_in_tree_paths = FALSE, tree_names = NULL) {
-  # path the java file that will compute logmap
-  jar_path <- system.file("java", "logmap.jar", package = "groves")
-
+compute_logmap <- function(tree_paths, add_tip_branches = TRUE, 
+                           tree_names = NULL, base_lab = NULL) {
+  # path to the java file that will compute logmap
+  lm_path <- system.file("java", "logmap.jar", package = "groves")
+  
+  # if tree names not given, give trees numbers 
+  if (is.null(tree_names)) {
+    tree_names <- 1:length(tree_paths)
+  }
+  
+  # if base tree is not specified, find gene tree with minimum mean BHV distance 
+  # from other trees 
+  if (is.null(base_lab)) {
+    # save contents in tree_paths txt files to a single txt file 
+    txt_path <- "full_trees_file.txt"
+    merge_txt(tree_paths, txt_path)
+    # compute distances
+    dists <- compute_geodesic(txt_path)
+    # remove txt file with multiPhylo object
+    unlink(txt_path)
+    # find tree with lowest mean BHV distance from other trees
+    diag(dists) <- NA
+    base_tree_number <- which.min(rowMeans(dists, na.rm = TRUE))
+    base_lab <- tree_names[base_tree_number]
+  # otherwise, make sure that base_tree is a number or a name given in base trees
+  } else {
+    if (is.numeric(base_lab)) {
+      base_tree_number <- base_lab
+    } else {
+      if (!(base_lab %in% tree_names)) {
+        stop("base_lab given does not appear in tree_names vector. Please let groves
+             calculate a base tree for you, input a number corresponding your desired
+             base tree's position in tree_paths, or a name that appears in tree_paths.")
+      }
+      base_tree_number <- which(base_lab %in% tree_names)
+    }
+  }
+  # save base tree path
+  base_path <- tree_paths[base_tree_number]
+  
   # the number of trees in tree_paths 
   n <- length(tree_paths) 
-  # logmap vector for base tree 
+  # logmap vector for first tree 
   res <- system2('java',
-                 args = c('-jar', jar_path,
+                 args = c('-jar', lm_path,
                           base_path,
-                          base_path),
+                          tree_paths[1]),
                  stdout = T)
   eval(parse(text=res[length(res)]))
   
   # make matrix to hold logmap vector results 
-  logMap_vects <- matrix(nrow = (n+1), ncol = length(logMap))
+  logMap_vects <- matrix(nrow = n, ncol = length(logMap))
+  logMap_vects[1,] <- logMap
   
-  # if base tree isn't included in tree_paths, saved log map for base tree
-  # as first entry 
-  if (!base_in_tree_paths) {
-    logMap_vects[1,] <- logMap
-  }
-
-  # compute log map vector for all trees included in tree_paths 
-  for (i in 2:(n+1)) {
+  # compute log map vector for all trees other included in tree_paths 
+  for (i in 2:n) {
     res <- system2('java',
-                   args = c('-jar', jar_path,
+                   args = c('-jar', lm_path,
                             base_path,
-                            tree_paths[i-1]),
+                            tree_paths[i]),
                    stdout = T)
     eval(parse(text=res[length(res)]))
-    logMap_vects[i,] <- logMap
+    logMap_vects[i, ] <- logMap
   }
   # add on lengths for branches ending in tips
   if (add_tip_branches) {
@@ -68,28 +97,20 @@ compute_logmap <- function(base_path, tree_paths, add_tip_branches = TRUE,
     # label branches that lead to tips as pendants 
     # tips are encoded as numbers 1 through the number of tips, so branches leading to tips are
     # encoded as edges that end in numbers less than the number of tips
-    pendant <- which(base_tree$edge[,2] <= length(base_tree$tip.label))
+    pendant <- which(base_tree$edge[, 2] <= length(base_tree$tip.label))
     base_tip_labs <- base_tree$tip.label
     pendant_lengths <- base_tree$edge.length[pendant]
-    # save pendant lengths into new matrix 
-    lm_with_pend[1, (ncol(logMap_vects)+1):ncol(lm_with_pend)] <- pendant_lengths
     # loop through trees in tree_paths 
     for (i in 1:length(tree_paths)) {
       tree <- ape::read.tree(tree_paths[i])
-      pendant <- which(tree$edge[,2] <= length(tree$tip.label))
+      pendant <- which(tree$edge[, 2] <= length(tree$tip.label))
       pendant_lengths <- tree$edge.length[pendant]
       # reorder pendant lengths if tips are in a different order than tips in base tree 
       order <- match(base_tip_labs, tree$tip.label)
-      lm_with_pend[(i+1), (ncol(logMap_vects)+1):ncol(lm_with_pend)] <- pendant_lengths[order]
+      lm_with_pend[i, (ncol(logMap_vects)+1):ncol(lm_with_pend)] <- pendant_lengths[order]
     }
     logMap_vects <- lm_with_pend
   }
-  if (is.null(tree_names)) {
-    tree_names <- 1:length(tree_paths)
-  }
-  rownames(logMap_vects) <- c("base_tree", tree_names)
-  if (base_in_tree_paths) {
-    logMap_vects <- logMap_vects[2:nrow(logMap_vects),]
-  }
-  return(logMap_vects)
+  rownames(logMap_vects) <- tree_names
+  return(list(vectors = logMap_vects, base_lab = base_lab))
 }
