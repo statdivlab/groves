@@ -9,6 +9,9 @@ plot_logmap(
   vectors,
   phylogenomic = NULL,
   group = NULL,
+  other_tree = NULL,
+  other_name = "other tree",
+  ignore_in_pca = NULL,
   title = "MDS of Gene Tree Distances",
   show_legend = TRUE,
   legend_lab = NULL,
@@ -26,6 +29,13 @@ matrix that corresponds to the phylogenomic tree, which will then be noted in th
 
 \item{group}{An optional vector to color points by. This should be same length as the 
 number of rows in \code{vector}.}
+
+\item{other_tree}{An optional additional tree to plot in a different color.}
+
+\item{other_name}{An optional name for \code{other_tree} if it is included.}
+
+\item{ignore_in_pca}{The index of any rows in \code{vectors} that should be ignored when
+running PCA. This can be used to add a new point to an existing plot.}
 
 \item{title}{An optional parameter to change the plot title.}
 
@@ -51,10 +61,10 @@ Plots PCA of log map results of trees for each distance.
 }
 \examples{
 path <- paste0(system.file("txt", package = "groves"), "/")
-lm_vectors <- compute_logmap(tree_paths = paste0(path, "tree", 1:3, ".txt"),
-               tree_names = c("tree1", "tree2", "tree3"))$vectors
-names <- paste0("tree", 1:3)
-med_branch <- c(1, 5, 2)
+lm_vectors <- compute_logmap(tree_paths = paste0(path, "tree", 1:4, ".txt"),
+               tree_names = c("tree1", "tree2", "tree3", "tree4"))$vectors
+names <- paste0("tree", 1:4)
+med_branch <- c(1, 5, 2, 4)
 plot_logmap(vectors = lm_vectors, phylogenomic = 1, group = med_branch, title = "PCA plot",
          show_legend = TRUE, legend_lab = "Branch median", tree_names = names,
          alpha = 0.9, use_plotly = FALSE)

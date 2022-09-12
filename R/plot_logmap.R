@@ -7,6 +7,10 @@
 #' matrix that corresponds to the phylogenomic tree, which will then be noted in the plot. 
 #' @param group An optional vector to color points by. This should be same length as the 
 #' number of rows in \code{vector}.
+#' @param other_tree An optional additional tree to plot in a different color. 
+#' @param other_name An optional name for \code{other_tree} if it is included.
+#' @param ignore_in_pca The index of any rows in \code{vectors} that should be ignored when
+#' running PCA. This can be used to add a new point to an existing plot. 
 #' @param title An optional parameter to change the plot title.
 #' @param show_legend A boolean about whether or not to show a legend for grouping variable.
 #' @param legend_lab A label for the legend for the grouping variable. Enter "" to hide
@@ -22,24 +26,40 @@
 #' 
 #' @examples 
 #' path <- paste0(system.file("txt", package = "groves"), "/")
-#' lm_vectors <- compute_logmap(tree_paths = paste0(path, "tree", 1:3, ".txt"),
-#'                tree_names = c("tree1", "tree2", "tree3"))$vectors
-#' names <- paste0("tree", 1:3)
-#' med_branch <- c(1, 5, 2)
+#' lm_vectors <- compute_logmap(tree_paths = paste0(path, "tree", 1:4, ".txt"),
+#'                tree_names = c("tree1", "tree2", "tree3", "tree4"))$vectors
+#' names <- paste0("tree", 1:4)
+#' med_branch <- c(1, 5, 2, 4)
 #' plot_logmap(vectors = lm_vectors, phylogenomic = 1, group = med_branch, title = "PCA plot",
 #'          show_legend = TRUE, legend_lab = "Branch median", tree_names = names,
 #'          alpha = 0.9, use_plotly = FALSE)
 #'
 #' @export
 plot_logmap <- function(vectors, phylogenomic = NULL, group = NULL,
-                     title = "MDS of Gene Tree Distances",
+                     other_tree = NULL, other_name = "other tree", 
+                     ignore_in_pca = NULL, title = "MDS of Gene Tree Distances",
                      show_legend = TRUE, legend_lab = NULL, 
                      tree_names = NULL, alpha = 1, use_plotly = FALSE) {
   ### start by organizing df 
   # get first two pca coordinates
-  pca <- stats::prcomp(vectors, rank. = 2)
-  df <- data.frame(PC1 = pca$x[ ,1],
-                   PC2 = pca$x[ ,2])
+  if (is.null(ignore_in_pca)) {
+    pca <- stats::prcomp(vectors, rank. = 2)
+    df <- data.frame(PC1 = pca$x[, 1],
+                     PC2 = pca$x[, 2])
+  } else {
+    pca <- stats::prcomp(vectors[-ignore_in_pca, ], rank. = 2)
+    pc1 <- rep(NA, nrow(vectors))
+    pc2 <- rep(NA, nrow(vectors))
+    pc1[-ignore_in_pca] <- pca$x[, 1]
+    pc2[-ignore_in_pca] <- pca$x[, 2]
+    centered_matrix <- t(matrix(pca$center, nrow = ncol(vectors), ncol = length(ignore_in_pca)))
+    new_pcs <- (vectors[ignore_in_pca, ] - centered_matrix) %*% pca$rotation
+    pc1[ignore_in_pca] <- new_pcs[, 1]
+    pc2[ignore_in_pca] <- new_pcs[, 2]
+    df <- data.frame(PC1 = pc1,
+                     PC2 = pc2)
+  }
+  
   if (is.null(tree_names)) {
     # label trees by number if no names given 
     df$Name <- 1:nrow(df)
@@ -57,7 +77,7 @@ plot_logmap <- function(vectors, phylogenomic = NULL, group = NULL,
   
   ### plotting 
   # No phylogenomic tree 
-  if (is.null(phylogenomic)) {
+  if (is.null(phylogenomic) & is.null(other_tree)) {
     # No grouping variable 
     if (is.null(group)) {
       plot <- ggplot(df, aes(x = PC1, y = PC2, label = Name)) + 
@@ -71,16 +91,21 @@ plot_logmap <- function(vectors, phylogenomic = NULL, group = NULL,
     }
     # Including phylogenomic tree 
   } else {
-    # if phylogenomic tree is included, make separate phylogenomic df 
-    genom_df <- df[phylogenomic, ]
+    # if phylogenomic tree or other tree is included, make tree_type variable 
     df$tree_type <- rep("gene tree", nrow(df))
     df$tree_type[phylogenomic] <- "phylogenomic"
+    df$tree_type[other_tree] <- other_name
+    df$tree_type <- factor(df$tree_type, 
+                           levels = c("gene tree", "phylogenomic", other_name))
+    
+    other_df <- dplyr::filter(df, tree_type != "gene tree")
+    
     if (is.null(group)) {
       plot <- ggplot(df, aes(x = PC1, y = PC2, color = tree_type, label = Name)) + 
         geom_point(alpha = alpha) + 
-        scale_color_manual(values = c("black", "red")) +
-        labs(color = "Tree Type")
-      geom_point(data = genom_df, color = "red") 
+        scale_color_manual(values = c("black", "red", "green")) +
+        labs(color = "Tree Type") +
+        geom_point(data = other_df) 
       # Grouping variable 
     } else {
       plot <- ggplot(df, aes(x = PC1, y = PC2, label = Name, color = group,
