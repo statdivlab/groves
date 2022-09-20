@@ -141,7 +141,7 @@ plot_logmap <- function(vectors, phylogenomic = NULL, group = NULL,
                       pc2 = df$PC2,
                       name = df$Name,
                       index = 1:nrow(df)) 
-  pc1_df <- dplyr::arrange(pc_df, desc(abs(pc1)))
-  pc2_df <- dplyr::arrange(pc_df, desc(abs(pc2)))
+  pc1_df <- dplyr::arrange(pc_df, dplyr::desc(abs(pc1)))
+  pc2_df <- dplyr::arrange(pc_df, dplyr::desc(abs(pc2)))
   return(list(plot = full_plot, pc1_info = pc1_df, pc2_info = pc2_df))
 }

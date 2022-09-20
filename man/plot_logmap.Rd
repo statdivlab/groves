@@ -12,11 +12,12 @@ plot_logmap(
   other_tree = NULL,
   other_name = "other tree",
   ignore_in_pca = NULL,
-  title = "MDS of Gene Tree Distances",
+  title = "PCA of Trees",
   show_legend = TRUE,
   legend_lab = NULL,
   tree_names = NULL,
   alpha = 1,
+  trees_to_label = NULL,
   use_plotly = FALSE
 )
 }
@@ -49,6 +50,9 @@ number of rows in \code{vector}.}
 
 \item{alpha}{Transparency of the points, defaults to 1 (fully opaque).}
 
+\item{trees_to_label}{Optional set of names in \code{tree_names} to label on plot. These are
+only labeled if \code{use_plotly} is set to \code{FALSE}.}
+
 \item{use_plotly}{If true, the output will be a plotly object, with labels
 when points are moused over, if false the output will be a ggplot object.}
 }
@@ -67,6 +71,6 @@ names <- paste0("tree", 1:4)
 med_branch <- c(1, 5, 2, 4)
 plot_logmap(vectors = lm_vectors, phylogenomic = 1, group = med_branch, title = "PCA plot",
          show_legend = TRUE, legend_lab = "Branch median", tree_names = names,
-         alpha = 0.9, use_plotly = FALSE)
+         alpha = 0.9, use_plotly = FALSE, trees_to_label = "tree1")
 
 }

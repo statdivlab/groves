@@ -1,5 +1,5 @@
 Package: groves
-Title: Package for visualizing gene-level phylogenies
+Title: Package for Visualizing Gene-Level Phylogenies
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Sarah",
@@ -19,7 +19,8 @@ Imports:
     stringr,
     plotly,
     treeio,
-    RColorBrewer
+    RColorBrewer,
+    ggrepel
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.1
