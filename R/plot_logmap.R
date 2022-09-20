@@ -20,6 +20,8 @@
 #' @param alpha Transparency of the points, defaults to 1 (fully opaque).
 #' @param use_plotly If true, the output will be a plotly object, with labels
 #' when points are moused over, if false the output will be a ggplot object.
+#' @param trees_to_label Optional set of names in \code{tree_names} to label on plot. These are
+#' only labeled if \code{use_plotly} is set to \code{FALSE}.
 #'
 #' @return A ggplot2 object.
 #' @import ggplot2
@@ -32,14 +34,15 @@
 #' med_branch <- c(1, 5, 2, 4)
 #' plot_logmap(vectors = lm_vectors, phylogenomic = 1, group = med_branch, title = "PCA plot",
 #'          show_legend = TRUE, legend_lab = "Branch median", tree_names = names,
-#'          alpha = 0.9, use_plotly = FALSE)
+#'          alpha = 0.9, use_plotly = FALSE, trees_to_label = "tree1")
 #'
 #' @export
 plot_logmap <- function(vectors, phylogenomic = NULL, group = NULL,
                      other_tree = NULL, other_name = "other tree", 
-                     ignore_in_pca = NULL, title = "MDS of Gene Tree Distances",
+                     ignore_in_pca = NULL, title = "PCA of Trees",
                      show_legend = TRUE, legend_lab = NULL, 
-                     tree_names = NULL, alpha = 1, use_plotly = FALSE) {
+                     tree_names = NULL, alpha = 1, 
+                     trees_to_label = NULL, use_plotly = FALSE) {
   ### start by organizing df 
   # get first two pca coordinates
   if (is.null(ignore_in_pca)) {
@@ -124,8 +127,21 @@ plot_logmap <- function(vectors, phylogenomic = NULL, group = NULL,
     theme(plot.title = element_text(hjust = 0.5))
   # use plotly if asked for 
   if (use_plotly) {
-    return(plotly::ggplotly(full_plot, tooltip = "Name"))
+    full_plot <- plotly::ggplotly(full_plot, tooltip = "Name")
   } else {
-    return(full_plot)
+    # if plotly not used, and trees to label are given, add those to plot 
+    if (!is.null(trees_to_label)) {
+      label_df <- dplyr::filter(df, Name %in% trees_to_label) 
+      full_plot <- full_plot + 
+        ggrepel::geom_text_repel(data = label_df, aes(label = Name), color = "black")
+    }
   }
+  # save dataframes for PC 1 and PC2
+  pc_df <- data.frame(pc1 = df$PC1,
+                      pc2 = df$PC2,
+                      name = df$Name,
+                      index = 1:nrow(df)) 
+  pc1_df <- dplyr::arrange(pc_df, desc(abs(pc1)))
+  pc2_df <- dplyr::arrange(pc_df, desc(abs(pc2)))
+  return(list(plot = full_plot, pc1_info = pc1_df, pc2_info = pc2_df))
 }
