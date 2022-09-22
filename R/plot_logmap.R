@@ -5,6 +5,7 @@
 #' from compute_logmap.
 #' @param phylogenomic An optional argument, if included gives the index of the \code{vectors} 
 #' matrix that corresponds to the phylogenomic tree, which will then be noted in the plot. 
+#' @param phylogenomic_name An optional argument, gives the name of the \code{phylogenomic} tree.
 #' @param group An optional vector to color points by. This should be same length as the 
 #' number of rows in \code{vector}.
 #' @param other_tree An optional additional tree to plot in a different color. 
@@ -32,17 +33,18 @@
 #'                tree_names = c("tree1", "tree2", "tree3", "tree4"))$vectors
 #' names <- paste0("tree", 1:4)
 #' med_branch <- c(1, 5, 2, 4)
-#' plot_logmap(vectors = lm_vectors, phylogenomic = 1, group = med_branch, title = "PCA plot",
-#'          show_legend = TRUE, legend_lab = "Branch median", tree_names = names,
-#'          alpha = 0.9, use_plotly = FALSE, trees_to_label = "tree1")
+#' plot_logmap(vectors = lm_vectors, phylogenomic = 1, phylogenomic_name = NULL, 
+#'            group = med_branch, title = "PCA plot", show_legend = TRUE, 
+#'            legend_lab = "Branch median", tree_names = names,
+#'            alpha = 0.9, use_plotly = FALSE, trees_to_label = "tree1")
 #'
 #' @export
-plot_logmap <- function(vectors, phylogenomic = NULL, group = NULL,
-                     other_tree = NULL, other_name = "other tree", 
-                     ignore_in_pca = NULL, title = "PCA of Trees",
-                     show_legend = TRUE, legend_lab = NULL, 
-                     tree_names = NULL, alpha = 1, 
-                     trees_to_label = NULL, use_plotly = FALSE) {
+plot_logmap <- function(vectors, phylogenomic = NULL, phylogenomic_name = NULL, 
+                        group = NULL, other_tree = NULL, other_name = "other tree", 
+                        ignore_in_pca = NULL, title = "PCA of Trees",
+                        show_legend = TRUE, legend_lab = NULL, 
+                        tree_names = NULL, alpha = 1, 
+                        trees_to_label = NULL, use_plotly = FALSE) {
   ### start by organizing df 
   # get first two pca coordinates
   if (is.null(ignore_in_pca)) {
@@ -94,22 +96,33 @@ plot_logmap <- function(vectors, phylogenomic = NULL, group = NULL,
     }
     # Including phylogenomic tree 
   } else {
+    if (is.null(phylogenomic_name)) {
+      phylogenomic_name = "phylogenomic"
+    }
     # if phylogenomic tree or other tree is included, make tree_type variable 
     df$tree_type <- rep("gene tree", nrow(df))
     df$tree_type[phylogenomic] <- "phylogenomic"
-    df$tree_type[other_tree] <- other_name
+    df$tree_type[other_tree] <- "other"
     df$tree_type <- factor(df$tree_type, 
-                           levels = c("gene tree", "phylogenomic", other_name))
+                           levels = c("gene tree", 
+                                      "phylogenomic", 
+                                      "other"))
     
     other_df <- dplyr::filter(df, tree_type != "gene tree")
     
     if (is.null(group)) {
       plot <- ggplot(df, aes(x = PC1, y = PC2, color = tree_type, label = Name)) + 
         geom_point(alpha = alpha) + 
-        scale_color_manual(values = c("black", "red", "green")) +
         labs(color = "Tree Type") +
-        geom_point(data = other_df) 
-      # Grouping variable 
+        geom_point(data = other_df) +
+        #scale_color_discrete(labels = c("gene tree",
+        #                                latex2exp::TeX(phylogenomic_name),
+        #                                latex2exp::TeX(other_name))) +
+        scale_color_manual(values = c("black", "red", "green"),
+                           labels = c("gene tree",
+                                      latex2exp::TeX(phylogenomic_name),
+                                      latex2exp::TeX(other_name))) 
+    # Grouping variable 
     } else {
       plot <- ggplot(df, aes(x = PC1, y = PC2, label = Name, color = group,
                              shape = tree_type)) + 
@@ -117,7 +130,10 @@ plot_logmap <- function(vectors, phylogenomic = NULL, group = NULL,
         labs(color = ifelse(is.null(legend_lab), "Group", legend_lab),
              shape = "Tree Type") +
         theme(legend.position = legend_pos) + 
-        geom_point(data = other_df, color = "black")
+        geom_point(data = other_df, color = "black") +
+        scale_shape_discrete(labels = c("gene tree",
+                                        latex2exp::TeX(phylogenomic_name),
+                                        latex2exp::TeX(other_name)))
     }
   }
   # add details 

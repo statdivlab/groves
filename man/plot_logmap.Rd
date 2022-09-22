@@ -8,6 +8,7 @@ Plots PCA of log map results of trees for each distance.}
 plot_logmap(
   vectors,
   phylogenomic = NULL,
+  phylogenomic_name = NULL,
   group = NULL,
   other_tree = NULL,
   other_name = "other tree",
@@ -27,6 +28,8 @@ from compute_logmap.}
 
 \item{phylogenomic}{An optional argument, if included gives the index of the \code{vectors} 
 matrix that corresponds to the phylogenomic tree, which will then be noted in the plot.}
+
+\item{phylogenomic_name}{An optional argument, gives the name of the \code{phylogenomic} tree.}
 
 \item{group}{An optional vector to color points by. This should be same length as the 
 number of rows in \code{vector}.}
@@ -69,8 +72,9 @@ lm_vectors <- compute_logmap(tree_paths = paste0(path, "tree", 1:4, ".txt"),
                tree_names = c("tree1", "tree2", "tree3", "tree4"))$vectors
 names <- paste0("tree", 1:4)
 med_branch <- c(1, 5, 2, 4)
-plot_logmap(vectors = lm_vectors, phylogenomic = 1, group = med_branch, title = "PCA plot",
-         show_legend = TRUE, legend_lab = "Branch median", tree_names = names,
-         alpha = 0.9, use_plotly = FALSE, trees_to_label = "tree1")
+plot_logmap(vectors = lm_vectors, phylogenomic = 1, phylogenomic_name = NULL, 
+           group = med_branch, title = "PCA plot", show_legend = TRUE, 
+           legend_lab = "Branch median", tree_names = names,
+           alpha = 0.9, use_plotly = FALSE, trees_to_label = "tree1")
 
 }
