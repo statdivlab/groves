@@ -116,7 +116,8 @@ plot_logmap <- function(vectors, phylogenomic = NULL, group = NULL,
         geom_point(alpha = alpha) +
         labs(color = ifelse(is.null(legend_lab), "Group", legend_lab),
              shape = "Tree Type") +
-        theme(legend.position = legend_pos)
+        theme(legend.position = legend_pos) + 
+        geom_point(data = other_df, color = "black")
     }
   }
   # add details 
