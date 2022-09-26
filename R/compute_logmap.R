@@ -49,13 +49,14 @@ compute_logmap <- function(tree_paths, add_tip_branches = TRUE,
   } else {
     if (is.numeric(base_lab)) {
       base_tree_number <- base_lab
+      base_lab <- tree_names[base_tree_number]
     } else {
       if (!(base_lab %in% tree_names)) {
         stop("base_lab given does not appear in tree_names vector. Please let groves
              calculate a base tree for you, input a number corresponding your desired
              base tree's position in tree_paths, or a name that appears in tree_paths.")
       }
-      base_tree_number <- which(base_lab %in% tree_names)
+      base_tree_number <- which(base_lab == tree_names)
     }
   }
   # save base tree path
@@ -69,10 +70,17 @@ compute_logmap <- function(tree_paths, add_tip_branches = TRUE,
                           base_path,
                           tree_paths[1]),
                  stdout = T)
-  eval(parse(text=res[length(res)]))
+  try(eval(parse(text=res[length(res)])))
   
   # make matrix to hold logmap vector results 
-  logMap_vects <- matrix(nrow = n, ncol = length(logMap))
+  logMap_vects <- try(matrix(nrow = n, ncol = length(logMap)))
+  if (inherits(logMap_vects, "try-error")) {
+    stop(paste0("The chosen base tree, ", base_lab, ", is on the boundary of tree space and the log
+                map cannot be computed using this tree. If you are manually choosing the
+                base tree, please try another one. If this base tree was chosen automatically,
+                you can try setting a base tree manually, but if you are unable to find a tree
+                that does not return this error, this method may not work for your tree set."))
+  }
   logMap_vects[1,] <- logMap
   
   # compute log map vector for all trees other included in tree_paths 
