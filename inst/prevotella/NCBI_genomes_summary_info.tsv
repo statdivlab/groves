@@ -1,0 +1,383 @@
+input_accession	downloaded_accession	assembly_name	taxid	organism_name	infraspecific_name	version_status	assembly_level	num_SCG_hits	uniq_SCG_hits	perc_comp	perc_redund
+GCA_000025925.1	GCA_000025925.1	ASM2592v1	264731	Prevotella ruminicola 23	strain=Bryant 23	latest	Complete Genome	80	80	100.00	0.00
+GCA_000144405.1	GCA_000144405.1	ASM14440v1	553174	Prevotella melaninogenica ATCC 25845	strain=ATCC 25845	latest	Complete Genome	80	80	100.00	0.00
+GCA_000146675.1	GCA_000146675.1	ASM14667v1	862515	Prevotella marshii DSM 16973 = JCM 13450	strain=DSM 16973	latest	Scaffold	80	80	100.00	0.00
+GCA_000157935.1	GCA_000157935.1	ASM15793v1	537011	Prevotella copri DSM 18205	strain=DSM 18205	latest	Scaffold	80	80	100.00	0.00
+GCA_000160535.1	GCA_000160535.1	ASM16053v1	585502	Prevotella bergensis DSM 17361	strain=DSM 17361	latest	Scaffold	80	80	100.00	0.00
+GCA_000163055.2	GCA_000163055.2	ASM16305v2	575614	Prevotella sp. oral taxon 299 str. F0039	strain=F0039	latest	Complete Genome	80	79	98.75	1.25
+GCA_000177075.1	GCA_000177075.1	ASM17707v1	679190	Prevotella buccalis ATCC 35310	strain=ATCC 35310	latest	Contig	80	80	100.00	0.00
+GCA_000179055.1	GCA_000179055.1	ASM17905v1	752555	Prevotella bryantii B14	strain=B14	latest	Contig	80	79	98.75	1.25
+GCA_000184945.1	GCA_000184945.1	ASM18494v1	873513	Prevotella buccae ATCC 33574	strain=ATCC 33574	latest	Scaffold	80	79	98.75	1.25
+GCA_000185145.2	GCA_000185145.2	ASM18514v2	873533	Prevotella oralis ATCC 33269	strain=ATCC 33269	latest	Scaffold	80	79	98.75	1.25
+GCA_000185845.1	GCA_000185845.1	ASM18584v1	888832	Prevotella salivae DSM 15606	strain=DSM 15606	latest	Scaffold	80	79	98.75	1.25
+GCA_000191065.1	GCA_000191065.1	ASM19106v1	888743	Prevotella multiformis DSM 16608	strain=DSM 16608	latest	Scaffold	79	79	98.75	0.00
+GCA_000218235.1	GCA_000218235.1	ASM21823v1	688246	Prevotella multisaccharivorax DSM 17128	strain=DSM 17128	latest	Scaffold	80	79	98.75	1.25
+GCA_000220235.1	GCA_000220235.1	ASM22023v1	997352	Prevotella nigrescens ATCC 33563	strain=ATCC 33563	latest	Scaffold	80	80	100.00	0.00
+GCA_000220255.1	GCA_000220255.1	ASM22025v1	997353	Prevotella pallens ATCC 700821	strain=ATCC 700821	latest	Scaffold	80	80	100.00	0.00
+GCA_000235885.1	GCA_000235885.1	ASM23588v1	1002367	Prevotella stercorea DSM 18206	strain=DSM 18206	latest	Scaffold	80	79	98.75	1.25
+GCA_000257925.1	GCA_000257925.1	PspF0472v1.0	1095752	Prevotella sp. oral taxon 306 str. F0472	strain=F0472	latest	Contig	80	80	100.00	0.00
+GCA_000262545.1	GCA_000262545.1	ASM26254v1	868129	Prevotella bivia DSM 20514	strain=DSM 20514	latest	Scaffold	78	78	97.50	0.00
+GCA_000312305.1	GCA_000312305.1	ASM31230v1	1197728	Prevotella conceptionensis 9403948	strain=9403948	latest	Scaffold	80	77	96.25	3.75
+GCA_000373185.1	GCA_000373185.1	ASM37318v1	1122990	Prevotella paludivivens DSM 17968 = JCM 13650	strain=DSM 17968	latest	Scaffold	80	80	100.00	0.00
+GCA_000377625.1	GCA_000377625.1	ASM37762v1	1122993	Prevotella veroralis DSM 19559 = JCM 6290	strain=DSM 19559	latest	Scaffold	80	80	100.00	0.00
+GCA_000378085.1	GCA_000378085.1	ASM37808v1	1122985	Prevotella loescheii DSM 19665 = JCM 12249 = ATCC 15930	strain=DSM 19665	latest	Scaffold	80	80	100.00	0.00
+GCA_000378745.1	GCA_000378745.1	ASM37874v1	1122979	Prevotella amnii DSM 23384 = JCM 14753	strain=DSM 23384	latest	Scaffold	78	77	96.25	1.25
+GCA_000379965.1	GCA_000379965.1	ASM37996v1	1122988	Prevotella nanceiensis DSM 19126 = JCM 15639	strain=DSM 19126	latest	Scaffold	80	80	100.00	0.00
+GCA_000382385.1	GCA_000382385.1	ASM38238v1	1122986	Prevotella maculosa DSM 19339 = JCM 15638	strain=DSM 19339	latest	Scaffold	80	80	100.00	0.00
+GCA_000424185.1	GCA_000424185.1	ASM42418v1	1280674	Prevotella sp. AGR2160	strain=AGR2160	latest	Scaffold	79	79	98.75	0.00
+GCA_000426565.1	GCA_000426565.1	ASM42656v1	1122978	Prevotella albensis DSM 11370 = JCM 12258	strain=DSM 11370	latest	Scaffold	80	80	100.00	0.00
+GCA_000426585.1	GCA_000426585.1	ASM42658v1	1122980	Prevotella baroniae DSM 16972 = JCM 13447	strain=DSM 16972	latest	Scaffold	80	80	100.00	0.00
+GCA_000430525.1	GCA_000430525.1	ASM43052v1	1122981	Prevotella corporis DSM 18810 = JCM 8529	strain=DSM 18810	latest	Scaffold	80	80	100.00	0.00
+GCA_000431975.1	GCA_000431975.1	MGS924	1262938	Prevotella sp. CAG:924	NA	latest	Scaffold	80	78	97.50	2.50
+GCA_000433175.1	GCA_000433175.1	MGS1058	1262918	Prevotella sp. CAG:1058	NA	latest	Scaffold	78	77	96.25	2.50
+GCA_000434975.1	GCA_000434975.1	MGS520	1262929	Prevotella sp. CAG:520	NA	latest	Scaffold	79	79	98.75	0.00
+GCA_000435635.1	GCA_000435635.1	MGS1320	1262922	Prevotella sp. CAG:1320	NA	latest	Scaffold	79	79	98.75	0.00
+GCA_000436035.1	GCA_000436035.1	MGS732	1262934	Prevotella sp. CAG:732	NA	latest	Scaffold	77	76	95.00	1.25
+GCA_000436595.1	GCA_000436595.1	MGS1124	1262920	Prevotella sp. CAG:1124	NA	latest	Scaffold	79	77	96.25	2.50
+GCA_000436695.1	GCA_000436695.1	MGS1185	1262921	Prevotella sp. CAG:1185	NA	latest	Scaffold	79	78	97.50	1.25
+GCA_000436915.1	GCA_000436915.1	MGS1092	1262919	Prevotella sp. CAG:1092	NA	latest	Scaffold	77	76	95.00	1.25
+GCA_000455445.1	GCA_000455445.1	4401737	1122992	Prevotella timonensis 4401737 = DSM 22865 = JCM 15640	strain=4401737	latest	Scaffold	80	80	100.00	0.00
+GCA_000467895.1	GCA_000467895.1	ASM46789v1	1227276	Prevotella sp. F0091	strain=F0091	latest	Scaffold	80	80	100.00	0.00
+GCA_000479005.1	GCA_000479005.1	PspBV3P1v1.0	1111130	Prevotella sp. BV3P1	strain=BV3P1	latest	Contig	80	80	100.00	0.00
+GCA_000518545.1	GCA_000518545.1	ASM51854v1	1336250	Hallella seregens ATCC 51272	strain=ATCC 51272	latest	Scaffold	80	80	100.00	0.00
+GCA_000585355.1	GCA_000585355.1	ASM58535v1	915438	Prevotella oryzae DSM 17970	strain=DSM 17970	latest	Scaffold	10	10	12.50	0.00
+GCA_000599605.1	GCA_000599605.1	HJM029	1433844	Prevotella sp. HJM029	strain=HJM029	latest	Scaffold	80	79	98.75	1.25
+GCA_000613345.1	GCA_000613345.1	ASM61334v1	1235811	Prevotella disiens JCM 6334 = ATCC 29426	strain=JCM 6334	latest	Contig	80	77	96.25	3.75
+GCA_000613405.1	GCA_000613405.1	ASM61340v1	1235815	Prevotella enoeca JCM 12259	strain=JCM 12259	latest	Contig	79	76	95.00	3.75
+GCA_000613445.1	GCA_000613445.1	ASM61344v1	1122991	Prevotella shahii DSM 15611 = JCM 12083	strain=JCM 12083	latest	Contig	80	77	96.25	3.75
+GCA_000613585.1	GCA_000613585.1	ASM61358v1	1122982	Prevotella denticola DSM 20614 = JCM 13449	strain=JCM 13449	latest	Contig	80	77	96.25	3.75
+GCA_000613725.1	GCA_000613725.1	ASM61372v1	1236494	Prevotella pleuritidis JCM 14110	strain=JCM 14110	latest	Contig	80	74	92.50	7.50
+GCA_000613785.1	GCA_000613785.1	ASM61378v1	1236497	Prevotella oulorum JCM 14966	strain=JCM 14966	latest	Contig	80	76	95.00	5.00
+GCA_000613925.1	GCA_000613925.1	ASM61392v1	1236504	Prevotella histicola JCM 15637 = DNF00424	strain=JCM 15637	latest	Contig	79	71	88.75	10.00
+GCA_000613945.1	GCA_000613945.1	ASM61394v1	1122983	Prevotella falsenii DSM 22864 = JCM 15124	strain=JCM 15124	latest	Contig	80	75	93.75	6.25
+GCA_000614025.1	GCA_000614025.1	ASM61402v1	1236508	Prevotella aurantiaca JCM 15754	strain=JCM 15754	latest	Contig	80	76	95.00	5.00
+GCA_000614065.1	GCA_000614065.1	ASM61406v1	1236509	Prevotella dentasini JCM 15908	strain=JCM 15908	latest	Contig	80	79	98.75	1.25
+GCA_000614105.1	GCA_000614105.1	ASM61410v1	1122987	Prevotella micans DSM 21469 = JCM 16134	strain=JCM 16134	latest	Contig	79	75	93.75	5.00
+GCA_000614205.1	GCA_000614205.1	ASM61420v1	1236516	Prevotella saccharolytica JCM 17484	strain=JCM 17484	latest	Contig	80	74	92.50	8.75
+GCA_000619825.1	GCA_000619825.1	ASM61982v1	1408310	Prevotella sp. MA2016	strain=MA2016	latest	Scaffold	80	79	98.75	1.25
+GCA_000621725.1	GCA_000621725.1	ASM62172v1	1408472	Prevotella brevis ATCC 19188	strain=ATCC 19188	latest	Scaffold	80	80	100.00	0.00
+GCA_000687715.1	GCA_000687715.1	ASM68771v1	1410667	Prevotella ruminicola Ga6B6	strain=Ga6B6	latest	Contig	80	80	100.00	0.00
+GCA_000688375.1	GCA_000688375.1	ASM68837v1	1392486	Prevotella sp. HUN102	strain=HUN102	latest	Contig	80	80	100.00	0.00
+GCA_000702825.1	GCA_000702825.1	ASM70282v1	1410613	Prevotella sp. P6B1	strain=P6B1	latest	Scaffold	80	78	97.50	2.50
+GCA_000758925.1	GCA_000758925.1	04_NF40_HMP1640v01	1284775	Prevotella sp. S7-1-8	strain=S7-1-8	latest	Contig	80	80	100.00	0.00
+GCA_000762405.1	GCA_000762405.1	04_NF40_HMP9304v01	1401062	Prevotella timonensis S9-PR14	strain=S9-PR14	latest	Contig	79	79	98.75	0.00
+GCA_000834015.1	GCA_000834015.1	ASM83401v1	1602169	Prevotella pectinovora	strain=P4-76	latest	Contig	79	79	98.75	0.00
+GCA_001262015.1	GCA_001262015.1	ASM126201v1	1236517	Prevotella fusca JCM 17724	strain=W1435	latest	Complete Genome	80	80	100.00	0.00
+GCA_001275135.1	GCA_001275135.1	ASM127513v1	1676614	Prevotella rara	strain=109	latest	Contig	80	79	98.75	1.25
+GCA_001552765.1	GCA_001552765.1	ASM155276v1	1497954	Bacteroidales bacterium KA00344	strain=KA00344	latest	Scaffold	80	80	100.00	0.00
+GCA_001553265.1	GCA_001553265.1	ASM155326v1	1384078	Prevotella sp. DNF00663	strain=DNF00663	latest	Scaffold	80	79	98.75	2.50
+GCA_001683355.1	GCA_001683355.1	ASM168335v1	1236518	Prevotella scopos JCM 17725	strain=W2052	latest	Chromosome	79	79	98.75	0.00
+GCA_001953955.1	GCA_001953955.1	ASM195395v1	1122984	Prevotella intermedia ATCC 25611 = DSM 20706	strain=ATCC 25611	latest	Complete Genome	80	80	100.00	0.00
+GCA_002224675.1	GCA_002224675.1	ASM222467v1	165179	Prevotella copri	strain=Indica	latest	Contig	80	80	100.00	0.00
+GCA_002251245.1	GCA_002251245.1	ASM225124v1	2024222	Prevotella sp. P5-92	strain=P5-92	latest	Contig	80	79	98.75	1.25
+GCA_002251295.1	GCA_002251295.1	ASM225129v1	2024217	Prevotella sp. P5-50	strain=P5-50	latest	Contig	80	80	100.00	0.00
+GCA_002251365.1	GCA_002251365.1	ASM225136v1	2024223	Prevotella sp. P3-122	strain=P3-122	latest	Contig	80	77	96.25	5.00
+GCA_002251385.1	GCA_002251385.1	ASM225138v1	2024225	Prevotella sp. P5-108	strain=P5-108	latest	Contig	79	79	98.75	0.00
+GCA_002251435.1	GCA_002251435.1	ASM225143v1	2024224	Prevotella sp. P2-180	strain=P2-180	latest	Contig	80	77	96.25	3.75
+GCA_002265625.1	GCA_002265625.1	ASM226562v1	2022527	Prevotella sp. 885	strain=885	latest	Contig	80	80	100.00	0.00
+GCA_002297965.1	GCA_002297965.1	ASM229796v1	1947215	Prevotella sp. UBA731	NA	latest	Scaffold	73	72	90.00	1.25
+GCA_002298545.1	GCA_002298545.1	ASM229854v1	1947217	Prevotella sp. UBA746	NA	latest	Scaffold	75	75	93.75	0.00
+GCA_002299275.1	GCA_002299275.1	ASM229927v1	1947184	Prevotella sp. UBA640	NA	latest	Scaffold	72	69	86.25	5.00
+GCA_002299635.1	GCA_002299635.1	ASM229963v1	1947185	Prevotella sp. UBA641	NA	latest	Scaffold	60	59	73.75	2.50
+GCA_002300055.1	GCA_002300055.1	ASM230005v1	1947174	Prevotella sp. UBA630	NA	latest	Scaffold	71	71	88.75	0.00
+GCA_002305235.1	GCA_002305235.1	ASM230523v1	1947085	Prevotella sp. UBA1395	NA	latest	Scaffold	67	67	83.75	0.00
+GCA_002305505.1	GCA_002305505.1	ASM230550v1	1947084	Prevotella sp. UBA1378	NA	latest	Scaffold	64	64	80.00	0.00
+GCA_002314055.1	GCA_002314055.1	ASM231405v1	1947083	Prevotella sp. UBA1104	NA	latest	Scaffold	78	78	97.50	0.00
+GCA_002316005.1	GCA_002316005.1	ASM231600v1	1952458	Prevotellaceae bacterium UBA1726	NA	latest	Scaffold	68	65	81.25	3.75
+GCA_002317355.1	GCA_002317355.1	ASM231735v1	1952455	Prevotellaceae bacterium UBA1710	NA	latest	Scaffold	78	77	96.25	1.25
+GCA_002317385.1	GCA_002317385.1	ASM231738v1	1947086	Prevotella sp. UBA1705	NA	latest	Scaffold	76	75	93.75	1.25
+GCA_002342415.1	GCA_002342415.1	ASM234241v1	1947093	Prevotella sp. UBA2456	NA	latest	Scaffold	76	76	95.00	0.00
+GCA_002342665.1	GCA_002342665.1	ASM234266v1	1947087	Prevotella sp. UBA2444	NA	latest	Scaffold	43	41	51.25	2.50
+GCA_002350805.1	GCA_002350805.1	ASM235080v1	1947122	Prevotella sp. UBA2850	NA	latest	Scaffold	70	68	85.00	2.50
+GCA_002351725.1	GCA_002351725.1	ASM235172v1	1947116	Prevotella sp. UBA2809	NA	latest	Scaffold	71	66	82.50	6.25
+GCA_002353205.1	GCA_002353205.1	ASM235320v1	1947112	Prevotella sp. UBA2756	NA	latest	Scaffold	75	75	93.75	0.00
+GCA_002353225.1	GCA_002353225.1	ASM235322v1	1947111	Prevotella sp. UBA2755	NA	latest	Scaffold	76	76	95.00	0.00
+GCA_002353295.1	GCA_002353295.1	ASM235329v1	1947110	Prevotella sp. UBA2754	NA	latest	Scaffold	77	77	96.25	0.00
+GCA_002353485.1	GCA_002353485.1	ASM235348v1	1947104	Prevotella sp. UBA2742	NA	latest	Scaffold	77	76	95.00	1.25
+GCA_002353525.1	GCA_002353525.1	ASM235352v1	1947102	Prevotella sp. UBA2739	NA	latest	Scaffold	73	71	88.75	2.50
+GCA_002353555.1	GCA_002353555.1	ASM235355v1	1947107	Prevotella sp. UBA2746	NA	latest	Scaffold	69	68	85.00	1.25
+GCA_002353585.1	GCA_002353585.1	ASM235358v1	1952469	Prevotellaceae bacterium UBA2738	NA	latest	Scaffold	76	75	93.75	1.25
+GCA_002353825.1	GCA_002353825.1	ASM235382v1	1947096	Prevotella sp. UBA2725	NA	latest	Scaffold	80	78	97.50	2.50
+GCA_002353975.1	GCA_002353975.1	ASM235397v1	1952467	Prevotellaceae bacterium UBA2718	NA	latest	Scaffold	71	67	83.75	5.00
+GCA_002354095.1	GCA_002354095.1	ASM235409v1	1947095	Prevotella sp. UBA2711	NA	latest	Scaffold	79	77	96.25	2.50
+GCA_002361535.1	GCA_002361535.1	ASM236153v1	1947134	Prevotella sp. UBA3294	NA	latest	Scaffold	63	63	78.75	0.00
+GCA_002361655.1	GCA_002361655.1	ASM236165v1	1947133	Prevotella sp. UBA3288	NA	latest	Scaffold	66	65	81.25	1.25
+GCA_002363695.1	GCA_002363695.1	ASM236369v1	1947130	Prevotella sp. UBA3208	NA	latest	Scaffold	57	57	71.25	0.00
+GCA_002369515.1	GCA_002369515.1	ASM236951v1	1947146	Prevotella sp. UBA3776	NA	latest	Scaffold	60	60	75.00	0.00
+GCA_002371695.1	GCA_002371695.1	ASM237169v1	1947799	bacterium UBA3756	NA	latest	Scaffold	54	53	66.25	1.25
+GCA_002371715.1	GCA_002371715.1	ASM237171v1	1947144	Prevotella sp. UBA3757	NA	latest	Scaffold	76	72	90.00	5.00
+GCA_002372235.1	GCA_002372235.1	ASM237223v1	1947141	Prevotella sp. UBA3675	NA	latest	Scaffold	66	66	82.50	0.00
+GCA_002372575.1	GCA_002372575.1	ASM237257v1	1947798	bacterium UBA3734	NA	latest	Scaffold	64	64	80.00	0.00
+GCA_002373375.1	GCA_002373375.1	ASM237337v1	1952482	Prevotellaceae bacterium UBA3627	NA	latest	Scaffold	63	62	77.50	1.25
+GCA_002379425.1	GCA_002379425.1	ASM237942v1	1947153	Prevotella sp. UBA4217	NA	latest	Scaffold	68	68	85.00	0.00
+GCA_002391185.1	GCA_002391185.1	ASM239118v1	1947163	Prevotella sp. UBA4376	NA	latest	Scaffold	66	66	82.50	0.00
+GCA_002392645.1	GCA_002392645.1	ASM239264v1	1952487	Prevotellaceae bacterium UBA3849	NA	latest	Scaffold	58	57	71.25	2.50
+GCA_002392835.1	GCA_002392835.1	ASM239283v1	1947149	Prevotella sp. UBA3837	NA	latest	Scaffold	63	62	77.50	1.25
+GCA_002393705.1	GCA_002393705.1	ASM239370v1	1947161	Prevotella sp. UBA4341	NA	latest	Scaffold	59	59	73.75	0.00
+GCA_002393725.1	GCA_002393725.1	ASM239372v1	1947160	Prevotella sp. UBA4339	NA	latest	Scaffold	68	66	82.50	2.50
+GCA_002394365.1	GCA_002394365.1	ASM239436v1	1952494	Prevotellaceae bacterium UBA4332	NA	latest	Scaffold	78	78	97.50	0.00
+GCA_002394385.1	GCA_002394385.1	ASM239438v1	1947158	Prevotella sp. UBA4330	NA	latest	Scaffold	80	80	100.00	0.00
+GCA_002395135.1	GCA_002395135.1	ASM239513v1	1947155	Prevotella sp. UBA4268	NA	latest	Scaffold	72	71	88.75	1.25
+GCA_002405875.1	GCA_002405875.1	ASM240587v1	1947802	bacterium UBA4637	NA	latest	Scaffold	45	41	51.25	5.00
+GCA_002407775.1	GCA_002407775.1	ASM240777v1	1947168	Prevotella sp. UBA5387	NA	latest	Scaffold	78	78	97.50	0.00
+GCA_002409785.1	GCA_002409785.1	ASM240978v1	1947167	Prevotella sp. UBA5379	NA	latest	Scaffold	75	75	93.75	0.00
+GCA_002437115.1	GCA_002437115.1	ASM243711v1	1947190	Prevotella sp. UBA6447	NA	latest	Scaffold	76	76	95.00	0.00
+GCA_002437285.1	GCA_002437285.1	ASM243728v1	1947187	Prevotella sp. UBA6429	NA	latest	Scaffold	76	76	95.00	0.00
+GCA_002437565.1	GCA_002437565.1	ASM243756v1	1947182	Prevotella sp. UBA6387	NA	latest	Scaffold	69	67	83.75	2.50
+GCA_002439605.1	GCA_002439605.1	ASM243960v1	1947189	Prevotella sp. UBA6442	NA	latest	Scaffold	72	72	90.00	0.00
+GCA_002440225.1	GCA_002440225.1	ASM244022v1	1947177	Prevotella sp. UBA6339	NA	latest	Scaffold	74	73	91.25	1.25
+GCA_002449535.1	GCA_002449535.1	ASM244953v1	1952525	Prevotellaceae bacterium UBA7017	NA	latest	Scaffold	67	67	83.75	0.00
+GCA_002449845.1	GCA_002449845.1	ASM244984v1	1947201	Prevotella sp. UBA6994	NA	latest	Scaffold	79	79	98.75	0.00
+GCA_002451555.1	GCA_002451555.1	ASM245155v1	1947197	Prevotella sp. UBA6866	NA	latest	Scaffold	76	75	93.75	1.25
+GCA_002479145.1	GCA_002479145.1	ASM247914v1	1947219	Prevotella sp. UBA7551	NA	latest	Scaffold	69	68	85.00	1.25
+GCA_002480935.1	GCA_002480935.1	ASM248093v1	1947238	Prevotella sp. UBA7782	NA	latest	Scaffold	65	61	76.25	6.25
+GCA_002481295.1	GCA_002481295.1	ASM248129v1	1947233	Prevotella sp. UBA7764	NA	latest	Scaffold	78	78	97.50	0.00
+GCA_002490315.1	GCA_002490315.1	ASM249031v1	1947225	Prevotella sp. UBA7594	NA	latest	Scaffold	70	70	87.50	0.00
+GCA_002933775.1	GCA_002933775.1	ASM293377v1	2033405	Prevotella sp. MGM1	strain=MGM1	latest	Contig	79	78	97.50	2.50
+GCA_003043925.1	GCA_003043925.1	ASM304392v1	2081962	Prevotella sp. oral taxon 820	strain=W6195	latest	Contig	79	78	97.50	1.25
+GCA_003043945.1	GCA_003043945.1	ASM304394v1	712466	Prevotella sp. oral taxon 376	strain=F0043	latest	Contig	80	77	96.25	3.75
+GCA_003096815.1	GCA_003096815.1	ASM309681v1	1703337	Prevotella colorans	strain=DSM 100333	latest	Scaffold	80	80	100.00	0.00
+GCA_003447235.1	GCA_003447235.1	ASM344723v1	59823	Prevotella sp.	NA	latest	Scaffold	78	77	96.25	1.25
+GCA_003483565.1	GCA_003483565.1	ASM348356v1	59823	Prevotella sp.	NA	latest	Scaffold	55	55	68.75	0.00
+GCA_003609775.1	GCA_003609775.1	ASM360977v1	28132	Prevotella melaninogenica	strain=GAI 07411	latest	Complete Genome	80	80	100.00	0.00
+GCA_003932845.1	GCA_003932845.1	ASM393284v1	2491051	Prevotella sp. OH937_COT-195	strain=OH937_COT-195	latest	Contig	80	79	98.75	1.25
+GCA_003977605.1	GCA_003977605.1	ASM397760v1	2490854	Prevotella koreensis	strain=KCOM 3155	latest	Scaffold	80	80	100.00	0.00
+GCA_004535825.1	GCA_004535825.1	ASM453582v1	2518605	Prevotella hominis	strain=BCRC 81118	latest	Contig	80	80	100.00	0.00
+GCA_004554665.1	GCA_004554665.1	ASM455466v1	2030927	Bacteroidales bacterium	NA	latest	Contig	77	73	91.25	5.00
+GCA_004555245.1	GCA_004555245.1	ASM455524v1	2030927	Bacteroidales bacterium	NA	latest	Contig	76	75	93.75	1.25
+GCA_004556065.1	GCA_004556065.1	ASM455606v1	2030927	Bacteroidales bacterium	NA	latest	Contig	64	64	80.00	0.00
+GCA_004557285.1	GCA_004557285.1	ASM455728v1	2030927	Bacteroidales bacterium	NA	latest	Contig	70	70	87.50	0.00
+GCA_004558865.1	GCA_004558865.1	ASM455886v1	2030927	Bacteroidales bacterium	NA	latest	Contig	75	74	92.50	1.25
+GCA_004792655.1	GCA_004792655.1	ASM479265v1	2030927	Bacteroidales bacterium	strain=NM73_A23	latest	Contig	80	78	97.50	2.50
+GCA_008016795.1	GCA_008016795.1	ASM801679v1	2508867	Prevotella brunnea	strain=A2672	latest	Contig	79	79	98.75	0.00
+GCA_009494395.1	GCA_009494395.1	ASM949439v1	165179	Prevotella copri	strain=iA622	latest	Contig	79	79	98.75	0.00
+GCA_009495355.1	GCA_009495355.1	ASM949535v1	165179	Prevotella copri	strain=iAQ1173	latest	Contig	80	80	100.00	0.00
+GCA_009695775.1	GCA_009695775.1	ASM969577v1	2606637	Prevotella mizrahii	strain=LKV-178-WT-2A	latest	Contig	79	79	98.75	0.00
+GCA_013166515.1	GCA_013166515.1	ASM1316651v1	2736294	Prevotella sp. PCHR	strain=PCHR	latest	Contig	80	80	100.00	0.00
+GCA_013166545.1	GCA_013166545.1	ASM1316654v1	2736292	Prevotella sp. PJ1A	strain=PJ1A	latest	Contig	80	80	100.00	0.00
+GCA_013166595.1	GCA_013166595.1	ASM1316659v1	2736291	Prevotella sp. PINT	strain=PINT	latest	Contig	80	80	100.00	0.00
+GCA_013166605.1	GCA_013166605.1	ASM1316660v1	2736290	Prevotella sp. PMUR	strain=PMUR	latest	Contig	80	78	97.50	2.50
+GCA_013333285.2	GCA_013333285.2	ASM1333328v2	59823	Prevotella sp.	NA	latest	Contig	78	78	97.50	0.00
+GCA_013333935.1	GCA_013333935.1	ASM1333393v1	59823	Prevotella sp.	NA	latest	Contig	79	79	98.75	0.00
+GCA_900079775.1	GCA_900079775.1	PRJEB13540	1776379	Prevotella lascolaii	strain=khD1	latest	Scaffold	80	80	100.00	0.00
+GCA_900100635.1	GCA_900100635.1	IMG-taxon 2623620508 annotated assembly	645274	Prevotella sp. BP1-148	strain=BP1-148	latest	Scaffold	80	80	100.00	0.00
+GCA_900107705.1	GCA_900107705.1	IMG-taxon 2623620552 annotated assembly	1761888	Prevotella sp. tc2-28	strain=TC2-28	latest	Contig	79	78	97.50	1.25
+GCA_900107775.1	GCA_900107775.1	IMG-taxon 2654588193 annotated assembly	839	Prevotella ruminicola	strain=D31d	latest	Scaffold	80	80	100.00	0.00
+GCA_900109055.1	GCA_900109055.1	IMG-taxon 2606217765 annotated assembly	1761885	Prevotella sp. khp7	strain=KHP7	latest	Scaffold	80	79	98.75	1.25
+GCA_900110085.1	GCA_900110085.1	IMG-taxon 2623620457 annotated assembly	1761887	Prevotella sp. ne3005	strain=NE3005	latest	Scaffold	80	80	100.00	0.00
+GCA_900110895.1	GCA_900110895.1	IMG-taxon 2623621022 annotated assembly	81582	Prevotella aff. ruminicola Tc2-24	strain=TC2-24	latest	Scaffold	80	80	100.00	0.00
+GCA_900113305.1	GCA_900113305.1	IMG-taxon 2651870360 annotated assembly	1855325	Prevotella sp. KH2C16	strain=KH2C16	latest	Scaffold	80	80	100.00	0.00
+GCA_900115435.1	GCA_900115435.1	IMG-taxon 2623620458 annotated assembly	1761889	Prevotella sp. tf2-5	strain=TF2-5	latest	Scaffold	80	79	98.75	1.25
+GCA_900119285.1	GCA_900119285.1	IMG-taxon 2593339271 annotated assembly	1520830	Prevotellaceae bacterium HUN156	strain=HUN156	latest	Scaffold	80	80	100.00	0.00
+GCA_900142525.1	GCA_900142525.1	IMG-taxon 2654588175 annotated assembly	839	Prevotella ruminicola	strain=KHT3	latest	Scaffold	80	80	100.00	0.00
+GCA_900155655.1	GCA_900155655.1	Prevotella ihuae	1917878	Prevotella ihumii	strain=Marseille-P3385	latest	Scaffold	80	80	100.00	0.00
+GCA_900187995.1	GCA_900187995.1	IMG-taxon 2724679806 annotated assembly	1177574	Prevotella jejuni	strain=DSM 26989	latest	Scaffold	80	80	100.00	0.00
+GCA_900199555.1	GCA_900199555.1	IMG-taxon 2623620474 annotated assembly	1945887	Prevotellaceae bacterium MN60	strain=MN60	latest	Scaffold	80	80	100.00	0.00
+GCA_900199655.1	GCA_900199655.1	IMG-taxon 2623620487 annotated assembly	1945886	Prevotellaceae bacterium KH2P17	strain=KH2P17	latest	Scaffold	80	80	100.00	0.00
+GCA_900290275.1	GCA_900290275.1	PRJEB24605	2079531	Prevotella sp. Marseille-P4119	strain=Marseille-P4119	latest	Scaffold	80	80	100.00	0.00
+GCA_900313235.1	GCA_900313235.1	Rumen uncultured genome RUG785	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	75	71	88.75	5.00
+GCA_900313615.1	GCA_900313615.1	Rumen uncultured genome RUG812	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	61	61	76.25	0.00
+GCA_900313805.1	GCA_900313805.1	Rumen uncultured genome RUG839	159272	uncultured Prevotella sp.	NA	latest	Contig	75	75	93.75	0.00
+GCA_900314195.1	GCA_900314195.1	Rumen uncultured genome hRUG878	159272	uncultured Prevotella sp.	NA	latest	Contig	69	69	86.25	0.00
+GCA_900314365.1	GCA_900314365.1	Rumen uncultured genome hRUG908	159272	uncultured Prevotella sp.	NA	latest	Contig	71	68	85.00	3.75
+GCA_900314455.1	GCA_900314455.1	Rumen uncultured genome hRUG905	159272	uncultured Prevotella sp.	NA	latest	Contig	80	80	100.00	0.00
+GCA_900314655.1	GCA_900314655.1	Rumen uncultured genome RUG030	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	80	79	98.75	1.25
+GCA_900314715.1	GCA_900314715.1	Rumen uncultured genome RUG036	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	80	100.00	0.00
+GCA_900314755.1	GCA_900314755.1	Rumen uncultured genome RUG037	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	80	100.00	0.00
+GCA_900314915.1	GCA_900314915.1	Rumen uncultured genome RUG046	159272	uncultured Prevotella sp.	NA	latest	Contig	79	78	97.50	1.25
+GCA_900314935.1	GCA_900314935.1	Rumen uncultured genome RUG047	159272	uncultured Prevotella sp.	NA	latest	Scaffold	80	79	98.75	1.25
+GCA_900314945.1	GCA_900314945.1	Rumen uncultured genome RUG056	159272	uncultured Prevotella sp.	NA	latest	Scaffold	80	80	100.00	0.00
+GCA_900314985.1	GCA_900314985.1	Rumen uncultured genome RUG062	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	79	78	97.50	1.25
+GCA_900314995.1	GCA_900314995.1	Rumen uncultured genome RUG063	159272	uncultured Prevotella sp.	NA	latest	Contig	80	80	100.00	0.00
+GCA_900315035.1	GCA_900315035.1	Rumen uncultured genome RUG069	159272	uncultured Prevotella sp.	NA	latest	Scaffold	79	79	98.75	0.00
+GCA_900315075.1	GCA_900315075.1	Rumen uncultured genome RUG071	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	76	95.00	6.25
+GCA_900315095.1	GCA_900315095.1	Rumen uncultured genome RUG064	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	79	98.75	1.25
+GCA_900315105.1	GCA_900315105.1	Rumen uncultured genome RUG070	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	78	97.50	3.75
+GCA_900315455.1	GCA_900315455.1	Rumen uncultured genome RUG003	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	74	92.50	7.50
+GCA_900315525.1	GCA_900315525.1	Rumen uncultured genome RUG108	159272	uncultured Prevotella sp.	NA	latest	Scaffold	79	79	98.75	0.00
+GCA_900315545.1	GCA_900315545.1	Rumen uncultured genome RUG106	159272	uncultured Prevotella sp.	NA	latest	Scaffold	78	78	97.50	0.00
+GCA_900315565.1	GCA_900315565.1	Rumen uncultured genome RUG107	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	80	100.00	0.00
+GCA_900315635.1	GCA_900315635.1	Rumen uncultured genome RUG101	159272	uncultured Prevotella sp.	NA	latest	Scaffold	80	80	100.00	0.00
+GCA_900315695.1	GCA_900315695.1	Rumen uncultured genome RUG116	159272	uncultured Prevotella sp.	NA	latest	Scaffold	78	78	97.50	0.00
+GCA_900315745.1	GCA_900315745.1	Rumen uncultured genome RUG112	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	79	78	97.50	1.25
+GCA_900315765.1	GCA_900315765.1	Rumen uncultured genome RUG126	159272	uncultured Prevotella sp.	NA	latest	Scaffold	79	77	96.25	3.75
+GCA_900315775.1	GCA_900315775.1	Rumen uncultured genome RUG124	159272	uncultured Prevotella sp.	NA	latest	Contig	79	79	98.75	0.00
+GCA_900315835.1	GCA_900315835.1	Rumen uncultured genome RUG137	159272	uncultured Prevotella sp.	NA	latest	Scaffold	80	80	100.00	0.00
+GCA_900315955.1	GCA_900315955.1	Rumen uncultured genome RUG136	159272	uncultured Prevotella sp.	NA	latest	Scaffold	80	79	98.75	1.25
+GCA_900316015.1	GCA_900316015.1	Rumen uncultured genome RUG143	159272	uncultured Prevotella sp.	NA	latest	Scaffold	73	73	91.25	0.00
+GCA_900316265.1	GCA_900316265.1	Rumen uncultured genome RUG172	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	77	77	96.25	0.00
+GCA_900316285.1	GCA_900316285.1	Rumen uncultured genome RUG178	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	79	98.75	1.25
+GCA_900316295.1	GCA_900316295.1	Rumen uncultured genome RUG176	159272	uncultured Prevotella sp.	NA	latest	Scaffold	80	80	100.00	0.00
+GCA_900316445.1	GCA_900316445.1	Rumen uncultured genome RUG195	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	78	78	97.50	0.00
+GCA_900316475.1	GCA_900316475.1	Rumen uncultured genome RUG200	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	77	77	96.25	0.00
+GCA_900316565.1	GCA_900316565.1	Rumen uncultured genome RUG212	159272	uncultured Prevotella sp.	NA	latest	Scaffold	79	78	97.50	1.25
+GCA_900316645.1	GCA_900316645.1	Rumen uncultured genome RUG209	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	79	78	97.50	1.25
+GCA_900316685.1	GCA_900316685.1	Rumen uncultured genome RUG216	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	79	79	98.75	0.00
+GCA_900316985.1	GCA_900316985.1	Rumen uncultured genome RUG249	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	78	72	90.00	7.50
+GCA_900317305.1	GCA_900317305.1	Rumen uncultured genome RUG280	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	79	78	97.50	1.25
+GCA_900317405.1	GCA_900317405.1	Rumen uncultured genome RUG295	159272	uncultured Prevotella sp.	NA	latest	Scaffold	78	76	95.00	2.50
+GCA_900317545.1	GCA_900317545.1	Rumen uncultured genome RUG301	159272	uncultured Prevotella sp.	NA	latest	Contig	79	78	97.50	1.25
+GCA_900317685.1	GCA_900317685.1	Rumen uncultured genome RUG318	159272	uncultured Prevotella sp.	NA	latest	Contig	80	80	100.00	0.00
+GCA_900318395.1	GCA_900318395.1	Rumen uncultured genome RUG383	159272	uncultured Prevotella sp.	NA	latest	Scaffold	73	72	90.00	1.25
+GCA_900318555.1	GCA_900318555.1	Rumen uncultured genome RUG405	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	79	79	98.75	0.00
+GCA_900318585.1	GCA_900318585.1	Rumen uncultured genome RUG403	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	78	76	95.00	2.50
+GCA_900318625.1	GCA_900318625.1	Rumen uncultured genome RUG413	159272	uncultured Prevotella sp.	NA	latest	Scaffold	75	75	93.75	0.00
+GCA_900318685.1	GCA_900318685.1	Rumen uncultured genome RUG424	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	78	78	97.50	0.00
+GCA_900318795.1	GCA_900318795.1	Rumen uncultured genome RUG431	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	77	76	95.00	1.25
+GCA_900318815.1	GCA_900318815.1	Rumen uncultured genome RUG414	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	78	75	93.75	3.75
+GCA_900318855.1	GCA_900318855.1	Rumen uncultured genome RUG430	159272	uncultured Prevotella sp.	NA	latest	Contig	78	77	96.25	1.25
+GCA_900318885.1	GCA_900318885.1	Rumen uncultured genome RUG443	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	77	96.25	5.00
+GCA_900318915.1	GCA_900318915.1	Rumen uncultured genome RUG446	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	72	72	90.00	0.00
+GCA_900319305.1	GCA_900319305.1	Rumen uncultured genome RUG473	159272	uncultured Prevotella sp.	NA	latest	Scaffold	73	70	87.50	3.75
+GCA_900319715.1	GCA_900319715.1	Rumen uncultured genome RUG515	159272	uncultured Prevotella sp.	NA	latest	Scaffold	73	73	91.25	0.00
+GCA_900319895.1	GCA_900319895.1	Rumen uncultured genome RUG536	159272	uncultured Prevotella sp.	NA	latest	Contig	69	69	86.25	0.00
+GCA_900319905.1	GCA_900319905.1	Rumen uncultured genome RUG541	159272	uncultured Prevotella sp.	NA	latest	Scaffold	80	79	98.75	1.25
+GCA_900320045.1	GCA_900320045.1	Rumen uncultured genome RUG546	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	74	74	92.50	0.00
+GCA_900320255.1	GCA_900320255.1	Rumen uncultured genome RUG571	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	74	74	92.50	0.00
+GCA_900320445.1	GCA_900320445.1	Rumen uncultured genome RUG599	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	71	69	86.25	2.50
+GCA_900320585.1	GCA_900320585.1	Rumen uncultured genome RUG602	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	73	71	88.75	2.50
+GCA_900320845.1	GCA_900320845.1	Rumen uncultured genome RUG624	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	77	76	95.00	1.25
+GCA_900320905.1	GCA_900320905.1	Rumen uncultured genome RUG647	159272	uncultured Prevotella sp.	NA	latest	Scaffold	73	73	91.25	0.00
+GCA_900321425.1	GCA_900321425.1	Rumen uncultured genome RUG693	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	66	62	77.50	5.00
+GCA_900321965.1	GCA_900321965.1	Rumen uncultured genome RUG742	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	62	61	76.25	1.25
+GCA_900322035.1	GCA_900322035.1	Rumen uncultured genome RUG753	159272	uncultured Prevotella sp.	NA	latest	Scaffold	76	74	92.50	2.50
+GCA_900322095.1	GCA_900322095.1	Rumen uncultured genome RUG759	159272	uncultured Prevotella sp.	NA	latest	Scaffold	78	73	91.25	6.25
+GCA_900322175.1	GCA_900322175.1	Rumen uncultured genome RUG765	159272	uncultured Prevotella sp.	NA	latest	Contig	72	68	85.00	5.00
+GCA_900540375.1	GCA_900540375.1	UMGS239	159272	uncultured Prevotella sp.	NA	latest	Contig	80	80	100.00	0.00
+GCA_900540415.1	GCA_900540415.1	UMGS244	159272	uncultured Prevotella sp.	NA	latest	Contig	79	79	98.75	0.00
+GCA_900543585.1	GCA_900543585.1	UMGS580	159272	uncultured Prevotella sp.	NA	latest	Contig	78	77	96.25	1.25
+GCA_900543975.1	GCA_900543975.1	UMGS626	159272	uncultured Prevotella sp.	NA	latest	Contig	76	76	95.00	0.00
+GCA_900544495.1	GCA_900544495.1	UMGS678	159272	uncultured Prevotella sp.	NA	latest	Contig	76	76	95.00	0.00
+GCA_900544825.1	GCA_900544825.1	UMGS712	159272	uncultured Prevotella sp.	NA	latest	Contig	80	80	100.00	0.00
+GCA_900545525.1	GCA_900545525.1	UMGS796	159272	uncultured Prevotella sp.	NA	latest	Contig	75	75	93.75	0.00
+GCA_900546345.1	GCA_900546345.1	UMGS868	159272	uncultured Prevotella sp.	NA	latest	Contig	80	80	100.00	0.00
+GCA_900546575.1	GCA_900546575.1	UMGS899	159272	uncultured Prevotella sp.	NA	latest	Contig	79	79	98.75	0.00
+GCA_900547005.1	GCA_900547005.1	UMGS937	159272	uncultured Prevotella sp.	NA	latest	Contig	70	70	87.50	0.00
+GCA_900547085.1	GCA_900547085.1	UMGS950	159272	uncultured Prevotella sp.	NA	latest	Contig	77	77	96.25	0.00
+GCA_900548195.1	GCA_900548195.1	UMGS1063	159272	uncultured Prevotella sp.	NA	latest	Contig	67	66	82.50	1.25
+GCA_900548535.1	GCA_900548535.1	UMGS1103	159272	uncultured Prevotella sp.	NA	latest	Contig	77	77	96.25	0.00
+GCA_900548585.1	GCA_900548585.1	UMGS1105	159272	uncultured Prevotella sp.	NA	latest	Contig	76	76	95.00	0.00
+GCA_900548745.1	GCA_900548745.1	UMGS1118	159272	uncultured Prevotella sp.	NA	latest	Contig	74	74	92.50	0.00
+GCA_900549175.1	GCA_900549175.1	UMGS1164	159272	uncultured Prevotella sp.	NA	latest	Contig	80	78	97.50	2.50
+GCA_900550035.1	GCA_900550035.1	UMGS1250	159272	uncultured Prevotella sp.	NA	latest	Contig	80	78	97.50	2.50
+GCA_900550365.1	GCA_900550365.1	UMGS1285	159272	uncultured Prevotella sp.	NA	latest	Contig	76	76	95.00	0.00
+GCA_900551055.1	GCA_900551055.1	UMGS1360	159272	uncultured Prevotella sp.	NA	latest	Contig	76	76	95.00	0.00
+GCA_900551275.1	GCA_900551275.1	UMGS1390	159272	uncultured Prevotella sp.	NA	latest	Contig	75	74	92.50	1.25
+GCA_900551985.1	GCA_900551985.1	UMGS1464	159272	uncultured Prevotella sp.	NA	latest	Contig	79	78	97.50	1.25
+GCA_900552515.1	GCA_900552515.1	UMGS1520	159272	uncultured Prevotella sp.	NA	latest	Contig	75	75	93.75	0.00
+GCA_900552675.1	GCA_900552675.1	UMGS1526	159272	uncultured Prevotella sp.	NA	latest	Contig	72	72	90.00	0.00
+GCA_900552965.1	GCA_900552965.1	UMGS1561	159272	uncultured Prevotella sp.	NA	latest	Contig	61	61	76.25	0.00
+GCA_900553155.1	GCA_900553155.1	UMGS1584	159272	uncultured Prevotella sp.	NA	latest	Contig	74	74	92.50	0.00
+GCA_900553465.1	GCA_900553465.1	UMGS1624	159272	uncultured Prevotella sp.	NA	latest	Contig	71	71	88.75	0.00
+GCA_900553595.1	GCA_900553595.1	UMGS1635	159272	uncultured Prevotella sp.	NA	latest	Contig	70	69	86.25	1.25
+GCA_900553965.1	GCA_900553965.1	UMGS1674	159272	uncultured Prevotella sp.	NA	latest	Contig	70	68	85.00	2.50
+GCA_900554045.1	GCA_900554045.1	UMGS1684	159272	uncultured Prevotella sp.	NA	latest	Contig	74	74	92.50	0.00
+GCA_900554545.1	GCA_900554545.1	UMGS1733	159272	uncultured Prevotella sp.	NA	latest	Contig	76	76	95.00	0.00
+GCA_900554695.1	GCA_900554695.1	UMGS1741	159272	uncultured Prevotella sp.	NA	latest	Contig	64	64	80.00	0.00
+GCA_900554835.1	GCA_900554835.1	UMGS1762	159272	uncultured Prevotella sp.	NA	latest	Contig	76	74	92.50	2.50
+GCA_900555035.1	GCA_900555035.1	UMGS1787	159272	uncultured Prevotella sp.	NA	latest	Contig	63	63	78.75	0.00
+GCA_900556275.1	GCA_900556275.1	UMGS1918	159272	uncultured Prevotella sp.	NA	latest	Contig	70	69	86.25	1.25
+GCA_900556395.1	GCA_900556395.1	UMGS1929	159272	uncultured Prevotella sp.	NA	latest	Contig	70	67	83.75	3.75
+GCA_900556795.1	GCA_900556795.1	UMGS1972	159272	uncultured Prevotella sp.	NA	latest	Contig	59	59	73.75	0.00
+GCA_900556825.1	GCA_900556825.1	UMGS1977	159272	uncultured Prevotella sp.	NA	latest	Contig	64	62	77.50	2.50
+GCA_900557035.1	GCA_900557035.1	UMGS1996	159272	uncultured Prevotella sp.	NA	latest	Contig	69	69	86.25	0.00
+GCA_900557405.1	GCA_900557405.1	UMGS2034	159272	uncultured Prevotella sp.	NA	latest	Contig	63	63	78.75	0.00
+GCA_900637655.1	GCA_900637655.1	52295_B01	28135	Prevotella oris	strain=NCTC13071	latest	Complete Genome	80	80	100.00	0.00
+GCA_900762125.1	GCA_900762125.1	SRS1170749_2	159272	uncultured Prevotella sp.	NA	latest	Contig	74	73	91.25	1.25
+GCA_900765465.1	GCA_900765465.1	SRS294916_12	159272	uncultured Prevotella sp.	NA	latest	Contig	58	58	72.50	0.00
+GCA_900767615.1	GCA_900767615.1	SRS475997_20	159272	uncultured Prevotella sp.	NA	latest	Contig	77	76	95.00	1.25
+GCA_900768785.1	GCA_900768785.1	SRS476152_97	159272	uncultured Prevotella sp.	NA	latest	Contig	76	68	85.00	11.25
+GCA_900769055.1	GCA_900769055.1	SRS476193_33	159272	uncultured Prevotella sp.	NA	latest	Contig	67	66	82.50	1.25
+GCA_900769275.1	GCA_900769275.1	SRS476193_3	159272	uncultured Prevotella sp.	NA	latest	Contig	62	62	77.50	0.00
+GCA_900770025.1	GCA_900770025.1	SRS476289_59	159272	uncultured Prevotella sp.	NA	latest	Contig	70	70	87.50	0.00
+GCA_900770395.1	GCA_900770395.1	SRS476306_34	159272	uncultured Prevotella sp.	NA	latest	Contig	77	77	96.25	0.00
+GCA_900770515.1	GCA_900770515.1	SRS476326_96	159272	uncultured Prevotella sp.	NA	latest	Contig	47	47	58.75	0.00
+GCA_900770845.1	GCA_900770845.1	SRS476348_84	159272	uncultured Prevotella sp.	NA	latest	Contig	77	75	93.75	2.50
+GCA_900771975.1	GCA_900771975.1	SRS820612_48	159272	uncultured Prevotella sp.	NA	latest	Contig	80	80	100.00	0.00
+GCA_900772835.1	GCA_900772835.1	SRS883029_73	159272	uncultured Prevotella sp.	NA	latest	Contig	70	67	83.75	3.75
+GCA_902167755.1	GCA_902167755.1	NZ_Prevotella_copri_PS131S11_mod	537011	Prevotella copri DSM 18205	NA	latest	Contig	80	80	100.00	0.00
+GCA_902760315.1	GCA_902760315.1	Rumen uncultured genome RUG10554	194843	uncultured Bacteroidales bacterium	NA	latest	Scaffold	77	77	96.25	0.00
+GCA_902760345.1	GCA_902760345.1	Rumen uncultured genome RUG10553	194843	uncultured Bacteroidales bacterium	NA	latest	Scaffold	80	80	100.00	0.00
+GCA_902761605.1	GCA_902761605.1	Rumen uncultured genome RUG10679	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	74	74	92.50	0.00
+GCA_902761905.1	GCA_902761905.1	Rumen uncultured genome RUG10713	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	78	78	97.50	0.00
+GCA_902762325.1	GCA_902762325.1	Rumen uncultured genome RUG10753	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	73	73	91.25	0.00
+GCA_902762565.1	GCA_902762565.1	Rumen uncultured genome RUG10775	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	79	98.75	1.25
+GCA_902763615.1	GCA_902763615.1	Rumen uncultured genome RUG10880	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	78	97.50	2.50
+GCA_902764705.1	GCA_902764705.1	Rumen uncultured genome RUG10994	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	78	75	93.75	3.75
+GCA_902765585.1	GCA_902765585.1	Rumen uncultured genome RUG11071	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	77	76	95.00	1.25
+GCA_902766505.1	GCA_902766505.1	Rumen uncultured genome RUG11177	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	73	72	90.00	1.25
+GCA_902767045.1	GCA_902767045.1	Rumen uncultured genome RUG11225	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	76	76	95.00	0.00
+GCA_902767775.1	GCA_902767775.1	Rumen uncultured genome RUG11288	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	78	76	95.00	2.50
+GCA_902768105.1	GCA_902768105.1	Rumen uncultured genome RUG11337	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	78	78	97.50	0.00
+GCA_902768785.1	GCA_902768785.1	Rumen uncultured genome RUG11392	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	79	77	96.25	2.50
+GCA_902769705.1	GCA_902769705.1	Rumen uncultured genome RUG11493	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	79	98.75	1.25
+GCA_902769805.1	GCA_902769805.1	Rumen uncultured genome RUG11506	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	77	74	92.50	3.75
+GCA_902770195.1	GCA_902770195.1	Rumen uncultured genome RUG11543	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	78	97.50	2.50
+GCA_902770635.1	GCA_902770635.1	Rumen uncultured genome RUG11590	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	80	100.00	0.00
+GCA_902770845.1	GCA_902770845.1	Rumen uncultured genome RUG11619	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	79	98.75	1.25
+GCA_902771155.1	GCA_902771155.1	Rumen uncultured genome RUG11642	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	74	71	88.75	3.75
+GCA_902771445.1	GCA_902771445.1	Rumen uncultured genome RUG11679	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	77	75	93.75	2.50
+GCA_902771785.1	GCA_902771785.1	Rumen uncultured genome RUG11701	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	78	78	97.50	0.00
+GCA_902772585.1	GCA_902772585.1	Rumen uncultured genome RUG11782	194843	uncultured Bacteroidales bacterium	NA	latest	Scaffold	78	78	97.50	0.00
+GCA_902774795.1	GCA_902774795.1	Rumen uncultured genome RUG12014	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	65	64	80.00	1.25
+GCA_902774815.1	GCA_902774815.1	Rumen uncultured genome RUG12005	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	77	96.25	3.75
+GCA_902774925.1	GCA_902774925.1	Rumen uncultured genome RUG12019	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	80	79	98.75	1.25
+GCA_902775075.1	GCA_902775075.1	Rumen uncultured genome RUG12031	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	63	61	76.25	5.00
+GCA_902775475.1	GCA_902775475.1	Rumen uncultured genome RUG12065	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	79	79	98.75	0.00
+GCA_902775605.1	GCA_902775605.1	Rumen uncultured genome RUG12087	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	70	70	87.50	0.00
+GCA_902775975.1	GCA_902775975.1	Rumen uncultured genome RUG12118	194843	uncultured Bacteroidales bacterium	NA	latest	Contig	78	76	95.00	2.50
+GCA_902776195.1	GCA_902776195.1	Rumen uncultured genome RUG12152	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	80	80	100.00	0.00
+GCA_902776475.1	GCA_902776475.1	Rumen uncultured genome RUG12178	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	77	77	96.25	0.00
+GCA_902776545.1	GCA_902776545.1	Rumen uncultured genome RUG12181	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	79	74	92.50	7.50
+GCA_902776665.1	GCA_902776665.1	Rumen uncultured genome RUG12193	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	77	77	96.25	0.00
+GCA_902776685.1	GCA_902776685.1	Rumen uncultured genome RUG12198	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	76	73	91.25	3.75
+GCA_902776935.1	GCA_902776935.1	Rumen uncultured genome RUG12212	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	66	66	82.50	0.00
+GCA_902778255.1	GCA_902778255.1	Rumen uncultured genome RUG12354	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	78	97.50	2.50
+GCA_902778265.1	GCA_902778265.1	Rumen uncultured genome RUG12352	194843	uncultured Bacteroidales bacterium	NA	latest	Scaffold	69	67	83.75	3.75
+GCA_902778535.1	GCA_902778535.1	Rumen uncultured genome RUG12386	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	79	98.75	1.25
+GCA_902779455.1	GCA_902779455.1	Rumen uncultured genome RUG12472	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	79	78	97.50	1.25
+GCA_902779745.1	GCA_902779745.1	Rumen uncultured genome RUG12503	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	72	71	88.75	1.25
+GCA_902780025.1	GCA_902780025.1	Rumen uncultured genome RUG12526	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	73	72	90.00	1.25
+GCA_902780635.1	GCA_902780635.1	Rumen uncultured genome RUG12596	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	76	72	90.00	5.00
+GCA_902781315.1	GCA_902781315.1	Rumen uncultured genome RUG12665	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	78	77	96.25	1.25
+GCA_902782305.1	GCA_902782305.1	Rumen uncultured genome RUG12758	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	73	73	91.25	0.00
+GCA_902783165.1	GCA_902783165.1	Rumen uncultured genome RUG12836	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	79	78	97.50	1.25
+GCA_902783625.1	GCA_902783625.1	Rumen uncultured genome RUG12886	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	74	73	91.25	1.25
+GCA_902784065.1	GCA_902784065.1	Rumen uncultured genome RUG12938	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	73	58	72.50	20.00
+GCA_902784565.1	GCA_902784565.1	Rumen uncultured genome RUG12981	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	74	72	90.00	3.75
+GCA_902784615.1	GCA_902784615.1	Rumen uncultured genome RUG12989	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	75	71	88.75	6.25
+GCA_902784755.1	GCA_902784755.1	Rumen uncultured genome RUG12994	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	77	77	96.25	0.00
+GCA_902785695.1	GCA_902785695.1	Rumen uncultured genome RUG13095	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	56	53	66.25	3.75
+GCA_902785945.1	GCA_902785945.1	Rumen uncultured genome RUG13113	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	77	77	96.25	0.00
+GCA_902786665.1	GCA_902786665.1	Rumen uncultured genome RUG13201	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	77	96.25	3.75
+GCA_902788605.1	GCA_902788605.1	Rumen uncultured genome RUG13388	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	80	100.00	0.00
+GCA_902789415.1	GCA_902789415.1	Rumen uncultured genome RUG13469	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	79	78	97.50	1.25
+GCA_902790625.1	GCA_902790625.1	Rumen uncultured genome RUG13587	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	80	80	100.00	0.00
+GCA_902792635.1	GCA_902792635.1	Rumen uncultured genome RUG13783	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	79	79	98.75	0.00
+GCA_902792685.1	GCA_902792685.1	Rumen uncultured genome RUG13792	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	61	60	75.00	1.25
+GCA_902792855.1	GCA_902792855.1	Rumen uncultured genome RUG13814	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	78	78	97.50	0.00
+GCA_902794405.1	GCA_902794405.1	Rumen uncultured genome RUG13967	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	79	78	97.50	1.25
+GCA_902795605.1	GCA_902795605.1	Rumen uncultured genome RUG14088	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	77	76	95.00	1.25
+GCA_902797505.1	GCA_902797505.1	Rumen uncultured genome RUG14277	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	72	72	90.00	0.00
+GCA_902798285.1	GCA_902798285.1	Rumen uncultured genome RUG14357	159272	uncultured Prevotella sp.	NA	latest	Scaffold	72	71	88.75	1.25
+GCA_902798425.1	GCA_902798425.1	Rumen uncultured genome RUG14378	194843	uncultured Bacteroidales bacterium	NA	latest	Scaffold	79	79	98.75	0.00
+GCA_902798615.1	GCA_902798615.1	Rumen uncultured genome RUG14400	194843	uncultured Bacteroidales bacterium	NA	latest	Scaffold	76	76	95.00	0.00
+GCA_902799355.1	GCA_902799355.1	Rumen uncultured genome RUG14466	194843	uncultured Bacteroidales bacterium	NA	latest	Scaffold	77	77	96.25	0.00
+GCA_902799455.1	GCA_902799455.1	Rumen uncultured genome RUG14468	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	74	74	92.50	0.00
+GCA_902799655.1	GCA_902799655.1	Rumen uncultured genome RUG14488	194843	uncultured Bacteroidales bacterium	NA	latest	Scaffold	78	75	93.75	3.75
+GCA_902799765.1	GCA_902799765.1	Rumen uncultured genome RUG14503	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	76	75	93.75	1.25
+GCA_902799905.1	GCA_902799905.1	Rumen uncultured genome RUG14519	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	79	78	97.50	1.25
+GCA_902799975.1	GCA_902799975.1	Rumen uncultured genome RUG14525	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	77	74	92.50	3.75
+GCA_902800185.1	GCA_902800185.1	Rumen uncultured genome RUG14547	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	73	71	88.75	2.50
+GCA_902800245.1	GCA_902800245.1	Rumen uncultured genome RUG14561	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	75	73	91.25	2.50
+GCA_902800365.1	GCA_902800365.1	Rumen uncultured genome RUG14568	159272	uncultured Prevotella sp.	NA	latest	Scaffold	77	76	95.00	1.25
+GCA_902800435.1	GCA_902800435.1	Rumen uncultured genome RUG14572	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	69	66	82.50	3.75
+GCA_902800495.1	GCA_902800495.1	Rumen uncultured genome RUG14573	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	73	70	87.50	3.75
+GCA_902800585.1	GCA_902800585.1	Rumen uncultured genome RUG14585	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	80	100.00	0.00
+GCA_902800595.1	GCA_902800595.1	Rumen uncultured genome RUG14586	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	68	68	85.00	0.00
+GCA_902800925.1	GCA_902800925.1	Rumen uncultured genome RUG14617	194843	uncultured Bacteroidales bacterium	NA	latest	Scaffold	79	78	97.50	1.25
+GCA_902801155.1	GCA_902801155.1	Rumen uncultured genome RUG14644	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	60	60	75.00	0.00
+GCA_902801375.1	GCA_902801375.1	Rumen uncultured genome RUG14668	370804	uncultured Prevotellaceae bacterium	NA	latest	Scaffold	80	80	100.00	0.00
+GCA_902801425.1	GCA_902801425.1	Rumen uncultured genome RUG14682	194843	uncultured Bacteroidales bacterium	NA	latest	Scaffold	74	72	90.00	3.75
+GCA_902803455.1	GCA_902803455.1	Rumen uncultured genome RUG14878	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	73	71	88.75	2.50
+GCA_902803475.1	GCA_902803475.1	Rumen uncultured genome RUG14873	370804	uncultured Prevotellaceae bacterium	NA	latest	Contig	73	73	91.25	0.00

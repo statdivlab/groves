@@ -1,0 +1,202 @@
+---
+title: "Introduction to groves: Prevotella analysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to groves: Prevotella analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+`groves` is a package for visualizing a set of estimated gene trees and phylogenomic trees. This vignette will lead you through creating a summary visualization of a set of trees, and will demonstrate other functionality in `groves`. Knitting this vignette may take a few minutes. 
+
+In this vignette, we will investigate $63$ estimated gene trees and $2$ estimated phylogenomic trees for a set of $73$ Prevotella genomes. This dataset was generated using the Genome Taxonomy Database (GTDB), release 202 (Parks et al. 2018) (Parks et al. 2020). More details about this data can be found in [add citation to pre-print!].
+
+We will start by loading the packages that we'll use in this vignette. 
+
+```{r setup, message = FALSE}
+# install.packages("ape")
+library(ape)
+# install.packages("tidyverse")
+library(tidyverse)
+# if (!require("BiocManager", quietly = TRUE))
+#  install.packages("BiocManager")
+# BiocManager::install("ggtree")
+library(ggtree)
+# if (!require("remotes", quietly = TRUE))
+#   install.packages("remotes")
+# remotes::install_github("statdivlab/groves")
+library(groves)
+```
+
+Next, we will load a list of gene names for this analysis. All data in this analysis is saved in `groves`, so we will set a path to find these files. We can take a look at the first few gene names. 
+
+```{r}
+path <- "../inst/prevotella/"
+gene_names <- stringr::str_sub(list.files(paste0(path, "gene_trees")), 1, -5)
+head(gene_names)
+```
+
+Next, we can create our log map visualization for all the $63$ gene trees and the 
+phylogenomic tree created by concatenating alignments for all $63$ genes. To create
+this visualization, we need a list of paths to the .txt files that contain each 
+estimated tree. Once we have these, we can compute a vector in a high-dimensional
+Euclidean space to represent each tree using `compute_logmap()`. 
+
+```{r, cache = TRUE}
+# make a vector of paths to .txt files of all trees to go into the plot 
+tree_paths <- c(paste0(path, "gene_trees/", gene_names, ".txt"),
+           paste0(path, "phylogenomic_trees/concat_tree.txt"))
+# compute log map coordinates for all trees 
+lm_res <- compute_logmap(tree_paths = tree_paths,
+                         tree_names = c(gene_names, "phylogenomic"))
+```
+
+`lm_res` is a list that contains a vector for each tree and the label of the base tree. We can see that the base tree in this analysis is the `r lm_res$base_lab` tree. This means that the phylogenomic tree has the minimum mean BHV distance to all the other trees in the set. 
+
+Now, we can use `plot_logmap()` to make our two-dimensional plot. We will use the vectors from `lm_res`, specify which tree in our set is the phylogenomic tree, add a title, and tree names.
+
+```{r}
+plot_res <- plot_logmap(vectors = lm_res$vectors, phylogenomic = 64,
+                        title = "Prevotella Trees", 
+                        tree_names = c(gene_names, "phylogenomic"),
+                        phylogenomic_name = "phylogenomic")
+plot_res$plot
+```
+
+If we look at the plot, we can see most of the gene trees together in a cloud with the phylogenomic tree near the middle along with three outliers. We can check out the rest of the `plot_res` output to see what genes these outlying trees correspond to. 
+
+```{r}
+head(plot_res$pc1_info)
+head(plot_res$pc2_info)
+```
+
+From this output we can see that the two outliers in the first principal component are DMRL_synthase and GTP_cyclohydroI and the outlier in the second prinicipal component is BacA.
+
+In order to understand the effect of these outlying genes on the phylogenomic tree, we computed another phylogenomic tree that includes $63$ of the genes, ignoring these three outlying genes. We add this tree to our plot below. 
+
+```{r}
+# get the log map vector for the new phylogenomic tree
+new_vectors <- add_vector(new_tree_path = paste0(path, "phylogenomic_trees/red_concat.txt"),
+                          base_path = paste0(path, "phylogenomic_trees/concat_tree.txt"),
+                          vectors = lm_res$vectors,
+                          new_name = "reduced phylogenomic")
+# We specify that the phylogenomic tree is the 64th entry in paths, and that the 65th 
+# entry to paths is also different, and provide a name for this entry with the 'other_name' 
+# argument. We say to ignore the 65th tree in the PCA in order to add the new phylogenomic
+# tree to the previous plot instead of re-computing the first two principal components. 
+plot_res1 <- plot_logmap(vectors = new_vectors, phylogenomic = 64, other_tree = 65, 
+                         phylogenomic_name = "phylogenomic",
+                         other_name = "reduced phylogenomic", ignore_in_pca = 65,
+                         title = "Prevotella Trees", 
+                         tree_names = c(gene_names, "phylogenomic", "reduced phylogenomic"))
+plot_res1$plot
+```
+
+Here we can see that the phylogenomic tree is quite robust to removing these three trees.
+
+If we look at the gene names, we can see that $10$ of them start with "DUF", which stands for domain of unknown function and means that they represent proteins with uncharacterized functions. We can add this information to our plot. 
+
+```{r}
+DUF <- grep("DUF", gene_names)
+prot_func <- ifelse(1:nrow(new_vectors) %in% DUF, "unknown", "known")
+plot_res2 <- plot_logmap(vectors = new_vectors, phylogenomic = 64, other_tree = 65, 
+                         phylogenomic_name = "phylogenomic",
+                         other_name = "reduced phylogenomic", ignore_in_pca = 65,
+                         title = "Prevotella Trees", 
+                         tree_names = c(gene_names, "phylogenomic", "reduced phylogenomic"),
+                         group = prot_func, legend_lab = "Function")
+plot_res2$plot
+```
+
+There doesn't seem to be any clear pattern that distinguishes the genes with known and unknown function in this plot. 
+
+Next, we can look individually at the base tree (chosen to be the phylogenomic tree) and the three outlying trees to understand why they appear as outliers. 
+
+```{r}
+# plot trees 
+# phylogenomic tree 
+phylogenomic <- read.tree(paste0(path, "phylogenomic_trees/concat_tree.txt"))
+# rename labels from accession numbers to numbers 
+match_df <- data.frame(oldlab = phylogenomic$tip.label,
+                       newlab = 1:length(phylogenomic$tip.label))
+phylogenomic_num <- rename_labs(match_df, phylogenomic)
+ggtree(phylogenomic_num) + geom_tiplab(size = 2) + 
+  xlim(c(0, 1.1)) + ggtitle("Phylogenomic Tree") + 
+  theme(plot.title = element_text(hjust = 0.5))
+# max edge length for phylogenomic tree
+max(phylogenomic$edge.length)
+# BacA gene tree 
+BacA <- read.tree(paste0(path, "gene_trees/BacA.txt"))
+BacA_num <- rename_labs(match_df, BacA)
+ggtree(BacA_num) + geom_tiplab(size = 2) + 
+  xlim(c(0, 6)) + ggtitle("BacA Tree") + 
+  theme(plot.title = element_text(hjust = 0.5))
+# max edge length for BacA
+max(BacA$edge.length)
+```
+
+From these first two plots, we can see that BacA (the outlier in the second principal component) has one long branch that separates two clusters of genomes. These means that for this gene, there is more evolutionary distance between the genomes on different sides of the branch, when compared to other genes. These two clusters could be investigated more to try to understand why they might be distinct for this specific gene. 
+
+```{r}
+# DMRL_synthase
+DMRL_synthase <- read.tree(paste0(path, "gene_trees/DMRL_synthase.txt"))
+DMRL_synthase_num <- rename_labs(match_df, DMRL_synthase)
+ggtree(DMRL_synthase_num) + geom_tiplab(size = 2) + 
+  xlim(c(0, 12)) + ggtitle("DMRL_synthase Tree") + 
+  theme(plot.title = element_text(hjust = 0.5))
+# max edge length for DMRL_synthase
+max(DMRL_synthase$edge.length)
+# GTP_cyclohydroI 
+GTP_cyclohydroI <- read.tree(paste0(path, "gene_trees/GTP_cyclohydroI.txt"))
+GTP_cyclohydroI_num <- rename_labs(match_df, GTP_cyclohydroI)
+ggtree(GTP_cyclohydroI_num) + geom_tiplab(size = 2) + 
+  xlim(c(0, 5)) + ggtitle("GTP_cyclohydroI Tree") + 
+  theme(plot.title = element_text(hjust = 0.5))
+# max edge length for cyclohydroI tree
+max(GTP_cyclohydroI$edge.length)
+```
+
+For each of these trees (outliers in the first principal component) we can see that they have a long branch leading to the 51st tip. These genes could also be investigated more closely to understand if this is biological signal or a problem with the alignments for these particular genes. 
+
+Finally, we can look closer at the phylogenomic tree and plot the bootstrap support and gene tree support for each split. The bootstrap support was generated when estimating the phylogenomic tree with IQTREE (Minh et al. 2020), and gives a measure of confidence for each split in the tree. We prefer gene tree support, which is the proportion of gene trees that support each split in a phylogenomic tree. 
+
+```{r}
+# Plot bootstrap support values 
+gene_trees <- read.tree(paste0(path, "gene_trees.txt"))
+boot <- read.table(paste0(path, "phylogenomic_bootstrap_vals.txt"))
+plot_support(phylogenomic_num, unlist(boot), color_branch = TRUE, 
+             title = "Bootstrap Support", xlim_max = 1.1,
+             support_type = "boot")
+
+# Plot gene tree support values 
+support <- check_gene_support(main_tree = phylogenomic,
+                  trees = gene_trees,
+                  rooted = FALSE)
+plot_support(phylogenomic_num, support, color_branch = TRUE,
+             title = "Gene Tree Support", xlim_max = 1.1)
+```
+
+We can see that while the bootstrap support values are quite high for the majority of the splits, but the gene tree support values are higher for the splits closer to the tips and lower for splits further from the tips. This means that the most recent evolutionary relationships are agreed on by most gene trees, but not the ones deeper in the tree. 
+
+Citations: 
+
+Donovan H Parks, Maria Chuvochina, David W Waite, Christian Rinke, Adam
+  Skarshewski, Pierre-Alain Chaumeil, and Philip Hugenholtz. A standardized
+  bacterial taxonomy based on genome phylogeny substantially revises the tree
+  of life. Nature biotechnology, 36(10):996–1004, 2018.
+  
+Donovan H Parks, Maria Chuvochina, Pierre-Alain Chaumeil, Christian Rinke,
+  Aaron J Mussig, and Philip Hugenholtz. A complete domain-to-species tax-
+  onomy for bacteria and archaea. Nature biotechnology, 38(9):1079–1086, 2020.
+  
+Bui Quang Minh, Heiko A Schmidt, Olga Chernomor, Dominik Schrempf,
+  Michael D Woodhams, Arndt Von Haeseler, and Robert Lanfear. Iq-tree 2:
+  new models and efficient methods for phylogenetic inference in the genomic
+  era. Molecular biology and evolution, 37(5):1530–1534, 2020.
