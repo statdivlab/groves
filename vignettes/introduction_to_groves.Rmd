@@ -23,8 +23,6 @@ We will start by loading the packages that we'll use in this vignette.
 ```{r setup, message = FALSE}
 # install.packages("ape")
 library(ape)
-# install.packages("tidyverse")
-library(tidyverse)
 # if (!require("BiocManager", quietly = TRUE))
 #  install.packages("BiocManager")
 # BiocManager::install("ggtree")
@@ -33,6 +31,7 @@ library(ggtree)
 #   install.packages("remotes")
 # remotes::install_github("statdivlab/groves")
 library(groves)
+library(ggplot2)
 ```
 
 Next, we will load a list of gene names for this analysis. All data in this analysis is saved in `groves`, so we will set a path to find these files. We can take a look at the first few gene names. 
@@ -49,7 +48,7 @@ this visualization, we need a list of paths to the .txt files that contain each
 estimated tree. Once we have these, we can compute a vector in a high-dimensional
 Euclidean space to represent each tree using `compute_logmap()`. 
 
-```{r, cache = TRUE}
+```{r}
 # make a vector of paths to .txt files of all trees to go into the plot 
 tree_paths <- c(paste0(path, "gene_trees/", gene_names, ".txt"),
            paste0(path, "phylogenomic_trees/concat_tree.txt"))
@@ -111,7 +110,8 @@ plot_res2 <- plot_logmap(vectors = new_vectors, phylogenomic = 64, other_tree = 
                          other_name = "reduced phylogenomic", ignore_in_pca = 65,
                          title = "Prevotella Trees", 
                          tree_names = c(gene_names, "phylogenomic", "reduced phylogenomic"),
-                         group = prot_func, legend_lab = "Function")
+                         group = prot_func, legend_lab = "Function",
+                         alpha = 0.7)
 plot_res2$plot
 ```
 
