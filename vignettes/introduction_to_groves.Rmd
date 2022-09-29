@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 `groves` is a package for visualizing a set of estimated gene trees and phylogenomic trees. This vignette will lead you through creating a summary visualization of a set of trees, and will demonstrate other functionality in `groves`. Knitting this vignette may take a few minutes. 
 
-In this vignette, we will investigate $63$ estimated gene trees and $2$ estimated phylogenomic trees for a set of $73$ Prevotella genomes. This dataset was generated using the Genome Taxonomy Database (GTDB), release 202 (Parks et al. 2018) (Parks et al. 2020). More details about this data can be found in [add citation to pre-print!].
+In this vignette, we will investigate $63$ estimated gene trees and $2$ estimated phylogenomic trees for a set of $78$ Prevotella genomes. This dataset was generated using the Genome Taxonomy Database (GTDB), release 202 (Parks et al. 2018) (Parks et al. 2020). More details about this data can be found in [add citation to pre-print!].
 
 We will start by loading the packages that we'll use in this vignette. 
 
