@@ -49,7 +49,9 @@ the title.}
 \value{
 A ggtree object. Note this function will also provide a warning about rows
 containing missing values if \code{color_branch = TRUE}. These rows correspond with
-the branches that lead to tips, which all have 100% support.
+the branches that lead to tips, which all have 100% support. In the output ggree 
+object, trees will be labeled or colored by support values, and branches with support
+values equal to zero will be shown with dashed lines.
 }
 \description{
 Plot support

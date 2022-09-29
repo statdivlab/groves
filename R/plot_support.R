@@ -21,7 +21,9 @@
 #'
 #' @return A ggtree object. Note this function will also provide a warning about rows
 #' containing missing values if \code{color_branch = TRUE}. These rows correspond with
-#' the branches that lead to tips, which all have 100% support. 
+#' the branches that lead to tips, which all have 100% support. In the output ggree 
+#' object, trees will be labeled or colored by support values, and branches with support
+#' values equal to zero will be shown with dashed lines.
 #'
 #' @examples 
 #' trees <- ape::rmtree(100, 5, rooted = TRUE)
@@ -55,18 +57,21 @@ plot_support <- function(main_tree, support, support_type = "gene", lab_size = 2
   
   # plot with support as a number on each branch leading to an internal node
   if (!color_branch) {
-    plot <- tree %>% ggtree(aes(label = bootstrap)) + 
+    plot <- tree %>% ggtree(aes(label = bootstrap,
+                                linetype = (bootstrap == 0 & !is.na(bootstrap)))) + 
       geom_text(aes(color = bootstrap), vjust = -0.3, hjust = hjust, size = supp_size) +
       scale_color_gradientn(colors = RColorBrewer::brewer.pal(11, "Spectral")[c(1:4,8:11)], limits = col.range) 
   # plot with branches leading to an internal node colored based on support values 
   } else {
-    plot <- tree %>% ggtree(aes(label = bootstrap, color = bootstrap)) + 
+    plot <- tree %>% ggtree(aes(label = bootstrap, color = bootstrap,
+                                linetype = (bootstrap == 0 & !is.na(bootstrap)))) + 
       scale_color_gradientn(colors = RColorBrewer::brewer.pal(11, "Spectral")[c(1:5,7:11)], limits = col.range) 
   }
   full_plot <- plot + geom_tiplab(size = lab_size, color = "black") + 
     ggplot2::xlim(0, xlim_max) +
     labs(color = "Support",
          title = title) + 
+    guides(linetype = "none") +
     theme(legend.position = legend_pos, 
           plot.title = element_text(hjust = 0.5))
   return(full_plot)
