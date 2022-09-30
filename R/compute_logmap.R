@@ -39,11 +39,13 @@ compute_logmap <- function(tree_paths, add_tip_branches = TRUE,
     merge_txt(tree_paths, txt_path)
     # compute distances
     dists <- compute_geodesic(txt_path)
+    # compute squared distances
+    sq_dists <- dists^2
     # remove txt file with multiPhylo object
     unlink(txt_path)
     # find tree with lowest mean BHV distance from other trees
-    diag(dists) <- NA
-    base_tree_number <- which.min(rowMeans(dists, na.rm = TRUE))
+    diag(sq_dists) <- NA
+    base_tree_number <- which.min(rowMeans(sq_dists, na.rm = TRUE))
     base_lab <- tree_names[base_tree_number]
   # otherwise, make sure that base_tree is a number or a name given in base trees
   } else {
