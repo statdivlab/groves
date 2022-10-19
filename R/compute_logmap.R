@@ -41,12 +41,26 @@ compute_logmap <- function(tree_paths, add_tip_branches = TRUE,
     dists <- compute_geodesic(txt_path)
     # compute squared distances
     sq_dists <- dists^2
-    # remove txt file with multiPhylo object
-    unlink(txt_path)
     # find tree with lowest mean BHV distance from other trees
     diag(sq_dists) <- NA
-    base_tree_number <- which.min(rowMeans(sq_dists, na.rm = TRUE))
+    mean_dists <- rowMeans(sq_dists, na.rm = TRUE)
+    base_tree_number <- which.min(mean_dists)
+    # check that chosen tree is binary 
+    binary <- check_binary(tree_path = tree_paths[base_tree_number])
+    if (!binary) {
+      which_binary <- check_binary(tree_path = txt_path)
+      # if no trees are resolved, cannot run log map 
+      if (sum(which_binary) == 0) {
+        stop("No trees in the tree set are binary (they are all unresolved). Because of this, this visualization tool cannot be run on this tree set.")
+      }
+      mean_dists_binary <- mean_dists
+      mean_dists_binary[!which_binary] <- Inf
+      base_tree_number <- which.min(mean_dists_binary)
+    }
     base_lab <- tree_names[base_tree_number]
+    # remove txt file with multiPhylo object
+    unlink(txt_path)
+    
   # otherwise, make sure that base_tree is a number or a name given in base trees
   } else {
     if (is.numeric(base_lab)) {
@@ -60,7 +74,12 @@ compute_logmap <- function(tree_paths, add_tip_branches = TRUE,
       }
       base_tree_number <- which(base_lab == tree_names)
     }
+    base_binary <- check_binary(tree_path = tree_paths[base_tree_number])
+    if (!base_binary) {
+      stop("The base tree that you chose is not binary (it is unresolved). Please choose another base tree or let groves calculate a base tree for you by leaving out the base_lab argument.")
+    }
   }
+  
   # save base tree path
   base_path <- tree_paths[base_tree_number]
   
