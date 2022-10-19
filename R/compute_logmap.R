@@ -96,11 +96,7 @@ compute_logmap <- function(tree_paths, add_tip_branches = TRUE,
   # make matrix to hold logmap vector results 
   logMap_vects <- try(matrix(nrow = n, ncol = length(logMap)))
   if (inherits(logMap_vects, "try-error")) {
-    stop(paste0("The chosen base tree, ", base_lab, ", is on the boundary of tree space and the log
-                map cannot be computed using this tree. If you are manually choosing the
-                base tree, please try another one. If this base tree was chosen automatically,
-                you can try setting a base tree manually, but if you are unable to find a tree
-                that does not return this error, this method may not work for your tree set."))
+    stop(paste0("The chosen base tree, ", base_lab, ", is on the boundary of tree space and the log map cannot be computed using this tree. If you are manually choosing the base tree, please try another one. If this base tree was chosen automatically, you can try setting a base tree manually, but if you are unable to find a tree that does not return this error, this method may not work for your tree set."))
   }
   logMap_vects[1,] <- logMap
   
