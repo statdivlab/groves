@@ -13,7 +13,7 @@ Imports:
     ggplot2,
     phangorn,
     dplyr,
-    ggtree,
+    biocViews:ggtree,
     stats,
     smacof,
     stringr,
