@@ -8,12 +8,13 @@ Authors@R:
            email = "teichs@uw.edu")
 Description: Implements functions to use for phylogenetic tree visualization. 
 License: GPL-3
+biocViews:
 Imports: 
     ape,
     ggplot2,
     phangorn,
     dplyr,
-    biocViews:ggtree,
+    ggtree,
     stats,
     smacof,
     stringr,
