@@ -26,7 +26,9 @@
 #' @param x_axis Principal component number to use on the x-axis. Defaults to 1.
 #' @param y_axis Principal component number to use on the y-axis. Defaults to 2.
 #'
-#' @return A ggplot2 object.
+#' @return A ggplot2 object, a dataframe of coordinates ordered by the principal component on the 
+#' x-axis, a dataframe of coordinates ordered by the principal component on the y-axis, and a 
+#' vector giving the principal coordinates on the x and y axes.
 #' @import ggplot2
 #' 
 #' @examples 
@@ -163,5 +165,5 @@ plot_logmap <- function(vectors, phylogenomic = NULL, phylogenomic_name = NULL,
                       index = 1:nrow(df)) 
   pc_x_df <- dplyr::arrange(pc_df, dplyr::desc(abs(pc_x)))
   pc_y_df <- dplyr::arrange(pc_df, dplyr::desc(abs(pc_y)))
-  return(list(plot = full_plot, pc_x_info = pc_x_df, pc_y_info = pc_y_df))
+  return(list(plot = full_plot, pc_x_info = pc_x_df, pc_y_info = pc_y_df, axis_pcs = c(x_axis, y_axis)))
 }

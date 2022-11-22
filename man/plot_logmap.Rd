@@ -19,7 +19,9 @@ plot_logmap(
   tree_names = NULL,
   alpha = 1,
   trees_to_label = NULL,
-  use_plotly = FALSE
+  use_plotly = FALSE,
+  x_axis = 1,
+  y_axis = 2
 )
 }
 \arguments{
@@ -58,9 +60,15 @@ only labeled if \code{use_plotly} is set to \code{FALSE}.}
 
 \item{use_plotly}{If true, the output will be a plotly object, with labels
 when points are moused over, if false the output will be a ggplot object.}
+
+\item{x_axis}{Principal component number to use on the x-axis. Defaults to 1.}
+
+\item{y_axis}{Principal component number to use on the y-axis. Defaults to 2.}
 }
 \value{
-A ggplot2 object.
+A ggplot2 object, a dataframe of coordinates ordered by the principal component on the 
+x-axis, a dataframe of coordinates ordered by the principal component on the y-axis, and a 
+vector giving the principal coordinates on the x and y axes.
 }
 \description{
 Plots PCA of log map results
