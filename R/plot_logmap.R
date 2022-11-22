@@ -23,6 +23,8 @@
 #' when points are moused over, if false the output will be a ggplot object.
 #' @param trees_to_label Optional set of names in \code{tree_names} to label on plot. These are
 #' only labeled if \code{use_plotly} is set to \code{FALSE}.
+#' @param x_axis Principal component number to use on the x-axis. Defaults to 1.
+#' @param y_axis Principal component number to use on the y-axis. Defaults to 2.
 #'
 #' @return A ggplot2 object.
 #' @import ggplot2
@@ -44,25 +46,26 @@ plot_logmap <- function(vectors, phylogenomic = NULL, phylogenomic_name = NULL,
                         ignore_in_pca = NULL, title = "PCA of Trees",
                         show_legend = TRUE, legend_lab = NULL, 
                         tree_names = NULL, alpha = 1, 
-                        trees_to_label = NULL, use_plotly = FALSE) {
+                        trees_to_label = NULL, use_plotly = FALSE,
+                        x_axis = 1, y_axis = 2) {
   ### start by organizing df 
   # get first two pca coordinates
   if (is.null(ignore_in_pca)) {
-    pca <- stats::prcomp(vectors, rank. = 2)
-    df <- data.frame(PC1 = pca$x[, 1],
-                     PC2 = pca$x[, 2])
+    pca <- stats::prcomp(vectors)
+    df <- data.frame(pc_x = pca$x[, x_axis],
+                     pc_y = pca$x[, y_axis])
   } else {
-    pca <- stats::prcomp(vectors[-ignore_in_pca, ], rank. = 2)
-    pc1 <- rep(NA, nrow(vectors))
-    pc2 <- rep(NA, nrow(vectors))
-    pc1[-ignore_in_pca] <- pca$x[, 1]
-    pc2[-ignore_in_pca] <- pca$x[, 2]
+    pca <- stats::prcomp(vectors[-ignore_in_pca, ])
+    pc_x <- rep(NA, nrow(vectors))
+    pc_y <- rep(NA, nrow(vectors))
+    pc_x[-ignore_in_pca] <- pca$x[, x_axis]
+    pc_y[-ignore_in_pca] <- pca$x[, y_axis]
     centered_matrix <- t(matrix(pca$center, nrow = ncol(vectors), ncol = length(ignore_in_pca)))
     new_pcs <- (vectors[ignore_in_pca, ] - centered_matrix) %*% pca$rotation
-    pc1[ignore_in_pca] <- new_pcs[, 1]
-    pc2[ignore_in_pca] <- new_pcs[, 2]
-    df <- data.frame(PC1 = pc1,
-                     PC2 = pc2)
+    pc_x[ignore_in_pca] <- new_pcs[, x_axis]
+    pc_y[ignore_in_pca] <- new_pcs[, y_axis]
+    df <- data.frame(pc_x = pc_x,
+                     pc_y = pc_y)
   }
   
   if (is.null(tree_names)) {
@@ -85,11 +88,11 @@ plot_logmap <- function(vectors, phylogenomic = NULL, phylogenomic_name = NULL,
   if (is.null(phylogenomic) & is.null(other_tree)) {
     # No grouping variable 
     if (is.null(group)) {
-      plot <- ggplot(df, aes(x = PC1, y = PC2, label = Name)) + 
+      plot <- ggplot(df, aes(x = pc_x, y = pc_y, label = Name)) + 
         geom_point(alpha = alpha) 
       # Grouping variable 
     } else {
-      plot <- ggplot(df, aes(x = PC1, y = PC2, label = Name, color = group)) + 
+      plot <- ggplot(df, aes(x = pc_x, y = pc_y, label = Name, color = group)) + 
         geom_point(alpha = alpha) +
         labs(color = ifelse(is.null(legend_lab), "Group", legend_lab)) +
         theme(legend.position = legend_pos)
@@ -111,7 +114,7 @@ plot_logmap <- function(vectors, phylogenomic = NULL, phylogenomic_name = NULL,
     other_df <- dplyr::filter(df, tree_type != "gene tree")
     
     if (is.null(group)) {
-      plot <- ggplot(df, aes(x = PC1, y = PC2, color = tree_type, label = Name)) + 
+      plot <- ggplot(df, aes(x = pc_x, y = pc_y, color = tree_type, label = Name)) + 
         geom_point(alpha = alpha) + 
         labs(color = "Tree Type") +
         geom_point(data = other_df) +
@@ -124,7 +127,7 @@ plot_logmap <- function(vectors, phylogenomic = NULL, phylogenomic_name = NULL,
                                       latex2exp::TeX(other_name))) 
     # Grouping variable 
     } else {
-      plot <- ggplot(df, aes(x = PC1, y = PC2, label = Name, color = group,
+      plot <- ggplot(df, aes(x = pc_x, y = pc_y, label = Name, color = group,
                              shape = tree_type)) + 
         geom_point(alpha = alpha) +
         labs(color = ifelse(is.null(legend_lab), "Group", legend_lab),
@@ -154,11 +157,11 @@ plot_logmap <- function(vectors, phylogenomic = NULL, phylogenomic_name = NULL,
     }
   }
   # save dataframes for PC 1 and PC2
-  pc_df <- data.frame(pc1 = df$PC1,
-                      pc2 = df$PC2,
+  pc_df <- data.frame(pc_x = df$pc_x,
+                      pc_y = df$pc_y,
                       Name = df$Name,
                       index = 1:nrow(df)) 
-  pc1_df <- dplyr::arrange(pc_df, dplyr::desc(abs(pc1)))
-  pc2_df <- dplyr::arrange(pc_df, dplyr::desc(abs(pc2)))
-  return(list(plot = full_plot, pc1_info = pc1_df, pc2_info = pc2_df))
+  pc_x_df <- dplyr::arrange(pc_df, dplyr::desc(abs(pc_x)))
+  pc_y_df <- dplyr::arrange(pc_df, dplyr::desc(abs(pc_y)))
+  return(list(plot = full_plot, pc_x_info = pc_x_df, pc_y_info = pc_y_df))
 }
