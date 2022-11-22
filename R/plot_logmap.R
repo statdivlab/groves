@@ -143,8 +143,8 @@ plot_logmap <- function(vectors, phylogenomic = NULL, phylogenomic_name = NULL,
   }
   # add details 
   full_plot <- plot +
-    labs(x = 'Principal Component 1',
-         y = 'Principal Component 2') +
+    labs(x = paste0('Principal Component ', x_axis),
+         y = paste0('Principal Component ', y_axis)) +
     ggtitle(title) + 
     theme(plot.title = element_text(hjust = 0.5))
   # use plotly if asked for 
