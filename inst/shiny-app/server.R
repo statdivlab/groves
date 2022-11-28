@@ -1,6 +1,26 @@
 server <- function(input, output, session) {
   
-  n <- length(tree_names)
+  tree_data <- reactive({
+    req(input$trees_upload)
+    ape::read.tree(input$trees_upload$datapath)
+  })
+  
+  n_tree <- reactive({
+    req(tree_data())
+    length(tree_data())
+  })
+  
+  n <- length(tree_paths)
+  
+  observeEvent(input$consensus_yn, {
+    req(n_tree())
+    updateNumericInput(session, "consensus_num",
+                       "If yes, what is the index of the consensus tree?",
+                       value = 1, min = 1, max = n_tree())
+  })
+  
+  output$num_trees <- renderPrint(length(tree_data()))  
+  #output$num_trees <- renderPrint(input$trees_upload)  
   
   # get tree with minimum BHV distance to other trees
   txt_path <- "full_trees_file.txt"
