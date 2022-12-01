@@ -1,78 +1,193 @@
 server <- function(input, output, session) {
   
+  # get tree multiPhylo object
   tree_data <- reactive({
     req(input$trees_upload)
     ape::read.tree(input$trees_upload$datapath)
   })
   
+  # get number of trees in tree data
   n_tree <- reactive({
     req(tree_data())
     length(tree_data())
   })
   
-  n <- length(tree_paths)
-  
-  observeEvent(input$consensus_yn, {
+  # when trees are uploaded, update consensus number input 
+  observeEvent(n_tree(), {
     req(n_tree())
     updateNumericInput(session, "consensus_num",
                        "If yes, what is the index of the consensus tree?",
                        value = 1, min = 1, max = n_tree())
   })
   
-  output$num_trees <- renderPrint(length(tree_data()))  
-  #output$num_trees <- renderPrint(input$trees_upload)  
+  # if there is a consensus tree, upload base tree selection input 
+  observeEvent(input$consensus_yn, {
+    if (input$consensus_yn == "yes")
+      req(tree_names())
+      req(input$consensus_num)
+      updateRadioButtons(session, "base_tree",
+                         "Select a base tree (this may take a minute).",
+                         choices = list("minimizer of squared BHV distance to all trees" = "minimizer",
+                                        "consensus tree" = "consensus",
+                                        "other" = "other"))
+  })
   
-  # get tree with minimum BHV distance to other trees
-  txt_path <- "full_trees_file.txt"
-  merge_txt(tree_paths, txt_path)
-  dists <- compute_geodesic(txt_path)
-  unlink(txt_path)
-  sq_dists <- dists^2
-  diag(sq_dists) <- NA
-  mean_dists <- rowMeans(sq_dists, na.rm = TRUE)
-  min_tree_number <- which.min(mean_dists)
-  binary <- check_binary(tree_path = tree_paths[min_tree_number])
-  if (!binary) {
-    which_binary <- check_binary(tree_path = txt_path)
-    if (sum(which_binary) == 0) {
-      stop("No trees in the tree set are binary (they are all unresolved). Because of this, this visualization tool cannot be run on this tree set.")
+  # save tree name info 
+  tree_names <- reactive({
+    if (isTruthy(input$tree_names_upload)) {
+      req(input$tree_names_upload)
+      shinyFeedback::hideFeedback("tree_names_upload")
+      names_tmp <- read.csv(input$tree_names_upload$datapath)$x
+      shinyFeedback::feedbackWarning("tree_names_upload",
+                                     length(names_tmp) != n_tree(),
+                                     paste0("The length of your tree names is ", length(names_tmp)," and the number of trees in your multiPhylo file is ", n_tree(), "."))
+      names_tmp
+    } else if (isTruthy(input$tree_names_text)) {
+      shinyFeedback::hideFeedback("tree_names_text")
+      req(input$tree_names_text)
+      names_tmp <- trimws(unlist(strsplit(input$tree_names_text, ",")))
+      shinyFeedback::feedbackWarning("tree_names_text",
+                                     length(names_tmp) != n_tree(),
+                                     paste0("The length of your tree names is ", length(names_tmp)," and the number of trees in your multiPhylo file is ", n_tree(), "."))
+      if (length(names_tmp) == n_tree()) {
+        names_tmp
+      } 
+    } else if (isTruthy(input$tree_nums)) {
+      req(n_tree())
+      as.character(1:n_tree())
     }
-    mean_dists_binary <- mean_dists
-    mean_dists_binary[!which_binary] <- Inf
-    min_tree_number <- which.min(mean_dists_binary)
-  }
-  min_lab <- tree_names[min_tree_number]
+  })
+  
+  # update trees to plot based on tree_names 
+  observeEvent(tree_names(), {
+    updateSelectInput(session, "tree0_choice",
+                      "Choose a tree to plot",
+                      c("", tree_names()))
+    updateSelectInput(session, "tree1_choice",
+                      "Choose a tree to plot",
+                      c("", tree_names()))
+    updateSelectInput(session, "tree2_choice",
+                      "Choose a tree to plot",
+                      c("", tree_names()))
+    updateSelectInput(session, "tree3_choice",
+                      "Choose a tree to plot",
+                      c("", tree_names()))
+  })
+  
+  # save tree additional data 
+  extra_tree_data <- reactive({
+    req(input$tree_char_upload)
+    shinyFeedback::hideFeedback("tree_char_upload")
+    df <- read.csv(input$tree_char_upload$datapath)
+    shinyFeedback::feedbackWarning("tree_char_upload",
+                                   nrow(df) != n_tree(),
+                                   paste0("The length of your tree characteristics dataset is ", nrow(df)," and the number of trees in your multiPhylo file is ", n_tree(), "."))
+    df
+  })
+  
+  # update var color input 
+  observeEvent(extra_tree_data(), {
+    req(extra_tree_data())
+    updateSelectInput(session, "var_color", 
+                      "Variable to add to plot", selected = "none",
+                      choices = c("none", names(extra_tree_data())))
+  })
+  
+  # write each tree in the multiPhylo file to its own txt file and save paths 
+  tree_paths <- reactive({
+    if (!file.exists("groves_data")) {
+      dir.create("groves_data")
+    }
+    req(tree_data()) 
+    trees <- tree_data()
+    req(n_tree())
+    path <- paste0("groves_data/tree_", 1, ".txt")
+    ape::write.tree(trees[[1]], path)
+    paths <- path
+    for (i in 2:n_tree()) {
+      path <- paste0("groves_data/tree_", i, ".txt")
+      ape::write.tree(trees[[i]], path)
+      paths <- c(paths, path)
+    }
+    paths
+  })
+  
+  # get distances between trees 
+  tree_dists <- reactive({
+    req(tree_data()) 
+    tree_data_tmp <- tree_data()
+    computing <- showNotification("Computing distances between trees...", duration = NULL,
+                                  closeButton = FALSE, type = "message")
+    on.exit(removeNotification(computing), add = TRUE)
+    ape::write.tree(tree_data_tmp, "groves_data/all_trees.txt")
+    dists <- compute_geodesic("groves_data/all_trees.txt")
+  })
+    
+  min_ind <- reactive({
+    req(tree_paths())
+    tree_paths_tmp <- tree_paths()
+    req(tree_dists())
+    dists <- tree_dists()
+    sq_dists <- dists^2
+    diag(sq_dists) <- NA
+    mean_dists <- rowMeans(sq_dists, na.rm = TRUE)
+    min_tree_number <- which.min(mean_dists)
+    binary <- check_binary(tree_path = tree_paths_tmp[min_tree_number])
+    if (!binary) {
+      which_binary <- check_binary(tree_path = "groves_data/all_trees.txt")
+      if (sum(which_binary) == 0) {
+        stop("No trees in the tree set are binary (they are all unresolved). Because of this, this visualization tool cannot be run on this tree set.")
+      }
+      mean_dists_binary <- mean_dists
+      mean_dists_binary[!which_binary] <- Inf
+      min_tree_number <- which.min(mean_dists_binary)
+    }
+    min_tree_number
+  })
+  
+  min_lab <- reactive({
+    req(min_ind())
+    req(tree_names())
+    tree_names_tmp <- tree_names()
+    tree_names_tmp[min_ind()]
+  })
   
   # observe base tree for log map plot
-  observeEvent((input$base_tree), {
+  observeEvent(c(input$base_tree, min_lab()), {
+    req(min_lab())
+    req(tree_names())
+    req(input$consensus_num)
     if (input$base_tree == "other") {
-      updateSelectInput(session, 
+      updateSelectInput(session,
                         "other_base_tree",
                         "base tree",
-                        choices = c("", tree_names))
+                        choices = c("", tree_names()))
     } else if (input$base_tree == "minimizer") {
-      updateSelectInput(session, 
+      updateSelectInput(session,
                         "other_base_tree",
                         "base tree",
-                        choices = c(min_lab))
+                        choices = c(min_lab()))
     } else {
-      updateSelectInput(session, 
+      updateSelectInput(session,
                         "other_base_tree",
                         "base tree",
-                        choices = c(input$base_tree))
+                        choices = c(tree_names()[input$consensus_num]))
     }
   })
   
   logmap_res <- eventReactive((input$other_base_tree), {
+    req(tree_paths())
+    req(tree_names())
     computing <- showNotification("Computing log map...", duration = NULL,
                                   closeButton = FALSE, type = "message")
     on.exit(removeNotification(computing), add = TRUE)
     # get base tree from input
     req(input$base_tree)
-    if (!(input$base_tree %in% c("minimizer", "other"))) {
-      base <- input$base_tree
+    req(input$consensus_num)
+    if (input$base_tree == "consensus") {
+      base <- tree_names()[input$consensus_num]
     } else if (input$base_tree == "minimizer") {
-      base <- min_lab
+      base <- min_lab()
     } else {
       if (!isTruthy(input$other_base_tree)) {
         shinyFeedback::feedbackWarning("other_base_tree",
@@ -82,43 +197,59 @@ server <- function(input, output, session) {
       req(input$other_base_tree)
       base <- input$other_base_tree
     }
-    compute_logmap(tree_paths = tree_paths,
-                   tree_names = tree_names,
+    tree_paths_temp <- tree_paths()
+    tree_names_temp <- tree_names()
+    compute_logmap(tree_paths = tree_paths_temp,
+                   tree_names = tree_names_temp,
                    base_lab = base)
   })
-  
+
   # make sure that coordinate for x-axis is valid, if not revert to coord 1
   pc_x <- reactive({
-    out_range <- input$pc_x > n
-    shinyFeedback::feedbackWarning("pc_x", out_range, 
-                                   paste0("Please select a number less than ", n, "."))
+    req(n_tree())
+    out_range <- input$pc_x > n_tree()
+    shinyFeedback::feedbackWarning("pc_x", out_range,
+                                   paste0("Please select a number less than ", n_tree(), "."))
     req(input$pc_x)
     if (out_range) {1}
     else {input$pc_x}
   })
-  
+
   # make sure that coordinate for y-axis is valid, if not revert to coord 2
   pc_y <- reactive({
-    out_range <- input$pc_y > n
-    shinyFeedback::feedbackWarning("pc_y", out_range, 
-                                   paste0("Please select a number less than ", n, "."))
+    req(n_tree())
+    out_range <- input$pc_y > n_tree()
+    shinyFeedback::feedbackWarning("pc_y", out_range,
+                                   paste0("Please select a number less than ", n_tree(), "."))
     req(input$pc_y)
     if (out_range) {2}
     else {input$pc_y}
   })
-  
+
   # run plot_logmap
   plot_res <- reactive({
+    req(logmap_res())
+    req(tree_names())
     lm_res <- logmap_res()
-    plot_logmap(vectors = lm_res$vectors, phylogenomic = phylogenomic,
-                          title = "Prevotella Trees",
-                          tree_names = tree_names,
-                          phylogenomic_name = "phylogenomic",
-                          x_axis = pc_x(),
-                          y_axis = pc_y())
+    if (input$consensus_yn == "no") {
+      plot_logmap(vectors = lm_res$vectors, 
+                  title = "Log map representation",
+                  tree_names = tree_names(),
+                  x_axis = pc_x(),
+                  y_axis = pc_y())
+    } else {
+      req(input$consensus_num)
+      plot_logmap(vectors = lm_res$vectors, phylogenomic = input$consensus_num,
+                  title = "Log map representation",
+                  tree_names = tree_names(),
+                  phylogenomic_name = tree_names()[input$consensus_num],
+                  x_axis = pc_x(),
+                  y_axis = pc_y())
+    }
+    
     })
-  
-  # make reactive for plot 
+
+  # make reactive for plot
   logmap_plot <- reactive({
     req(plot_res())
     plot_result <- plot_res()
@@ -126,21 +257,21 @@ server <- function(input, output, session) {
     if (isTruthy(input$tree0_choice)) {
       tree0_name <- input$tree0_choice
       tree0_ind <- which(plot_result$pc_x_info$Name == tree0_name)
-      plot_with_point <- plot_result$plot + 
+      plot_with_point <- plot_result$plot +
         geom_point(data = plot_result$pc_x_info[tree0_ind, ],
-                   aes(x = pc_x, y = pc_y), 
+                   aes(x = pc_x, y = pc_y),
                    color = "blue")
       plot_with_point
     } else {
       plot_result$plot
     }
   })
-  
+
   logmap_plotly <- eventReactive(logmap_plot(), {
     ggplotly(logmap_plot(), tooltip = "Name", source = "logmap_plot")
   })
-  
-  # render log map plot 
+
+  # render log map plot
   observeEvent(logmap_plotly(), {
     output$logmap_plot <- plotly::renderPlotly(logmap_plotly())
   })
@@ -154,17 +285,17 @@ server <- function(input, output, session) {
       ggsave(file, plot = logmap_plot(), device = 'png', height = 8.5, width = 8.5)
     }
   )
-  
+
   # function to plot single tree
   plot_tree <- function(tree_name = NULL, tree_ind = NULL) {
     if (is.null(tree_ind)) {
-      tree_ind <- which(tree_names == tree_name)
+      tree_ind <- which(tree_names() == tree_name)
     }
-    tree <- phytools::midpoint.root(ape::read.tree(tree_paths[tree_ind]))
+    tree <- phytools::midpoint.root(ape::read.tree(tree_paths()[tree_ind]))
     tree_plot <- ggtree(tree) + geom_tiplab(size = 2.5)
     return(tree_plot)
   }
-  
+
   # when user clicks on point in log map plot, update input `tree0_choice`
   observeEvent(event_data("plotly_click", source = "logmap_plot"), {
     req(event_data("plotly_click", source = "logmap_plot"))
@@ -176,21 +307,21 @@ server <- function(input, output, session) {
     tree_name <- plot_result$pc_x_info$Name[ind]
     updateSelectInput(inputId = "tree0_choice",
                       label = "Choose a tree to plot",
-                      choices = c("", tree_names),
+                      choices = c("", tree_names()),
                       selected = tree_name)
   })
-  
-  # when user inputs tree to plot, plot that tree on right of log map tab 
+
+  # when user inputs tree to plot, plot that tree on right of log map tab
   tree0_plot <- eventReactive(input$tree0_choice, {
     req(input$tree0_choice)
     plot_tree(tree_name = input$tree0_choice)
   })
-  
+
   observeEvent(tree0_plot(), {
     output$tree_plot <- renderPlot(tree0_plot())
   })
-  
-  # download tree 0 
+
+  # download tree 0
   output$download_tree0 <- downloadHandler(
     filename = function() {
       req(input$tree0_choice)
@@ -201,9 +332,9 @@ server <- function(input, output, session) {
       ggsave(file, plot = tree0_plot(), device = 'png', height = 8, width = 8)
     }
   )
-  
+
   # plot individual trees in 3rd tab
-  # plot base tree 
+  # plot base tree
   output$base_name <- renderText({
     req(input$other_base_tree)
     paste0("Base tree: ", input$other_base_tree)
@@ -225,7 +356,7 @@ server <- function(input, output, session) {
       ggsave(file, plot = base_tree_plot(), device = 'png', height = 8, width = 8)
     }
   )
-  # plot tree in upper right of third tab 
+  # plot tree in upper right of third tab
   tree1_plot <- eventReactive(input$tree1_choice, {
     req(input$tree1_choice)
     plot_tree(tree_name = input$tree1_choice)
