@@ -1,16 +1,13 @@
+#' Runs shiny app
+#' Runs shiny app of groves with user supplied data or with an example Prevotella dataset.
+#'
+#' @return Nothing is returned.
+#' 
+#' @export
 run_shiny <- function() {
-  library(groves)
-  library(plotly)
-  library(ggtree)
-  # build with prevotella to start
-  path <- system.file("prevotella", package = "groves")
-  gene_names <- stringr::str_sub(list.files(paste0(path, "/gene_trees")), 1, -5)[1:14]
-  tree_names <- c(gene_names, "phylogenomic")
-  # make a vector of paths to .txt files of all trees to go into the plot
-  tree_paths <- c(paste0(path, "/gene_trees/", gene_names, ".txt"),
-                  paste0(path, "/phylogenomic_trees/concat_tree.txt"))[1:15]
-  phylogenomic <- length(tree_paths)
-  
+  #library(groves)
+  #library(plotly)
+  #library(ggtree)
   appDir <- "inst/shiny-app/"
   #appDir <- system.file("shiny-app", package = "groves")
   shiny::runApp(appDir, display.mode = "normal")

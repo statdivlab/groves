@@ -102,15 +102,15 @@ plot_logmap <- function(vectors, phylogenomic = NULL, phylogenomic_name = NULL,
     # Including phylogenomic tree 
   } else {
     if (is.null(phylogenomic_name)) {
-      phylogenomic_name = "phylogenomic"
+      phylogenomic_name = "consensus"
     }
     # if phylogenomic tree or other tree is included, make tree_type variable 
     df$tree_type <- rep("gene tree", nrow(df))
-    df$tree_type[phylogenomic] <- "phylogenomic"
+    df$tree_type[phylogenomic] <- "consensus"
     df$tree_type[other_tree] <- "other"
     df$tree_type <- factor(df$tree_type, 
                            levels = c("gene tree", 
-                                      "phylogenomic", 
+                                      "consensus", 
                                       "other"))
     
     other_df <- dplyr::filter(df, tree_type != "gene tree")
