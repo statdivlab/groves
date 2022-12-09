@@ -6,6 +6,10 @@ server <- function(input, output, session) {
       updateRadioButtons(session, "consensus_yn", 
                          "Does your multiPhylo object include a consensus tree?", 
                          choices = c("yes", "no"), selected = "yes")
+    } else {
+      updateSelectInput(session, "var_color", 
+                        "Variable to add to plot",
+                        c("none"))
     }
   })
   
@@ -15,7 +19,6 @@ server <- function(input, output, session) {
       ape::read.tree("../prevotella/all_trees.txt")
     } else {
       req(input$trees_upload)
-      message("here!")
       ape::read.tree(input$trees_upload$datapath)
     }
   })
@@ -23,8 +26,19 @@ server <- function(input, output, session) {
   # get number of trees in tree data
   n_tree <- reactive({
     req(tree_data())
-    message("here at n_tree!")
     length(tree_data())
+  })
+  
+  gene_trees <- reactive({
+    req(tree_data())
+    req(n_tree())
+    req(input$consensus_num)
+    req(input$consensus_yn)
+    if (input$consensus_yn == "no") {
+      tree_data()
+    } else {
+      tree_data()[-input$consensus_num]
+    }
   })
   
   # when trees are uploaded, update consensus number input 
@@ -86,7 +100,6 @@ server <- function(input, output, session) {
   # save tree name info 
   tree_names <- reactive({
     if (input$data_type == "use Prevotella data") {
-      message("here at prev names!!")
       read.csv("../prevotella/tree_names.csv")$x
     } else {
       if (isTruthy(input$tree_names_upload)) {
@@ -131,17 +144,20 @@ server <- function(input, output, session) {
   })
   
   # save tree additional data 
-  extra_tree_data <- reactive({
+  extra_tree_data <- eventReactive(c(input$data_type, input$tree_char_upload), {
     if (input$data_type == "use Prevotella data") {
       read.csv("../prevotella/extra_tree_data.csv")
     } else {
-      req(input$tree_char_upload)
-      shinyFeedback::hideFeedback("tree_char_upload")
-      df <- read.csv(input$tree_char_upload$datapath)
-      shinyFeedback::feedbackWarning("tree_char_upload",
-                                     nrow(df) != n_tree(),
-                                     paste0("The length of your tree characteristics dataset is ", nrow(df)," and the number of trees in your multiPhylo file is ", n_tree(), "."))
-      df
+      if (isTruthy(input$tree_char_upload)) {
+        shinyFeedback::hideFeedback("tree_char_upload")
+        df <- read.csv(input$tree_char_upload$datapath)
+        shinyFeedback::feedbackWarning("tree_char_upload",
+                                       nrow(df) != n_tree(),
+                                       paste0("The length of your tree characteristics dataset is ", nrow(df)," and the number of trees in your multiPhylo file is ", n_tree(), "."))
+        df
+      } else {
+        NULL
+      }
     }
   })
   
@@ -213,7 +229,7 @@ server <- function(input, output, session) {
   })
   
   # observe base tree for log map plot
-  observeEvent(c(input$base_tree, min_lab()), {
+  observeEvent(c(input$base_tree, min_lab(), input$data_type), {
     req(min_lab())
     req(tree_names())
     req(input$consensus_num)
@@ -241,10 +257,12 @@ server <- function(input, output, session) {
                                    "Please select other tree.")
   })
   
-  # compute logmap 
-  logmap_res <- eventReactive(c(input$other_base_tree, input$data_type), {
+  #compute logmap
+  logmap_res <- eventReactive(c(input$other_base_tree, tree_names()), {
     req(tree_paths())
     req(tree_names())
+    req(isTruthy(input$other_base_tree))
+    req(input$other_base_tree %in% tree_names())
     computing <- showNotification("Computing log map...", duration = NULL,
                                   closeButton = FALSE, type = "message")
     on.exit(removeNotification(computing), add = TRUE)
@@ -328,6 +346,12 @@ server <- function(input, output, session) {
       }
     }
   })
+  
+  # ouput proportion of variance corresponding with x and y pc 
+  output$prop_var_x <- renderText(paste0(
+    round(plot_res()$prop_var[1]*100, 0), "%"))
+  output$prop_var_y <- renderText(paste0(
+    round(plot_res()$prop_var[2]*100, 0), "%"))
 
   # make reactive for plot
   logmap_plot <- reactive({
@@ -369,12 +393,29 @@ server <- function(input, output, session) {
   )
   
   # function to plot single tree
-  plot_tree <- function(tree_name = NULL, tree_ind = NULL) {
+  plot_tree <- function(tree_name = NULL, tree_ind = NULL, add_support = FALSE, gene_trees = NULL) {
     if (is.null(tree_ind)) {
       tree_ind <- which(tree_names() == tree_name)
     }
-    tree <- phytools::midpoint.root(ape::read.tree(tree_paths()[tree_ind]))
-    tree_plot <- ggtree::ggtree(tree) + ggtree::geom_tiplab(size = 2.5) + ggtree::theme_tree2()
+    if (input$midpoint) {
+      tree <- phangorn::midpoint(ape::read.tree(tree_paths()[tree_ind]))
+    } else {
+      tree <- ape::read.tree(tree_paths()[tree_ind])
+    }
+    if (!add_support) {
+      tree_plot <- ggtree::ggtree(tree) + ggtree::geom_tiplab(size = 2.5) #+ ggtree::theme_tree2()
+    } else {
+      if (input$midpoint == TRUE) {
+        gene_trees <- phangorn::midpoint(gene_trees)
+      } 
+      rooted <- ape::is.rooted(tree)
+      support <- groves::check_gene_support(tree, gene_trees, rooted)
+      tree_plot <- plot_support(tree, support, lab_size = 2.5, supp_size = 2.5, color_branch = TRUE,
+                                title ="")
+    }
+    if (input$scale) {
+      tree_plot <- tree_plot + ggtree::theme_tree2()
+    }
     return(tree_plot)
   }
 
@@ -422,9 +463,15 @@ server <- function(input, output, session) {
     req(input$other_base_tree)
     paste0("Base tree: ", input$other_base_tree)
   })
-  base_tree_plot <- eventReactive(input$other_base_tree, {
+  base_tree_plot <- eventReactive(c(input$other_base_tree, input$midpoint, input$scale, 
+                                    input$base_support), {
     req(input$other_base_tree)
-    plot_tree(tree_name = input$other_base_tree)
+    if (!isTruthy(input$base_support)) {
+      plot_tree(tree_name = input$other_base_tree)
+    } else {
+      plot_tree(tree_name = input$other_base_tree,
+                add_support = TRUE, gene_trees = gene_trees())
+    }
   })
   observeEvent(base_tree_plot(), {
     output$base_tree_plot <- renderPlot(base_tree_plot())
@@ -440,9 +487,15 @@ server <- function(input, output, session) {
     }
   )
   # plot tree in upper right of third tab
-  tree1_plot <- eventReactive(input$tree1_choice, {
+  tree1_plot <- eventReactive(c(input$tree1_choice, input$midpoint, input$scale,
+                                input$tree1_support), {
     req(input$tree1_choice)
-    plot_tree(tree_name = input$tree1_choice)
+    if (!isTruthy(input$tree1_support)) {
+      plot_tree(tree_name = input$tree1_choice)
+    } else {
+      plot_tree(tree_name = input$tree1_choice,
+                add_support = TRUE, gene_trees = gene_trees())
+    }
   })
   observeEvent(tree1_plot(), {
     output$chosen_tree1 <- renderPlot(tree1_plot())
@@ -458,9 +511,15 @@ server <- function(input, output, session) {
     }
   )
   # plot tree in lower left of third tab
-  tree2_plot <- eventReactive(input$tree2_choice, {
+  tree2_plot <- eventReactive(c(input$tree2_choice, input$midpoint, input$scale,
+                                input$tree2_support), {
     req(input$tree2_choice)
-    plot_tree(tree_name = input$tree2_choice)
+    if (!isTruthy(input$tree2_support)) {
+      plot_tree(tree_name = input$tree2_choice)
+    } else {
+      plot_tree(tree_name = input$tree2_choice,
+                add_support = TRUE, gene_trees = gene_trees())
+    }
   })
   observeEvent(tree2_plot(), {
     output$chosen_tree2 <- renderPlot(tree2_plot())
@@ -476,9 +535,15 @@ server <- function(input, output, session) {
     }
   )
   # plot tree in lower right of third tab
-  tree3_plot <- eventReactive(input$tree3_choice, {
+  tree3_plot <- eventReactive(c(input$tree3_choice, input$midpoint, input$scale,
+                                input$tree3_support), {
     req(input$tree3_choice)
-    plot_tree(tree_name = input$tree3_choice)
+    if (!isTruthy(input$tree3_support)) {
+      plot_tree(tree_name = input$tree3_choice)
+    } else {
+      plot_tree(tree_name = input$tree3_choice,
+                add_support = TRUE, gene_trees = gene_trees())
+    }
   })
   observeEvent(tree3_plot(), {
     output$chosen_tree3 <- renderPlot(tree3_plot())

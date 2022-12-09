@@ -35,8 +35,7 @@ ui <- fluidPage(
              fluidRow(
                column(5, fileInput("tree_char_upload", "Upload a .csv file containing a data frame, where each row represents a tree and trees are in the same order as the multiPhylo object.",
                                    accept = ".csv", width = '90%'))
-             ),
-             fluidRow(verbatimTextOutput("tree_names"))
+             )
      ),
      tabPanel("Visualize tree set",
              fluidRow(
@@ -53,6 +52,11 @@ ui <- fluidPage(
                column(2, offset = 2, selectInput("tree0_choice",
                                      "Choose a tree to plot",
                                      c("")))
+             ),
+             fluidRow(
+               column(1, tags$h5("Proportion variance explained")),
+               column(1, textOutput("prop_var_x")),
+               column(1, textOutput("prop_var_y"))
              ),
              fluidRow(
                column(6, plotly::plotlyOutput("logmap_plot", height = "600px")),
@@ -75,13 +79,23 @@ ui <- fluidPage(
     ),
     tabPanel("Visualize individual trees",
              fluidRow(
+               column(3, checkboxInput("midpoint",
+                                       "Midpoint root trees?",
+                                       value = TRUE)),
+               column(3, checkboxInput("scale",
+                                       "Show x-axis scale?",
+                                       value = TRUE))
+             ),
+             fluidRow(
                column(2, textOutput("base_name")),
-               column(2, offset = 2, downloadButton("download_base_tree")),
+               column(2, checkboxInput("base_support", "Plot gene tree support?")),
+               column(2, downloadButton("download_base_tree")),
                column(2,
                       selectInput("tree1_choice",
                                   "Choose a tree to plot",
                                   c(""))),
-               column(2, offset = 2, downloadButton("download_tree1"))
+               column(2, checkboxInput("tree1_support", "Plot gene tree support?")),
+               column(2, downloadButton("download_tree1"))
              ),
              fluidRow(
                column(6, plotOutput("base_tree_plot", height = "600px")),
@@ -91,11 +105,13 @@ ui <- fluidPage(
                column(2, selectInput("tree2_choice",
                                      "Choose a tree to plot",
                                      c(""))),
-               column(2, offset = 2, downloadButton("download_tree2")),
+               column(2, checkboxInput("tree2_support", "Plot gene tree support?")),
+               column(2, downloadButton("download_tree2")),
                column(2, selectInput("tree3_choice",
                                      "Choose a tree to plot",
                                      c(""))),
-               column(2, offset = 2, downloadButton("download_tree3"))
+               column(2, checkboxInput("tree3_support", "Plot gene tree support?")),
+               column(2, downloadButton("download_tree3"))
              ),
              fluidRow(
                column(6, plotOutput("chosen_tree2", height = "600px")),

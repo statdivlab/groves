@@ -34,9 +34,9 @@
 #'
 #' @export
 plot_support <- function(main_tree, support, support_type = "gene", lab_size = 2,
-                              supp_size = 2, xlim_max = 0.5, hjust = 1, 
-                              color_branch = FALSE, show_legend = TRUE, title = "") {
-  if (title == "") {
+                              supp_size = 2, xlim_max = NULL, hjust = 1, 
+                              color_branch = FALSE, show_legend = TRUE, title = "set") {
+  if (title == "set") {
     if (support_type == "gene") {
       title <- "Gene Tree Support"
     } else if (support_type == "boot") {
@@ -46,7 +46,7 @@ plot_support <- function(main_tree, support, support_type = "gene", lab_size = 2
     } else {
       stop("Please enter 'gene', 'boot', or 'other' for support_type.")
     }
-  }
+  } 
   # save support values as part of tree object with treeio::as.treedata 
   tree <- treeio::as.treedata(main_tree, support)
   # determine if legend is shown
@@ -68,11 +68,14 @@ plot_support <- function(main_tree, support, support_type = "gene", lab_size = 2
       scale_color_gradientn(colors = RColorBrewer::brewer.pal(11, "Spectral")[c(1:5,7:11)], limits = col.range) 
   }
   full_plot <- plot + geom_tiplab(size = lab_size, color = "black") + 
-    ggplot2::xlim(0, xlim_max) +
     labs(color = "Support",
          title = title) + 
     guides(linetype = "none") +
     theme(legend.position = legend_pos, 
           plot.title = element_text(hjust = 0.5))
+  if (!is.null(xlim_max)) {
+    full_plot <- full_plot + 
+      ggplot2::xlim(0, xlim_max)
+  }
   return(full_plot)
 }
