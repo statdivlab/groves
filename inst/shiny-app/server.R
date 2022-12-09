@@ -410,7 +410,7 @@ server <- function(input, output, session) {
       } 
       rooted <- ape::is.rooted(tree)
       support <- groves::check_gene_support(tree, gene_trees, rooted)
-      tree_plot <- plot_support(tree, support, lab_size = 2.5, supp_size = 2.5, color_branch = TRUE,
+      tree_plot <- groves::plot_support(tree, support, lab_size = 2.5, supp_size = 2.5, color_branch = TRUE,
                                 title ="")
     }
     if (input$scale) {

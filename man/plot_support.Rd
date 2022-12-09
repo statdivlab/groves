@@ -12,11 +12,11 @@ plot_support(
   support_type = "gene",
   lab_size = 2,
   supp_size = 2,
-  xlim_max = 0.5,
+  xlim_max = NULL,
   hjust = 1,
   color_branch = FALSE,
   show_legend = TRUE,
-  title = ""
+  title = "set"
 )
 }
 \arguments{
