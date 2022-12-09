@@ -70,6 +70,8 @@ plot_logmap <- function(vectors, phylogenomic = NULL, phylogenomic_name = NULL,
                      pc_y = pc_y)
   }
   
+  prop_var <- (pca$sdev^2/sum(pca$sdev^2))[c(x_axis, y_axis)]
+  
   if (is.null(tree_names)) {
     # label trees by number if no names given 
     df$Name <- 1:nrow(df)
@@ -165,5 +167,6 @@ plot_logmap <- function(vectors, phylogenomic = NULL, phylogenomic_name = NULL,
                       index = 1:nrow(df)) 
   pc_x_df <- dplyr::arrange(pc_df, dplyr::desc(abs(pc_x)))
   pc_y_df <- dplyr::arrange(pc_df, dplyr::desc(abs(pc_y)))
-  return(list(plot = full_plot, pc_x_info = pc_x_df, pc_y_info = pc_y_df, axis_pcs = c(x_axis, y_axis)))
+  return(list(plot = full_plot, pc_x_info = pc_x_df, pc_y_info = pc_y_df, 
+              axis_pcs = c(x_axis, y_axis), prop_var = prop_var))
 }
