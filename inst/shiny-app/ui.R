@@ -60,7 +60,8 @@ ui <- fluidPage(
              ),
              fluidRow(
                column(6, plotly::plotlyOutput("logmap_plot", height = "600px")),
-               column(6, plotOutput("tree_plot", height = "600px"))
+               #column(6, plotOutput("tree_plot", height = "600px"))
+               column(6, plotly::plotlyOutput("tree_plot", height = "600px"))
              ),
              fluidRow(
                column(6, downloadButton("download_lm")),
@@ -98,8 +99,10 @@ ui <- fluidPage(
                column(2, downloadButton("download_tree1"))
              ),
              fluidRow(
-               column(6, plotOutput("base_tree_plot", height = "600px")),
-               column(6, plotOutput("chosen_tree1", height = "600px"))
+               #column(6, plotOutput("base_tree_plot", height = "600px")),
+               column(6, plotly::plotlyOutput("base_tree_plot", height = "600px")),
+               #column(6, plotOutput("chosen_tree1", height = "600px"))
+               column(6, plotly::plotlyOutput("chosen_tree1", height = "600px"))
              ),
              fluidRow(
                column(2, selectInput("tree2_choice",
@@ -114,8 +117,10 @@ ui <- fluidPage(
                column(2, downloadButton("download_tree3"))
              ),
              fluidRow(
-               column(6, plotOutput("chosen_tree2", height = "600px")),
-               column(6, plotOutput("chosen_tree3", height = "600px"))
+               #column(6, plotOutput("chosen_tree2", height = "600px")),
+               column(6, plotly::plotlyOutput("chosen_tree2", height = "600px")),
+               #column(6, plotOutput("chosen_tree3", height = "600px"))
+               column(6, plotly::plotlyOutput("chosen_tree3", height = "600px"))
              )
     )
   )

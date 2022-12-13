@@ -403,20 +403,30 @@ server <- function(input, output, session) {
       tree <- ape::read.tree(tree_paths()[tree_ind])
     }
     if (!add_support) {
-      tree_plot <- ggtree::ggtree(tree) + ggtree::geom_tiplab(size = 2.5) #+ ggtree::theme_tree2()
+      tree_plot <- ggtree::ggtree(tree) + ggtree::geom_tiplab(size = 2.5) 
     } else {
       if (input$midpoint == TRUE) {
         gene_trees <- phangorn::midpoint(gene_trees)
       } 
       rooted <- ape::is.rooted(tree)
       support <- groves::check_gene_support(tree, gene_trees, rooted)
-      tree_plot <- groves::plot_support(tree, support, lab_size = 2.5, supp_size = 2.5, color_branch = TRUE,
-                                title ="")
+      #tree_plot <- groves::plot_support(tree, support, lab_size = 2.5, supp_size = 2.5, color_branch = TRUE,
+      tree_plot <- plot_support(tree, support, lab_size = 2.5, supp_size = 2.5, color_branch = TRUE,                          
+                           title ="")
     }
     if (input$scale) {
       tree_plot <- tree_plot + ggtree::theme_tree2()
     }
     return(tree_plot)
+  }
+  
+  plotly_tree <- function(tree_plot) {
+    tree_plotly <- tree_plot + 
+      ggplot2::geom_text(ggplot2::aes(label = label), 
+                         color = "black", 
+                         nudge_x = max(tree_plot$data$x)*0.08,
+                         hjust = 0,
+                         size = 3)
   }
 
   # when user clicks on point in log map plot, update input `tree0_choice`
@@ -440,9 +450,15 @@ server <- function(input, output, session) {
     req(input$tree0_choice)
     plot_tree(tree_name = input$tree0_choice)
   })
+  
+  tree0_plotly <- reactive({
+    req(tree0_plot)
+    plotly_tree(tree0_plot())
+  })
 
-  observeEvent(tree0_plot(), {
-    output$tree_plot <- renderPlot(tree0_plot())
+  observeEvent(tree0_plotly(), {
+    #output$tree_plot <- renderPlot(tree0_plot())
+    output$tree_plot <- plotly::renderPlotly(plotly::ggplotly(tree0_plotly(), tooltip = ""))
   })
 
   # download tree 0
@@ -473,8 +489,13 @@ server <- function(input, output, session) {
                 add_support = TRUE, gene_trees = gene_trees())
     }
   })
+  base_tree_plotly <- reactive({
+    req(base_tree_plot())
+    plotly_tree(base_tree_plot())
+  })
   observeEvent(base_tree_plot(), {
-    output$base_tree_plot <- renderPlot(base_tree_plot())
+    #output$base_tree_plot <- renderPlot(base_tree_plot())
+    output$base_tree_plot <- plotly::renderPlotly(plotly::ggplotly(base_tree_plotly(), tooltip = ""))
   })
   output$download_base_tree <- downloadHandler(
     filename = function() {
@@ -497,8 +518,13 @@ server <- function(input, output, session) {
                 add_support = TRUE, gene_trees = gene_trees())
     }
   })
-  observeEvent(tree1_plot(), {
-    output$chosen_tree1 <- renderPlot(tree1_plot())
+  tree1_plotly <- reactive({
+    req(tree1_plot())
+    plotly_tree(tree1_plot())
+  })
+  observeEvent(tree1_plotly(), {
+    #output$chosen_tree1 <- renderPlot(tree1_plot())
+    output$chosen_tree1 <- plotly::renderPlotly(plotly::ggplotly(tree1_plotly(), tooltip = ""))
   })
   output$download_tree1 <- downloadHandler(
     filename = function() {
@@ -521,8 +547,13 @@ server <- function(input, output, session) {
                 add_support = TRUE, gene_trees = gene_trees())
     }
   })
+  tree2_plotly <- reactive({
+    req(tree2_plot())
+    plotly_tree(tree2_plot())
+  })
   observeEvent(tree2_plot(), {
-    output$chosen_tree2 <- renderPlot(tree2_plot())
+    #output$chosen_tree2 <- renderPlot(tree2_plot())
+    output$chosen_tree2 <- plotly::renderPlotly(plotly::ggplotly(tree2_plotly(), tooltip = ""))
   })
   output$download_tree2 <- downloadHandler(
     filename = function() {
@@ -545,8 +576,13 @@ server <- function(input, output, session) {
                 add_support = TRUE, gene_trees = gene_trees())
     }
   })
+  tree3_plotly <- reactive({
+    req(tree3_plot())
+    plotly_tree(tree3_plot())
+  })
   observeEvent(tree3_plot(), {
-    output$chosen_tree3 <- renderPlot(tree3_plot())
+    #output$chosen_tree3 <- renderPlot(tree3_plot())
+    output$chosen_tree3 <- plotly::renderPlotly(plotly::ggplotly(tree3_plotly(), tooltip = ""))
   })
   output$download_tree3 <- downloadHandler(
     filename = function() {
