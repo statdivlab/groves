@@ -69,10 +69,15 @@ plot_support <- function(main_tree, support, support_type = "gene", lab_size = 2
   }
   full_plot <- plot + geom_tiplab(size = lab_size, color = "black") + 
     labs(color = "Support",
+         linetype = "Zero support",
          title = title) + 
-    guides(linetype = "none") +
+    #guides(linetype = "none") +
     theme(legend.position = legend_pos, 
           plot.title = element_text(hjust = 0.5))
+  if (sum(tree@data$bootstrap == 0) == 0) {
+    full_plot <- full_plot + 
+      guides(linetype = "none")
+  }
   if (!is.null(xlim_max)) {
     full_plot <- full_plot + 
       ggplot2::xlim(0, xlim_max)
