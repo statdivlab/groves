@@ -5,11 +5,7 @@
 #' 
 #' @export
 run_shiny <- function() {
-  #library(groves)
-  #library(plotly)
-  #library(ggtree)
   appDir <- "inst/shiny-app/"
-  #appDir <- system.file("shiny-app", package = "groves")
   shiny::runApp(appDir, display.mode = "normal")
 }
 
