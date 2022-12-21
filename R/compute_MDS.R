@@ -3,7 +3,6 @@
 #'
 #' @param trees_path The file path to a txt file containing the set of phylogenetic trees in a 
 #' multiPhylo object, required unless a dist_matrix is not NULL. 
-#' @param nf The number of axes in the MDS to keep. Defaults to 2. 
 #' @param dist_metric Either 'RF' for Robinson-Foulds, or 'BHV' for the geodesic defined in 
 #' Billera et al. (2001). Defaults to 'BHV'. Ignore this argument if using argument dist_matrix.
 #' @param dist_matrix If you would like to submit your own distance matrix computed with a different
@@ -11,6 +10,8 @@
 #' @param mds_type MDS is performed with the package smacof. Default is metric scaling, otherwise
 #' use value "nonmetric". 
 #' @param tree_names Optional tree names to use.
+#' @param x_axis Dimension number to use on the x-axis. Defaults to 1.
+#' @param y_axis Dimension number to use on the y-axis. Defaults to 2.
 #'
 #' @return A list containing an object 'dist_mat' containing distances between each phylogenetic tree
 #' in the multiPhylo object, and an object 'df' containing the desired number of axes in the MDS of the trees.
@@ -20,9 +21,9 @@
 #' compute_MDS(trees_path = trees_path, tree_names = paste0("tree", 1:3))
 #' 
 #' @export
-compute_MDS <- function(trees_path = NULL, nf = 2, dist_metric = "BHV",
+compute_MDS <- function(trees_path = NULL, dist_metric = "BHV",
                          dist_matrix = NULL, mds_type = "metric", 
-                         tree_names = NULL) {
+                         tree_names = NULL, x_axis = 1, y_axis = 2) {
   # check that if a metric has been input, it is either 'BHV' or 'RF'
   if (!(dist_metric %in% c("BHV", "RF"))) {
     stop("Please input either 'BHV' or 'RF' for dist_metric, or input your own distance matrix
@@ -58,8 +59,13 @@ compute_MDS <- function(trees_path = NULL, nf = 2, dist_metric = "BHV",
       dist_mat <- as.matrix(phangorn::RF.dist(trees))
     }
   }
+  # check that neither x_axis nor y_axis exceed n - 1
+  n <- nrow(dist_mat)
+  if (max(x_axis, y_axis) >= n) {
+    stop("Dimensions plotted on the x and y axis must both be less than n.")
+  }
   # make dataframe to save MDS coordinates 
-  df <- data.frame(matrix(data = NA, nrow = nrow(dist_mat), ncol = nf))
+  df <- data.frame(matrix(data = NA, nrow = nrow(dist_mat), ncol = 2))
   if (is.null(tree_names)) {
     row.names(dist_mat) <- paste0("tree", 1:nrow(dist_mat))
     row.names(df) <- paste0("tree", 1:nrow(dist_mat))
@@ -69,18 +75,14 @@ compute_MDS <- function(trees_path = NULL, nf = 2, dist_metric = "BHV",
   }
   if (mds_type == "metric") {
     # run metric MDS
-    mds <- smacof::mds(stats::as.dist(dist_mat), ndim = nf, type = "ratio")
-    for (i in 1:nf) {
-      df[, i] <- mds$conf[,i]
-    }
+    mds <- smacof::mds(stats::as.dist(dist_mat), ndim = max(x_axis, y_axis), type = "ratio")
   } else {
     # run non-metric MDS
-    mds <- smacof::mds(stats::as.dist(dist_mat), ndim = nf, type = "ordinal")
-    for (i in 1:nf) {
-      df[, i] <- mds$conf[,i]
-    }
+    mds <- smacof::mds(stats::as.dist(dist_mat), ndim = max(x_axis, y_axis), type = "ordinal")
   }
-  names(df) <- paste0("MDS",1:nf)
+  df[, 1] <- mds$conf[, x_axis]
+  df[, 2] <- mds$conf[, y_axis]
+  names(df) <- paste0("MDS", c(x_axis, y_axis))
   return(list("dist_mat" = dist_mat, "df" = df))
 }
 

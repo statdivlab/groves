@@ -17,6 +17,8 @@
 #' @param alpha Transparency of the points, defaults to 1 (fully opaque).
 #' @param use_plotly If true, the output will be a plotly object, with labels
 #' when points are moused over, if false the output will be a ggplot object.
+#' @param x_axis Dimension number to use on the x-axis. Defaults to 1.
+#' @param y_axis Dimension number to use on the y-axis. Defaults to 2.
 #'
 #' @return A ggplot2 object.
 #' @import ggplot2
@@ -35,7 +37,8 @@
 plot_MDS <- function(df, phylogenomic = NULL, group = NULL,
                      title = "MDS of Gene Tree Distances",
                      show_legend = TRUE, legend_lab = NULL, 
-                     tree_names = NULL, alpha = 1, use_plotly = FALSE) {
+                     tree_names = NULL, alpha = 1, use_plotly = FALSE,
+                     x_axis = 1, y_axis = 2) {
   ### start by organizing df 
   if (is.null(tree_names)) {
     # label trees by number if no names given 
@@ -102,8 +105,8 @@ plot_MDS <- function(df, phylogenomic = NULL, group = NULL,
   }
   # add details 
   full_plot <- plot +
-    labs(x = 'Dimension 1',
-         y = 'Dimension 2') +
+    labs(x = paste0('Dimension ', x_axis),
+         y = paste0('Dimension ', y_axis)) +
     ggtitle(title) + 
     theme(plot.title = element_text(hjust = 0.5))
   # use plotly if asked for 
