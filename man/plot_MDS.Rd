@@ -14,7 +14,9 @@ plot_MDS(
   legend_lab = NULL,
   tree_names = NULL,
   alpha = 1,
-  use_plotly = FALSE
+  use_plotly = FALSE,
+  x_axis = 1,
+  y_axis = 2
 )
 }
 \arguments{
@@ -42,6 +44,10 @@ the same length as the number of rows in \code{df} or a name in quotes of a vari
 
 \item{use_plotly}{If true, the output will be a plotly object, with labels
 when points are moused over, if false the output will be a ggplot object.}
+
+\item{x_axis}{Dimension number to use on the x-axis. Defaults to 1.}
+
+\item{y_axis}{Dimension number to use on the y-axis. Defaults to 2.}
 }
 \value{
 A ggplot2 object.

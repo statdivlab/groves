@@ -7,18 +7,17 @@ Calculates the distance between each tree and performs MDS}
 \usage{
 compute_MDS(
   trees_path = NULL,
-  nf = 2,
   dist_metric = "BHV",
   dist_matrix = NULL,
   mds_type = "metric",
-  tree_names = NULL
+  tree_names = NULL,
+  x_axis = 1,
+  y_axis = 2
 )
 }
 \arguments{
 \item{trees_path}{The file path to a txt file containing the set of phylogenetic trees in a 
 multiPhylo object, required unless a dist_matrix is not NULL.}
-
-\item{nf}{The number of axes in the MDS to keep. Defaults to 2.}
 
 \item{dist_metric}{Either 'RF' for Robinson-Foulds, or 'BHV' for the geodesic defined in 
 Billera et al. (2001). Defaults to 'BHV'. Ignore this argument if using argument dist_matrix.}
@@ -30,6 +29,10 @@ metric, use this argument. In this case, do not include the dist_metric argument
 use value "nonmetric".}
 
 \item{tree_names}{Optional tree names to use.}
+
+\item{x_axis}{Dimension number to use on the x-axis. Defaults to 1.}
+
+\item{y_axis}{Dimension number to use on the y-axis. Defaults to 2.}
 }
 \value{
 A list containing an object 'dist_mat' containing distances between each phylogenetic tree
