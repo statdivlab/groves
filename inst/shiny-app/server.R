@@ -67,12 +67,17 @@ server <- function(input, output, session) {
   
   # reset log map plot and tree0 
   observeEvent(input$reset, {
+    if (input$red_type == "PCA") {
+      max_val <- n_tree()
+    } else if (input$red_type == "MDS") {
+      max_val <- n_tree() -  1
+    }
     updateNumericInput(session, "pc_x",
                        "X coordinate",
-                       value = 1, min = 1, max = n_tree(), step = 1)
+                       value = 1, min = 1, max = max_val, step = 1)
     updateNumericInput(session, "pc_y",
                        "Y coordinate",
-                       value = 2, min = 1, max = n_tree(), step = 1)
+                       value = 2, min = 1, max = max_val, step = 1)
     updateSelectInput(session, "var_color", 
                       "Variable to add to plot", selected = "none",
                       choices = c("none", names(extra_tree_data())))
@@ -198,7 +203,7 @@ server <- function(input, output, session) {
     ape::write.tree(tree_data_tmp, "groves_data/all_trees.txt")
     dists <- groves::compute_geodesic("groves_data/all_trees.txt")
   })
-    
+  
   min_ind <- reactive({
     req(tree_paths())
     tree_paths_tmp <- tree_paths()
@@ -259,6 +264,7 @@ server <- function(input, output, session) {
   
   #compute logmap
   logmap_res <- eventReactive(c(input$other_base_tree, tree_names()), {
+    req(input$red_type == "PCA")
     req(tree_paths())
     req(tree_names())
     req(isTruthy(input$other_base_tree))
@@ -280,27 +286,38 @@ server <- function(input, output, session) {
     tree_paths_temp <- tree_paths()
     tree_names_temp <- tree_names()
     groves::compute_logmap(tree_paths = tree_paths_temp,
-                   tree_names = tree_names_temp,
-                   base_lab = base)
+                           tree_names = tree_names_temp,
+                           base_lab = base)
   })
   
   # make sure that coordinate for x-axis is valid, if not revert to coord 1
   pc_x <- reactive({
     req(n_tree())
-    out_range <- input$pc_x > n_tree()
+    if (input$red_type == "PCA") {
+      max_val = n_tree()
+    } else if (input$red_type == "MDS") {
+      max_val = n_tree() - 1
+    }
+    out_range <- input$pc_x > max_val
     shinyFeedback::feedbackWarning("pc_x", out_range,
-                                   paste0("Please select a number less than ", n_tree(), "."))
+                                   paste0("Please select a number less than ", max_val, "."))
     req(input$pc_x)
     if (out_range) {1}
     else {input$pc_x}
   })
-
+  
   # make sure that coordinate for y-axis is valid, if not revert to coord 2
   pc_y <- reactive({
     req(n_tree())
-    out_range <- input$pc_y > n_tree()
+    req(n_tree())
+    if (input$red_type == "PCA") {
+      max_val = n_tree()
+    } else if (input$red_type == "MDS") {
+      max_val = n_tree() - 1
+    }
+    out_range <- input$pc_y > max_val
     shinyFeedback::feedbackWarning("pc_y", out_range,
-                                   paste0("Please select a number less than ", n_tree(), "."))
+                                   paste0("Please select a number less than ", max_val, "."))
     req(input$pc_y)
     if (out_range) {2}
     else {input$pc_y}
@@ -314,45 +331,55 @@ server <- function(input, output, session) {
     if (input$consensus_yn == "no") {
       if (input$var_color == "none") {
         groves::plot_logmap(vectors = lm_res$vectors, 
-                    title = "Log map representation",
-                    tree_names = tree_names(),
-                    x_axis = pc_x(),
-                    y_axis = pc_y())
+                            title = "Log map representation",
+                            tree_names = tree_names(),
+                            x_axis = pc_x(),
+                            y_axis = pc_y())
       } else {
         groves::plot_logmap(vectors = lm_res$vectors, 
-                    title = "Log map representation",
-                    tree_names = tree_names(),
-                    x_axis = pc_x(),
-                    y_axis = pc_y(),
-                    group = extra_tree_data()[, input$var_color])
+                            title = "Log map representation",
+                            tree_names = tree_names(),
+                            x_axis = pc_x(),
+                            y_axis = pc_y(),
+                            group = extra_tree_data()[, input$var_color])
       }
     } else {
       req(input$consensus_num)
       if (input$var_color == "none") {
         groves::plot_logmap(vectors = lm_res$vectors, phylogenomic = input$consensus_num,
-                    title = "Log map representation",
-                    tree_names = tree_names(),
-                    phylogenomic_name = tree_names()[input$consensus_num],
-                    x_axis = pc_x(),
-                    y_axis = pc_y())
+                            title = "Log map representation",
+                            tree_names = tree_names(),
+                            phylogenomic_name = tree_names()[input$consensus_num],
+                            x_axis = pc_x(),
+                            y_axis = pc_y())
       } else {
         groves::plot_logmap(vectors = lm_res$vectors, phylogenomic = input$consensus_num,
-                    title = "Log map representation",
-                    tree_names = tree_names(),
-                    phylogenomic_name = tree_names()[input$consensus_num],
-                    x_axis = pc_x(),
-                    y_axis = pc_y(),
-                    group = extra_tree_data()[, input$var_color])
+                            title = "Log map representation",
+                            tree_names = tree_names(),
+                            phylogenomic_name = tree_names()[input$consensus_num],
+                            x_axis = pc_x(),
+                            y_axis = pc_y(),
+                            group = extra_tree_data()[, input$var_color])
       }
     }
   })
   
   # ouput proportion of variance corresponding with x and y pc 
-  output$prop_var_x <- renderText(paste0(
-    round(plot_res()$prop_var[1]*100, 0), "%"))
-  output$prop_var_y <- renderText(paste0(
-    round(plot_res()$prop_var[2]*100, 0), "%"))
-
+  output$prop_var_x <- renderText({
+    if (input$red_type == "PCA") {
+      paste0(round(plot_res()$prop_var[1]*100, 0), "%")
+    } else {
+      "NA"
+    }
+  })
+  output$prop_var_y <- renderText({
+    if (input$red_type == "PCA") {
+      paste0(round(plot_res()$prop_var[2]*100, 0), "%")
+    } else {
+      "NA"
+    }
+  })
+  
   # make reactive for plot
   logmap_plot <- reactive({
     req(plot_res())
@@ -364,31 +391,41 @@ server <- function(input, output, session) {
       plot_with_point <- plot_result$plot +
         if (input$var_color == "none") {
           ggplot2::geom_point(data = plot_result$pc_x_info[tree0_ind, ],
-                     ggplot2::aes(x = pc_x, y = pc_y),
-                     color = "blue")
+                              ggplot2::aes(x = pc_x, y = pc_y),
+                              color = "blue")
         }
       plot_with_point
     } else {
       plot_result$plot
     }
   })
-
-  logmap_plotly <- eventReactive(logmap_plot(), {
-    plotly::ggplotly(logmap_plot(), tooltip = "Name", source = "logmap_plot")
-  })
-
-  # render log map plot
-  observeEvent(logmap_plotly(), {
-    output$logmap_plot <- plotly::renderPlotly(logmap_plotly())
+  
+  trees_plotly <- reactive({
+    req(isTruthy(logmap_plot()) || isTruthy(MDS_plot()))
+    if (input$red_type == "PCA") {
+      plotly::ggplotly(logmap_plot(), tooltip = "Name", source = "trees_plot")
+    } else {
+      plotly::ggplotly(MDS_plot(), tooltip = "Name", source = "trees_plot")
+    }
   })
   
-  output$download_lm <- downloadHandler(
+  # render log map plot
+  observeEvent(trees_plotly(), {
+    output$trees_plot <- plotly::renderPlotly(trees_plotly())
+  })
+  
+  output$download_trees <- downloadHandler(
     filename = function() {
       paste('tree_set_plot', '.png', sep = '')
     },
     content = function(file) {
-      req(logmap_plot())
-      ggplot2::ggsave(file, plot = logmap_plot(), device = 'png', height = 8.5, width = 8.5)
+      if (input$red_type == "PCA") {
+        req(logmap_plot())
+        ggplot2::ggsave(file, plot = logmap_plot(), device = 'png', height = 8.5, width = 8.5)
+      } else {
+        req(MDS_plot())
+        ggplot2::ggsave(file, plot = MDS_plot(), device = 'png', height = 8.5, width = 8.5)
+      }
     }
   )
   
@@ -410,9 +447,8 @@ server <- function(input, output, session) {
       } 
       rooted <- ape::is.rooted(tree)
       support <- groves::check_gene_support(tree, gene_trees, rooted)
-      #tree_plot <- groves::plot_support(tree, support, lab_size = 2.5, supp_size = 2.5, color_branch = TRUE,
-      tree_plot <- plot_support(tree, support, lab_size = 2.5, supp_size = 2.5, color_branch = TRUE,                          
-                           title ="")
+      tree_plot <- groves::plot_support(tree, support, lab_size = 2.5, supp_size = 2.5, color_branch = TRUE,                          
+                                        title ="")
     }
     if (input$scale) {
       tree_plot <- tree_plot + ggtree::theme_tree2()
@@ -428,23 +464,30 @@ server <- function(input, output, session) {
                          hjust = 0,
                          size = 3)
   }
-
-  # when user clicks on point in log map plot, update input `tree0_choice`
-  observeEvent(plotly::event_data("plotly_click", source = "logmap_plot"), {
-    req(plotly::event_data("plotly_click", source = "logmap_plot"))
-    plot_result <- plot_res()
-    ed <- plotly::event_data("plotly_click", source = "logmap_plot")
+  
+  # when user clicks on point in low dimension plot, update input `tree0_choice`
+  observeEvent(plotly::event_data("plotly_click", source = "trees_plot"), {
+    req(plotly::event_data("plotly_click", source = "trees_plot"))
+    ed <- plotly::event_data("plotly_click", source = "trees_plot")
     x <- ed$x
     y <- ed$y
-    ind <- which.min((plot_result$pc_x_info$pc_x - x)^2 + 
-                       (plot_result$pc_x_info$pc_y - y)^2)
-    tree_name <- plot_result$pc_x_info$Name[ind]
+    if (input$red_type == "PCA") {
+      plot_result <- plot_res()
+      ind <- which.min((plot_result$pc_x_info$pc_x - x)^2 + 
+                         (plot_result$pc_x_info$pc_y - y)^2)
+      tree_name <- plot_result$pc_x_info$Name[ind]
+    } else {
+      df <- mds_res()$df
+      ind <- which.min((df[, 1] - x)^2 + 
+                         (df[, 2] - y)^2)
+      tree_name <- tree_names()[ind]
+    }
     updateSelectInput(inputId = "tree0_choice",
                       label = "Choose a tree to plot",
                       choices = c("", tree_names()),
                       selected = tree_name)
   })
-
+  
   # when user inputs tree to plot, plot that tree on right of log map tab
   tree0_plot <- eventReactive(input$tree0_choice, {
     req(input$tree0_choice)
@@ -455,12 +498,11 @@ server <- function(input, output, session) {
     req(tree0_plot)
     plotly_tree(tree0_plot())
   })
-
+  
   observeEvent(tree0_plotly(), {
-    #output$tree_plot <- renderPlot(tree0_plot())
     output$tree_plot <- plotly::renderPlotly(plotly::ggplotly(tree0_plotly(), tooltip = ""))
   })
-
+  
   # download tree 0
   output$download_tree0 <- downloadHandler(
     filename = function() {
@@ -472,7 +514,102 @@ server <- function(input, output, session) {
       ggplot2::ggsave(file, plot = tree0_plot(), device = 'png', height = 8, width = 8)
     }
   )
-
+  
+  # switch over to MDS 
+  observeEvent(input$red_type, {
+    req(n_tree())
+    if (input$red_type == "MDS") {
+      updateNumericInput(session, "pc_x",
+                         "X coordinate",
+                         value = 1, min = 1, max = n_tree() - 1, step = 1)
+      updateNumericInput(session, "pc_y",
+                         "Y coordinate",
+                         value = 2, min = 1, max = n_tree() - 1, step = 1)
+    }
+  })
+  
+  mds_dists <- eventReactive(input$mds_dist, {
+    req(isTruthy(input$mds_dist))
+    if (input$red_type == "MDS") {
+      if (input$mds_dist == "RF") {
+        as.matrix(phangorn::RF.dist(tree_data()))
+      } else {
+        req(tree_dists())
+        tree_dists()
+      }
+    }
+  }, ignoreInit = TRUE)
+  
+  mds_res <- reactive({
+    req(mds_dists())
+    #groves::compute_MDS(dist_metric = input$mds_dist,
+    compute_MDS(dist_metric = input$mds_dist,
+                        dist_matrix = mds_dists(),
+                        tree_names = tree_names(),
+                        x_axis = pc_x(), 
+                        y_axis = pc_y())
+  })
+  
+  # run plot_MDS
+  plot_MDS_res <- reactive({
+    req(mds_res())
+    df <- mds_res()$df
+    req(tree_names())
+    req(input$consensus_yn)
+    if (input$consensus_yn == "no") {
+      if (input$var_color == "none") {
+        #groves::plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
+        plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
+                         title = paste0("MDS of ", input$mds_dist, " distances"),
+                         tree_names = tree_names())
+      } else {
+        #groves::plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
+        plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
+                         title = paste0("MDS of ", input$mds_dist, " distances"),
+                         tree_names = tree_names(), 
+                         group = extra_tree_data()[, input$var_color])
+      }
+    } else {
+      if (input$var_color == "none") {
+        req(input$consensus_num)
+        #groves::plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
+        plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
+                 title = paste0("MDS of ", input$mds_dist, " distances"),
+                 tree_names = tree_names(),
+                 phylogenomic = input$consensus_num,
+                 phylogenomic_name = tree_names()[input$consensus_num])
+      } else {
+        #groves::plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
+        plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
+                 title = paste0("MDS of ", input$mds_dist, " distances"),
+                 tree_names = tree_names(), 
+                 group = extra_tree_data()[, input$var_color],
+                 phylogenomic = input$consensus_num,
+                 phylogenomic_name = tree_names()[input$consensus_num])
+      }
+    } 
+  })
+  
+  # make reactive for plot
+  MDS_plot <- reactive({
+    req(plot_MDS_res())
+    plot_result <- plot_MDS_res()
+    # if tree 0 has been chosen, color it blue
+    if (isTruthy(input$tree0_choice)) {
+      tree0_name <- input$tree0_choice
+      tree0_ind <- which(tree_names() == tree0_name)
+      plot_with_point <- plot_result +
+        if (input$var_color == "none") {
+          ggplot2::geom_point(data = mds_res()$df[tree0_ind, ],
+                              ggplot2::aes(x = MDS_x, y = MDS_y),
+                              color = "blue")
+        }
+      plot_with_point
+    } else {
+      plot_result
+    }
+  })
+  
   # plot individual trees in 3rd tab
   # plot base tree
   output$base_name <- renderText({
@@ -481,20 +618,19 @@ server <- function(input, output, session) {
   })
   base_tree_plot <- eventReactive(c(input$other_base_tree, input$midpoint, input$scale, 
                                     input$base_support), {
-    req(input$other_base_tree)
-    if (!isTruthy(input$base_support)) {
-      plot_tree(tree_name = input$other_base_tree)
-    } else {
-      plot_tree(tree_name = input$other_base_tree,
-                add_support = TRUE, gene_trees = gene_trees())
-    }
-  })
+                                      req(input$other_base_tree)
+                                      if (!isTruthy(input$base_support)) {
+                                        plot_tree(tree_name = input$other_base_tree)
+                                      } else {
+                                        plot_tree(tree_name = input$other_base_tree,
+                                                  add_support = TRUE, gene_trees = gene_trees())
+                                      }
+                                    })
   base_tree_plotly <- reactive({
     req(base_tree_plot())
     plotly_tree(base_tree_plot())
   })
   observeEvent(base_tree_plot(), {
-    #output$base_tree_plot <- renderPlot(base_tree_plot())
     output$base_tree_plot <- plotly::renderPlotly(plotly::ggplotly(base_tree_plotly(), tooltip = ""))
   })
   output$download_base_tree <- downloadHandler(
@@ -510,20 +646,19 @@ server <- function(input, output, session) {
   # plot tree in upper right of third tab
   tree1_plot <- eventReactive(c(input$tree1_choice, input$midpoint, input$scale,
                                 input$tree1_support), {
-    req(input$tree1_choice)
-    if (!isTruthy(input$tree1_support)) {
-      plot_tree(tree_name = input$tree1_choice)
-    } else {
-      plot_tree(tree_name = input$tree1_choice,
-                add_support = TRUE, gene_trees = gene_trees())
-    }
-  })
+                                  req(input$tree1_choice)
+                                  if (!isTruthy(input$tree1_support)) {
+                                    plot_tree(tree_name = input$tree1_choice)
+                                  } else {
+                                    plot_tree(tree_name = input$tree1_choice,
+                                              add_support = TRUE, gene_trees = gene_trees())
+                                  }
+                                })
   tree1_plotly <- reactive({
     req(tree1_plot())
     plotly_tree(tree1_plot())
   })
   observeEvent(tree1_plotly(), {
-    #output$chosen_tree1 <- renderPlot(tree1_plot())
     output$chosen_tree1 <- plotly::renderPlotly(plotly::ggplotly(tree1_plotly(), tooltip = ""))
   })
   output$download_tree1 <- downloadHandler(
@@ -539,20 +674,19 @@ server <- function(input, output, session) {
   # plot tree in lower left of third tab
   tree2_plot <- eventReactive(c(input$tree2_choice, input$midpoint, input$scale,
                                 input$tree2_support), {
-    req(input$tree2_choice)
-    if (!isTruthy(input$tree2_support)) {
-      plot_tree(tree_name = input$tree2_choice)
-    } else {
-      plot_tree(tree_name = input$tree2_choice,
-                add_support = TRUE, gene_trees = gene_trees())
-    }
-  })
+                                  req(input$tree2_choice)
+                                  if (!isTruthy(input$tree2_support)) {
+                                    plot_tree(tree_name = input$tree2_choice)
+                                  } else {
+                                    plot_tree(tree_name = input$tree2_choice,
+                                              add_support = TRUE, gene_trees = gene_trees())
+                                  }
+                                })
   tree2_plotly <- reactive({
     req(tree2_plot())
     plotly_tree(tree2_plot())
   })
   observeEvent(tree2_plot(), {
-    #output$chosen_tree2 <- renderPlot(tree2_plot())
     output$chosen_tree2 <- plotly::renderPlotly(plotly::ggplotly(tree2_plotly(), tooltip = ""))
   })
   output$download_tree2 <- downloadHandler(
@@ -568,20 +702,19 @@ server <- function(input, output, session) {
   # plot tree in lower right of third tab
   tree3_plot <- eventReactive(c(input$tree3_choice, input$midpoint, input$scale,
                                 input$tree3_support), {
-    req(input$tree3_choice)
-    if (!isTruthy(input$tree3_support)) {
-      plot_tree(tree_name = input$tree3_choice)
-    } else {
-      plot_tree(tree_name = input$tree3_choice,
-                add_support = TRUE, gene_trees = gene_trees())
-    }
-  })
+                                  req(input$tree3_choice)
+                                  if (!isTruthy(input$tree3_support)) {
+                                    plot_tree(tree_name = input$tree3_choice)
+                                  } else {
+                                    plot_tree(tree_name = input$tree3_choice,
+                                              add_support = TRUE, gene_trees = gene_trees())
+                                  }
+                                })
   tree3_plotly <- reactive({
     req(tree3_plot())
     plotly_tree(tree3_plot())
   })
   observeEvent(tree3_plot(), {
-    #output$chosen_tree3 <- renderPlot(tree3_plot())
     output$chosen_tree3 <- plotly::renderPlotly(plotly::ggplotly(tree3_plotly(), tooltip = ""))
   })
   output$download_tree3 <- downloadHandler(

@@ -8,6 +8,9 @@ Plots MDS results of trees for each distance.}
 plot_MDS(
   df,
   phylogenomic = NULL,
+  phylogenomic_name = NULL,
+  other_tree = NULL,
+  other_name = "other tree",
   group = NULL,
   title = "MDS of Gene Tree Distances",
   show_legend = TRUE,
@@ -15,16 +18,23 @@ plot_MDS(
   tree_names = NULL,
   alpha = 1,
   use_plotly = FALSE,
+  trees_to_label = NULL,
   x_axis = 1,
   y_axis = 2
 )
 }
 \arguments{
 \item{df}{A dataframe with the first two MDS coordinates for a set of trees and distances.
-It should include variables named \code{MDS1} and \code{MDS2}.}
+It should include variables named \code{MDS_x} and \code{MDS_y}.}
 
 \item{phylogenomic}{An optional argument, if included gives the index of the dataframe that
 corresponds to the phylogenomic tree, which will then be noted in the plot.}
+
+\item{phylogenomic_name}{An optional argument, gives the name of the \code{phylogenomic} tree.}
+
+\item{other_tree}{An optional additional tree to plot in a different color.}
+
+\item{other_name}{An optional name for \code{other_tree} if it is included.}
 
 \item{group}{An optional variable to color points by. This should either be a vector the same
 length as the number of rows in \code{df} or a name in quotes of a variable in \code{df}.}
@@ -44,6 +54,9 @@ the same length as the number of rows in \code{df} or a name in quotes of a vari
 
 \item{use_plotly}{If true, the output will be a plotly object, with labels
 when points are moused over, if false the output will be a ggplot object.}
+
+\item{trees_to_label}{Optional set of names in \code{tree_names} to label on plot. These are
+only labeled if \code{use_plotly} is set to \code{FALSE}.}
 
 \item{x_axis}{Dimension number to use on the x-axis. Defaults to 1.}
 

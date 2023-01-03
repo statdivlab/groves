@@ -9,7 +9,7 @@ ui <- fluidPage(
                                               "If you would like to work with your own data, choose 'upload my own data'. If you'd like to try out this tool with one of our datasets (made up of Prevotella genomes), choose 'use Prevotella data'.",
                                               choices = c("upload my own data", "use Prevotella data"), 
                                               width = "100%",
-                                              ))),
+             ))),
              fluidRow(column(12, tags$h4("If you choose the Prevotella data, go to the 'Visualize tree set' tab. Otherwise, follow the steps below to upload data."))),
              fluidRow(column(12, tags$h5("1. Upload trees."))),
              fluidRow(
@@ -36,8 +36,8 @@ ui <- fluidPage(
                column(5, fileInput("tree_char_upload", "Upload a .csv file containing a data frame, where each row represents a tree and trees are in the same order as the multiPhylo object.",
                                    accept = ".csv", width = '90%'))
              )
-     ),
-     tabPanel("Visualize tree set",
+    ),
+    tabPanel("Visualize tree set",
              fluidRow(
                column(1, actionButton("reset", "Reset plot", height = "100%")),
                column(1, numericInput("pc_x",
@@ -50,8 +50,8 @@ ui <- fluidPage(
                                      "Variable to add to plot",
                                      c("none"))),
                column(2, offset = 2, selectInput("tree0_choice",
-                                     "Choose a tree to plot",
-                                     c("")))
+                                                 "Choose a tree to plot",
+                                                 c("")))
              ),
              fluidRow(
                column(1, tags$h5("Proportion variance explained")),
@@ -59,24 +59,33 @@ ui <- fluidPage(
                column(1, textOutput("prop_var_y"))
              ),
              fluidRow(
-               column(6, plotly::plotlyOutput("logmap_plot", height = "600px")),
-               #column(6, plotOutput("tree_plot", height = "600px"))
+               column(6, plotly::plotlyOutput("trees_plot", height = "600px")),
                column(6, plotly::plotlyOutput("tree_plot", height = "600px"))
              ),
              fluidRow(
-               column(6, downloadButton("download_lm")),
+               column(6, downloadButton("download_trees")),
                column(6, downloadButton("download_tree0"))
              ),
-              fluidRow(
-                column(3, radioButtons("base_tree",
-                                       "Select a base tree (this may take a minute).",
-                                       choices = list("minimizer of squared BHV distance to all trees" = "minimizer",
-                                                      "other" = "other"),
-                                       select = "minimizer", inline = TRUE)),
-                column(6, selectInput("other_base_tree",
-                                      "base tree",
-                                      choices = c("")))
-              )
+             fluidRow(
+               column(3, radioButtons("base_tree",
+                                      "Select a base tree (this may take a minute).",
+                                      choices = list("minimizer of squared BHV distance to all trees" = "minimizer",
+                                                     "other" = "other"),
+                                      select = "minimizer", inline = TRUE)),
+               column(6, selectInput("other_base_tree",
+                                     "base tree",
+                                     choices = c("")))
+             ),
+             fluidRow(
+               column(3, radioButtons("red_type",
+                                      "Type of dimension reduction. Defaults to PCA of log map transformed trees.",
+                                      choices = c("PCA", "MDS"),
+                                      selected = "PCA", 
+                                      width = '100%')),
+               column(3, selectInput("mds_dist",
+                                     "If MDS, which distance?",
+                                     choices = c("", "BHV", "RF")))
+             )
     ),
     tabPanel("Visualize individual trees",
              fluidRow(
@@ -99,9 +108,7 @@ ui <- fluidPage(
                column(2, downloadButton("download_tree1"))
              ),
              fluidRow(
-               #column(6, plotOutput("base_tree_plot", height = "600px")),
                column(6, plotly::plotlyOutput("base_tree_plot", height = "600px")),
-               #column(6, plotOutput("chosen_tree1", height = "600px"))
                column(6, plotly::plotlyOutput("chosen_tree1", height = "600px"))
              ),
              fluidRow(
@@ -117,9 +124,7 @@ ui <- fluidPage(
                column(2, downloadButton("download_tree3"))
              ),
              fluidRow(
-               #column(6, plotOutput("chosen_tree2", height = "600px")),
                column(6, plotly::plotlyOutput("chosen_tree2", height = "600px")),
-               #column(6, plotOutput("chosen_tree3", height = "600px"))
                column(6, plotly::plotlyOutput("chosen_tree3", height = "600px"))
              )
     )

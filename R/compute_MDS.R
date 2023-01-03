@@ -65,10 +65,10 @@ compute_MDS <- function(trees_path = NULL, dist_metric = "BHV",
     stop("Dimensions plotted on the x and y axis must both be less than n.")
   }
   # make dataframe to save MDS coordinates 
-  df <- data.frame(matrix(data = NA, nrow = nrow(dist_mat), ncol = 2))
+  df <- data.frame(matrix(data = NA, nrow = nrow(dist_mat), ncol = 3))
   if (is.null(tree_names)) {
-    row.names(dist_mat) <- paste0("tree", 1:nrow(dist_mat))
-    row.names(df) <- paste0("tree", 1:nrow(dist_mat))
+    row.names(dist_mat) <- 1:nrow(df)
+    row.names(df) <- 1:nrow(df)
   } else {
     row.names(dist_mat) <- tree_names
     row.names(df) <- tree_names
@@ -82,7 +82,8 @@ compute_MDS <- function(trees_path = NULL, dist_metric = "BHV",
   }
   df[, 1] <- mds$conf[, x_axis]
   df[, 2] <- mds$conf[, y_axis]
-  names(df) <- paste0("MDS", c(x_axis, y_axis))
-  return(list("dist_mat" = dist_mat, "df" = df))
+  df[, 3] <- row.names(df)
+  names(df) <- c("MDS_x", "MDS_y", "Name")
+  return(list("dist_mat" = dist_mat, "df" = df, "axis_coords" = c(x_axis, y_axis)))
 }
 

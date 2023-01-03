@@ -104,15 +104,15 @@ plot_logmap <- function(vectors, phylogenomic = NULL, phylogenomic_name = NULL,
     # Including phylogenomic tree 
   } else {
     if (is.null(phylogenomic_name)) {
-      phylogenomic_name = "consensus"
+      phylogenomic_name = "phylogenomic"
     }
     # if phylogenomic tree or other tree is included, make tree_type variable 
     df$tree_type <- rep("gene tree", nrow(df))
-    df$tree_type[phylogenomic] <- "consensus"
+    df$tree_type[phylogenomic] <- "phylogenomic"
     df$tree_type[other_tree] <- "other"
     df$tree_type <- factor(df$tree_type, 
                            levels = c("gene tree", 
-                                      "consensus", 
+                                      "phylogenomic", 
                                       "other"))
     
     other_df <- dplyr::filter(df, tree_type != "gene tree")
@@ -122,9 +122,6 @@ plot_logmap <- function(vectors, phylogenomic = NULL, phylogenomic_name = NULL,
         geom_point(alpha = alpha) + 
         labs(color = "Tree Type") +
         geom_point(data = other_df) +
-        #scale_color_discrete(labels = c("gene tree",
-        #                                latex2exp::TeX(phylogenomic_name),
-        #                                latex2exp::TeX(other_name))) +
         scale_color_manual(values = c("black", "red", "green"),
                            labels = c("gene tree",
                                       latex2exp::TeX(phylogenomic_name),
