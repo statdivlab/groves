@@ -12,7 +12,7 @@
 
 If you are studying microbial evolution, you will often make a phylogenomic tree (typically using concatenation of gene-level alignments) to summarize the evolutionary relationships between a set of genomes. However, genes that are subject to different evolutionary pressures can have distinct evolutionary histories. For this reason, it can be useful to investigate gene-level phylogenetic trees in addition to genome-level phylogenomic trees.
 
-This package provides a visualization method to compare a set of gene-level trees and a phylogenomic tree. Specifically, it will produce a two-dimensional scatterplot, in which each point represents a tree, that preserves as much variation between the trees as possible. This can be used to identify genes with outlying evolutionary histories, compare sets of genes, or even highlight anomalies in the phylogenomic preprocessing process. This visualization can be produced from functions in this R package (see the [vignette](https://github.com/statdivlab/groves/blob/main/vignettes/introduction_to_groves.Rmd) for an example) or from a shiny app (run the functions `groves::run_shiny()`).
+This package provides a visualization method to compare a set of gene-level trees and a phylogenomic tree. Specifically, it will produce a two-dimensional scatterplot, in which each point represents a tree, that preserves as much variation between the trees as possible. This can be used to identify genes with outlying evolutionary histories, compare sets of genes, or even highlight anomalies in the phylogenomic preprocessing process.
 
 ## Installation
 
@@ -25,7 +25,9 @@ This package provides a visualization method to compare a set of gene-level tree
 
 ## Usage
 
-This package is still in development. Vignettes are coming soon, with instructions and examples of how to use `groves` to analysis your gene trees.
+This R package primarily produces visualizations of sets of phylogenetic trees. These visualizations can be produced from functions in this R package (see the [vignette](https://github.com/statdivlab/groves/blob/main/vignettes/introduction_to_groves.Rmd) for an example analysis) or from a shiny app (run the function `groves::run_shiny()`).
+
+Because many analyses don’t use gene-level trees, you may not be familiar with methods to generate them. A vignette is in development to walk through the process of generating gene-level trees as an additional step in a phylogenomic workflow.
 
 ## Issues/Requests
 
