@@ -5,7 +5,7 @@
 #' 
 #' @export
 run_shiny <- function() {
-  appDir <- "inst/shiny-app/"
+  appDir <- system.file("shiny-app", package = "groves")
   shiny::runApp(appDir, display.mode = "normal")
 }
 

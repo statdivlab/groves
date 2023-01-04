@@ -37,9 +37,6 @@ library(ggplot2)
 Next, we will load a list of gene names for this analysis. All data in this analysis is saved in `groves`, so we will set a path to find these files. We can take a look at the first few gene names. 
 
 ```{r}
-#path <- "../inst/prevotella/"
-#gene_names <- stringr::str_sub(list.files(paste0(path, "gene_trees")), #1, -5)
-#head(gene_names)
 gene_names <- as.vector(
   read.csv("https://raw.githubusercontent.com/statdivlab/groves/main/inst/prevotella/tree_names.csv")$x)[1:63]
 head(gene_names)
@@ -53,8 +50,6 @@ Euclidean space to represent each tree using `compute_logmap()`.
 
 ```{r}
 # make a vector of paths to .txt files of all trees to go into the plot 
-#tree_paths <- c(paste0(path, "gene_trees/", gene_names, ".txt"),
-#           paste0(path, "phylogenomic_trees/concat_tree.txt"))
 path <- system.file("prevotella", package = "groves")
 tree_paths <- c(paste0(path, "/gene_trees/",
                gene_names, ".txt"), 
