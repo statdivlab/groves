@@ -102,7 +102,7 @@ server <- function(input, output, session) {
       updateRadioButtons(session, "base_tree",
                          "Select a base tree (this may take a minute).",
                          choices = list("minimizer of squared BHV distance to all trees" = "minimizer",
-                                        "consensus tree" = "consensus",
+                                        "phylogenomic tree" = "consensus",
                                         "other" = "other"))
     } else {
       updateRadioButtons(session, "base_tree",
@@ -204,7 +204,7 @@ server <- function(input, output, session) {
   })
   
   # get distances between trees 
-  tree_dists <- reactive({
+  tree_dists <- eventReactive(c(input$submit_button, input$data_type), {
     req(tree_data()) 
     req(tree_names())
     tree_data_tmp <- tree_data()
