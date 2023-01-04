@@ -16,6 +16,10 @@ ui <- fluidPage(
                column(12, fileInput("trees_upload", "Upload a .txt file containing a multiPhylo object including all of the trees you'd like to plot.",
                                     accept = ".txt", width = '50%'))
              ),
+             fluidRow(
+               column(12, tags$h5("If you would like to rescale the branches of each tree by dividing by the sum of its branch lengths, indicate below. This is only recommended if you don't want your visualization to consider differences in branch lengths between trees.")),
+               column(12, radioButtons("rescale_yn", "Rescale branches?", choices = c("yes", "no"), selected = "no", width = "100%"))
+             ),
              fluidRow(column(12, tags$h5("2. Give consensus tree information."))),
              fluidRow(
                column(4, radioButtons("consensus_yn", "Does your multiPhylo object include a consensus tree?", choices = c("yes", "no"), selected = "no", width = '100%')),

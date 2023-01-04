@@ -14,12 +14,22 @@ server <- function(input, output, session) {
   })
   
   # get tree multiPhylo object
-  tree_data <- reactive({
+  raw_tree_data <- reactive({
     if (input$data_type == "use Prevotella data") {
       ape::read.tree("../prevotella/all_trees.txt")
     } else {
       req(input$trees_upload)
       ape::read.tree(input$trees_upload$datapath)
+    }
+  })
+  
+  # rescale if needed 
+  tree_data <- reactive({
+    req(raw_tree_data)
+    if (input$rescale_yn == "yes") {
+      groves::standardize_branches(raw_tree_data(), denom = "branch_sum")
+    } else {
+      raw_tree_data()
     }
   })
   
@@ -196,6 +206,7 @@ server <- function(input, output, session) {
   # get distances between trees 
   tree_dists <- reactive({
     req(tree_data()) 
+    req(tree_names())
     tree_data_tmp <- tree_data()
     computing <- showNotification("Computing distances between trees...", duration = NULL,
                                   closeButton = FALSE, type = "message")
@@ -235,6 +246,7 @@ server <- function(input, output, session) {
   
   # observe base tree for log map plot
   observeEvent(c(input$base_tree, min_lab(), input$data_type), {
+    req(input$red_type == "PCA")
     req(min_lab())
     req(tree_names())
     req(input$consensus_num)
@@ -257,6 +269,7 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$other_base_tree, {
+    req(input$red_type == "PCA")
     shinyFeedback::feedbackWarning("other_base_tree",
                                    !isTruthy(input$other_base_tree),
                                    "Please select other tree.")
