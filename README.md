@@ -8,7 +8,15 @@
 
 `groves` is an `R` package for visualizing a set of gene-level phylogenies.
 
+## About
+
+If you are studying microbial evolution, you will often make a phylogenomic tree (typically using concatenation of gene-level alignments) to summarize the evolutionary relationships between a set of genomes. However, genes that are subject to different evolutionary pressures can have distinct evolutionary histories. For this reason, it can be useful to investigate gene-level phylogenetic trees in addition to genome-level phylogenomic trees.
+
+This package provides a visualization method to compare a set of gene-level trees and a phylogenomic tree. Specifically, it will produce a two-dimensional scatterplot, in which each point represents a tree, that preserves as much variation between the trees as possible. This can be used to identify genes with outlying evolutionary histories, compare sets of genes, or even highlight anomalies in the phylogenomic preprocessing process. This visualization can be produced from functions in this R package (see the [vignette](https://github.com/statdivlab/groves/blob/main/vignettes/introduction_to_groves.Rmd) for an example) or from a shiny app (run the functions `groves::run_shiny()`).
+
 ## Installation
+
+`groves` is available through GitHub and can be installed with the following.
 
     if (!require("remotes", quietly = TRUE))
         install.packages("remotes") # check that remotes is installed
