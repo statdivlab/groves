@@ -555,8 +555,7 @@ server <- function(input, output, session) {
   
   mds_res <- reactive({
     req(mds_dists())
-    #groves::compute_MDS(dist_metric = input$mds_dist,
-    compute_MDS(dist_metric = input$mds_dist,
+    groves::compute_MDS(dist_metric = input$mds_dist,
                         dist_matrix = mds_dists(),
                         tree_names = tree_names(),
                         x_axis = pc_x(), 
@@ -571,13 +570,11 @@ server <- function(input, output, session) {
     req(input$consensus_yn)
     if (input$consensus_yn == "no") {
       if (input$var_color == "none") {
-        #groves::plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
-        plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
+        groves::plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
                          title = paste0("MDS of ", input$mds_dist, " distances"),
                          tree_names = tree_names())
       } else {
-        #groves::plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
-        plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
+        groves::plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
                          title = paste0("MDS of ", input$mds_dist, " distances"),
                          tree_names = tree_names(), 
                          group = extra_tree_data()[, input$var_color])
@@ -585,20 +582,18 @@ server <- function(input, output, session) {
     } else {
       if (input$var_color == "none") {
         req(input$consensus_num)
-        #groves::plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
-        plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
-                 title = paste0("MDS of ", input$mds_dist, " distances"),
-                 tree_names = tree_names(),
-                 phylogenomic = input$consensus_num,
-                 phylogenomic_name = tree_names()[input$consensus_num])
+        groves::plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
+                         title = paste0("MDS of ", input$mds_dist, " distances"),
+                         tree_names = tree_names(),
+                         phylogenomic = input$consensus_num,
+                         phylogenomic_name = tree_names()[input$consensus_num])
       } else {
-        #groves::plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
-        plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
-                 title = paste0("MDS of ", input$mds_dist, " distances"),
-                 tree_names = tree_names(), 
-                 group = extra_tree_data()[, input$var_color],
-                 phylogenomic = input$consensus_num,
-                 phylogenomic_name = tree_names()[input$consensus_num])
+        groves::plot_MDS(df = df, x_axis = pc_x(), y_axis = pc_y(), 
+                         title = paste0("MDS of ", input$mds_dist, " distances"),
+                         tree_names = tree_names(), 
+                         group = extra_tree_data()[, input$var_color],
+                         phylogenomic = input$consensus_num,
+                         phylogenomic_name = tree_names()[input$consensus_num])
       }
     } 
   })
