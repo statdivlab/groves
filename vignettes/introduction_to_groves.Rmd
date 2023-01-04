@@ -37,8 +37,11 @@ library(ggplot2)
 Next, we will load a list of gene names for this analysis. All data in this analysis is saved in `groves`, so we will set a path to find these files. We can take a look at the first few gene names. 
 
 ```{r}
-path <- "../inst/prevotella/"
-gene_names <- stringr::str_sub(list.files(paste0(path, "gene_trees")), 1, -5)
+#path <- "../inst/prevotella/"
+#gene_names <- stringr::str_sub(list.files(paste0(path, "gene_trees")), #1, -5)
+#head(gene_names)
+gene_names <- as.vector(
+  read.csv("https://raw.githubusercontent.com/statdivlab/groves/main/inst/prevotella/tree_names.csv")$x)[1:63]
 head(gene_names)
 ```
 
@@ -50,8 +53,12 @@ Euclidean space to represent each tree using `compute_logmap()`.
 
 ```{r}
 # make a vector of paths to .txt files of all trees to go into the plot 
-tree_paths <- c(paste0(path, "gene_trees/", gene_names, ".txt"),
-           paste0(path, "phylogenomic_trees/concat_tree.txt"))
+#tree_paths <- c(paste0(path, "gene_trees/", gene_names, ".txt"),
+#           paste0(path, "phylogenomic_trees/concat_tree.txt"))
+path <- system.file("prevotella", package = "groves")
+tree_paths <- c(paste0(path, "/gene_trees/",
+               gene_names, ".txt"), 
+               paste0(path, "/phylogenomic_trees/concat_tree.txt"))
 # compute log map coordinates for all trees 
 lm_res <- compute_logmap(tree_paths = tree_paths,
                          tree_names = c(gene_names, "phylogenomic"))
@@ -72,8 +79,8 @@ plot_res$plot
 If we look at the plot, we can see most of the gene trees together in a cloud with the phylogenomic tree near the middle along with three outliers. We can check out the rest of the `plot_res` output to see what genes these outlying trees correspond to. 
 
 ```{r}
-head(plot_res$pc1_info)
-head(plot_res$pc2_info)
+head(plot_res$pc_x_info)
+head(plot_res$pc_y_info)
 ```
 
 From this output we can see that the two outliers in the first principal component are DMRL_synthase and GTP_cyclohydroI and the outlier in the second prinicipal component is BacA.
@@ -82,8 +89,8 @@ In order to understand the effect of these outlying genes on the phylogenomic tr
 
 ```{r}
 # get the log map vector for the new phylogenomic tree
-new_vectors <- add_vector(new_tree_path = paste0(path, "phylogenomic_trees/red_concat.txt"),
-                          base_path = paste0(path, "phylogenomic_trees/concat_tree.txt"),
+new_vectors <- add_vector(new_tree_path = paste0(path, "/phylogenomic_trees/red_concat.txt"),
+                          base_path = paste0(path, "/phylogenomic_trees/concat_tree.txt"),
                           vectors = lm_res$vectors,
                           new_name = "reduced phylogenomic")
 # We specify that the phylogenomic tree is the 64th entry in paths, and that the 65th 
@@ -122,7 +129,7 @@ Next, we can look individually at the base tree (chosen to be the phylogenomic t
 ```{r}
 # plot trees 
 # phylogenomic tree 
-phylogenomic <- read.tree(paste0(path, "phylogenomic_trees/concat_tree.txt"))
+phylogenomic <- read.tree(paste0(path, "/phylogenomic_trees/concat_tree.txt"))
 # rename labels from accession numbers to numbers 
 match_df <- data.frame(oldlab = phylogenomic$tip.label,
                        newlab = 1:length(phylogenomic$tip.label))
@@ -133,7 +140,7 @@ ggtree(phylogenomic_num) + geom_tiplab(size = 2) +
 # max edge length for phylogenomic tree
 max(phylogenomic$edge.length)
 # BacA gene tree 
-BacA <- read.tree(paste0(path, "gene_trees/BacA.txt"))
+BacA <- read.tree(paste0(path, "/gene_trees/BacA.txt"))
 BacA_num <- rename_labs(match_df, BacA)
 ggtree(BacA_num) + geom_tiplab(size = 2) + 
   xlim(c(0, 6)) + ggtitle("BacA Tree") + 
@@ -146,7 +153,7 @@ From these first two plots, we can see that BacA (the outlier in the second prin
 
 ```{r}
 # DMRL_synthase
-DMRL_synthase <- read.tree(paste0(path, "gene_trees/DMRL_synthase.txt"))
+DMRL_synthase <- read.tree(paste0(path, "/gene_trees/DMRL_synthase.txt"))
 DMRL_synthase_num <- rename_labs(match_df, DMRL_synthase)
 ggtree(DMRL_synthase_num) + geom_tiplab(size = 2) + 
   xlim(c(0, 12)) + ggtitle("DMRL_synthase Tree") + 
@@ -154,7 +161,7 @@ ggtree(DMRL_synthase_num) + geom_tiplab(size = 2) +
 # max edge length for DMRL_synthase
 max(DMRL_synthase$edge.length)
 # GTP_cyclohydroI 
-GTP_cyclohydroI <- read.tree(paste0(path, "gene_trees/GTP_cyclohydroI.txt"))
+GTP_cyclohydroI <- read.tree(paste0(path, "/gene_trees/GTP_cyclohydroI.txt"))
 GTP_cyclohydroI_num <- rename_labs(match_df, GTP_cyclohydroI)
 ggtree(GTP_cyclohydroI_num) + geom_tiplab(size = 2) + 
   xlim(c(0, 5)) + ggtitle("GTP_cyclohydroI Tree") + 
@@ -169,8 +176,8 @@ Finally, we can look closer at the phylogenomic tree and plot the bootstrap supp
 
 ```{r}
 # Plot bootstrap support values 
-gene_trees <- read.tree(paste0(path, "gene_trees.txt"))
-boot <- read.table(paste0(path, "phylogenomic_bootstrap_vals.txt"))
+gene_trees <- read.tree(paste0(path, "/gene_trees.txt"))
+boot <- read.table(paste0(path, "/phylogenomic_bootstrap_vals.txt"))
 plot_support(phylogenomic_num, unlist(boot), color_branch = TRUE, 
              title = "Bootstrap Support", xlim_max = 1.1,
              support_type = "boot")
