@@ -1,7 +1,7 @@
 #' Plots MDS results
-#' Plots MDS results of trees for each distance.
+#' Plots the results of MDS, giving options to add colors and labels.
 #'
-#' @param df A dataframe with the first two MDS coordinates for a set of trees and distances.
+#' @param df A dataframe with the desired MDS coordinates for a set of trees and distances.
 #' It should include variables named \code{MDS_x} and \code{MDS_y}. 
 #' @param phylogenomic An optional argument, if included gives the index of the dataframe that
 #' corresponds to the phylogenomic tree, which will then be noted in the plot. 

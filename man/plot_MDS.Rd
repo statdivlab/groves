@@ -3,7 +3,7 @@
 \name{plot_MDS}
 \alias{plot_MDS}
 \title{Plots MDS results
-Plots MDS results of trees for each distance.}
+Plots the results of MDS, giving options to add colors and labels.}
 \usage{
 plot_MDS(
   df,
@@ -24,7 +24,7 @@ plot_MDS(
 )
 }
 \arguments{
-\item{df}{A dataframe with the first two MDS coordinates for a set of trees and distances.
+\item{df}{A dataframe with the desired MDS coordinates for a set of trees and distances.
 It should include variables named \code{MDS_x} and \code{MDS_y}.}
 
 \item{phylogenomic}{An optional argument, if included gives the index of the dataframe that
@@ -67,7 +67,7 @@ A ggplot2 object.
 }
 \description{
 Plots MDS results
-Plots MDS results of trees for each distance.
+Plots the results of MDS, giving options to add colors and labels.
 }
 \examples{
 trees_path <- system.file("txt", "small_tree_set.txt", package = "groves")

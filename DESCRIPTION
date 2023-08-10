@@ -23,11 +23,13 @@ Imports:
     RColorBrewer,
     ggrepel,
     latex2exp,
+    Rtsne,
+    umap,
     shiny,
     shinyFeedback
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Suggests: 
     knitr,
     rmarkdown,
