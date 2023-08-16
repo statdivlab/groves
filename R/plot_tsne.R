@@ -47,8 +47,13 @@ plot_tsne <- function(vectors, phylogenomic = NULL, phylogenomic_name = NULL,
                       trees_to_label = NULL, use_plotly = FALSE) {
   ### start by organizing df 
   # get first two coordinates
+  if (nrow(vectors) > 3) {
+    perp <- floor((nrow(vectors) - 1)/3)
+  } else {
+    perp <- 0.5
+  }
   tsne <- Rtsne::Rtsne(X = vectors, 
-                       perplexity = floor((nrow(vectors) - 1)/3))
+                       perplexity = perp)
   df <- data.frame(pc_x = tsne$Y[, 1],
                    pc_y = tsne$Y[, 2])
   
