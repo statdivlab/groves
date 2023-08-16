@@ -164,6 +164,7 @@ subsample <- function(gene_names, path = "", tail = ".fa",
     }
   }
   
-  complete_set <- list(gene_set = gene_set, genome_set = genome_set)
+  complete_set <- list(gene_set = rownames(upd_presence), 
+                       genome_set = colnames(upd_presence))
   return(list(presence = presence, complete_set = complete_set))
 }
