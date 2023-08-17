@@ -17,26 +17,29 @@ subsample(
 )
 }
 \arguments{
-\item{gene_names}{A list of gene names that correspond with alignments to examine}
+\item{gene_names}{A list of gene names that correspond with alignments to examine.}
 
-\item{path}{The file path to the gene alignments, default is ""}
+\item{path}{The file path to the gene alignments, default is "".}
 
-\item{tail}{The extension to the gene alignments, default is ".fa"}
+\item{tail}{The extension to the gene alignments, default is ".fa".}
 
-\item{genes_to_keep}{An optional list of genes to keep in the subsample}
+\item{genes_to_keep}{An optional list of genes to keep in the subsample.}
 
-\item{genomes_to_keep}{An optional list of genomes to keep in the subsample}
+\item{genomes_to_keep}{An optional list of genomes to keep in the subsample.}
 
 \item{gene_weight}{Set to 1, the number of genes to add at once. If gene_weight is
-larger than genome_weight, more genes will be retained in the subsample than genomes}
+larger than genome_weight, multiple genes will be added to the subsample before the next
+genome.}
 
 \item{genome_weight}{Set to 1, the number of genomes to add at once. If 
-genome_weight is larger than gene_weight, more genomes will be retained in the 
-subsample than genes}
+genome_weight is larger than gene_weight, multiple genomes will be added to the 
+subsample before the next gene.}
 }
 \value{
-A matrix with rows for each gene and columns for each genome (tip). Entries 
-equal to 1 mean the gene alignment includes that tip.
+presence: a matrix with rows for each gene and columns for each genome (tip). Entries 
+equal to 1 mean the gene alignment includes that tip, and a list called
+complete_set which includes a set of genes and genomes that were chosen as
+the subsample.
 }
 \description{
 Subsamples genes and genomes 

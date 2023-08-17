@@ -2,24 +2,42 @@
 % Please edit documentation in R/alignments_to_cat.R
 \name{alignments_to_cat}
 \alias{alignments_to_cat}
-\title{Makes new folder with alignments
-Makes a new folder with alignments to concatenate into a single alignment.}
+\title{Concatenates alignments 
+Concatenates individual alignments into concatenated alignment. Will
+optionally create a new folder to store all individual alignments and
+concatenated alignment.}
 \usage{
-alignments_to_cat(target_genes, path_from = "", tail = ".fa", path_to = "")
+alignments_to_cat(
+  target_genes,
+  path_from = "",
+  tail = ".fa",
+  path_to = "",
+  concat_name = "concatenated",
+  sep_string = "XXXXX"
+)
 }
 \arguments{
 \item{target_genes}{A list of target gene names.}
 
-\item{path_from}{Set to "".}
+\item{path_from}{Path to find target gene alignment files.}
 
-\item{tail}{Set to ".fa"}
+\item{tail}{Tail of alignment file after gene name.}
 
-\item{path_to}{Set to "".}
+\item{path_to}{Optional path to new folder to save all alignments. Defaults
+to "" which does not create a new folder.}
+
+\item{concat_name}{A name for the concatenated alignment.}
+
+\item{sep_string}{String to use to separate individual alignments within the 
+concatenated alignment.}
 }
 \value{
-Nothing, creates a folder in the desired directory.
+Nothing, creates a folder in the desired directory and a concatenated
+alignment.
 }
 \description{
-Makes new folder with alignments
-Makes a new folder with alignments to concatenate into a single alignment.
+Concatenates alignments 
+Concatenates individual alignments into concatenated alignment. Will
+optionally create a new folder to store all individual alignments and
+concatenated alignment.
 }
