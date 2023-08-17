@@ -10,7 +10,8 @@ remove_genomes(
   target_genomes,
   path = "",
   tail = ".fa",
-  new_file_suffix = ""
+  new_file_suffix = "",
+  new_folder_path = ""
 )
 }
 \arguments{
@@ -24,6 +25,8 @@ remove_genomes(
 
 \item{new_file_suffix}{A suffix to amend to alignment files after empty lines are removed.
 By default this is "", which means that the new file will replace the old file.}
+
+\item{new_folder_path}{Path to an optional new folder to put alignments in.}
 }
 \description{
 Removes genomes
