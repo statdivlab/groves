@@ -16,23 +16,23 @@ knitr::opts_chunk$set(
 
 ### Introduction 
 
-The main purpose of `groves` is to visualize a set of phylogenetic trees, specifically a set of gene trees and a phylogenomic tree. One requirement of `groves` is that all trees have the same set of tips. This means that we need a set of genomes and genes in which all of our genes are contained in each of our genomes. We will have a larger number of common genes for a set of taxonomically constrained genomes and fewer for a set of more diverse genomes. 
+The main purpose of `groves` is to visualize a set of phylogenetic trees, specifically a set of gene trees and a phylogenomic tree. One requirement of `groves` is that all trees have the same set of tips. This means that we need a set of genomes and genes in which all of our genes are contained in each of our genomes. We will refer to this as a "complete set" of genomes and genes. We will have a larger number of common genes for a set of taxonomically constrained genomes and fewer for a set of more diverse genomes. 
 
-In order to refine our genomes and genes to a set of genomes of interest that contain all genes of interest we will need to subsample either genomes, genes, or both. This vignette will walk through one workflow to go from genome fasta files to estimated gene and phylogenomic trees on a shared set of tips. This vignette provides one set of tools to do this but there are a number of tools that can be used to build phylogenetic and phylogenomic trees and we encourage the user to use methods and tools for gene identification, alignment, estimation, or any other task, that they are comfortable with. 
+In order to refine our genomes and genes to a complete set of genomes of interest that contain all genes of interest we will need to subsample either genomes, genes, or both. This vignette will walk through one workflow to go from genome fasta files to estimated gene and phylogenomic trees on a shared set of tips. This vignette provides one set of tools to do this but there are a number of tools that can be used to build phylogenetic and phylogenomic trees and we encourage the user to use methods and tools for gene identification, alignment, estimation, or any other task, that they are comfortable with. 
 
 This vignette has three major steps. 
 
-1. Run `GToTree` to go from genome fasta files to get individual protein alignment files for each gene. 
+1. Run `GToTree` to go from genome fasta files to individual protein alignment files for each gene. 
 
-2. Use functions from `groves` to identify a set of genomes of interest that contain all genes of interest and to generate new alignment files for each gene and a concatenated alignment file for this set of genomes and genes. 
+2. Use functions from `groves` to identify a complete set of genomes of interest that contain all genes of interest and to generate new alignment files for each gene and a concatenated alignment file for this set of genomes and genes. 
 
-3. Run `IQTree` to estimate all gene trees and the phylogenomic tree. 
+3. Run `IQ-TREE` to estimate all refined gene trees and the phylogenomic tree.
 
 ### Run `GToTree`
 
 `GToTree` is a user-friend workflow for phylogenomics created by our co-author Mike Lee. It takes in a set of input genomes and target genes and goes through gene identification, alignment, concatenation, and estimation, to output a concatenated phylogenomic tree. Importantly for us, we can also ask it to give us individual protein alignments for each gene, which we need for `groves`. 
 
-In this vignette, we will follow this `GToTree` [tutorial](https://astrobiomike.github.io/genomics/phylogenomics) on phylogenomics. We will work with the set of *Synechococcus* genomes. To follow along, you will need to install GToTree, activate the conda environment, and follow the shell commands from the tutorial that are copied below. However, we also provide the output files so these steps can be skipped. 
+In this vignette, we will follow this `GToTree` [tutorial](https://astrobiomike.github.io/genomics/phylogenomics) on phylogenomics to work with the set of *Synechococcus* genomes. To follow along, you will need to install GToTree, activate the conda environment, and follow the shell commands from the tutorial that are copied below. However, we also provide the output files so these steps can be skipped. 
 
 ```
 # activate gtotree conda environment 
@@ -50,67 +50,151 @@ ls *.fa > our-genome-fasta-files.txt
 GToTree -a ref-syn-accs.txt -f our-genome-fasta-files.txt -H Cyanobacteria -t -L Species -j 4 -o Syn-GToTree-out -k 
 ```
 
-The output of this analysis consists of several files, including a concatenated alignment of all target genes found in the genomes and an estimated concatenated tree. We will specifically use the contents of the individual alignments folder, which can be found at the path "Syn-GToTree-out/run_files/individual_alignments". We will work with the contents of this folder. 
+The output of this analysis consists of several files, including a concatenated alignment of all target genes found in the genomes and an estimated concatenated tree. We will specifically use the contents of the individual alignments folder, which can be found at the path "Syn-GToTree-out/run_files/individual_alignments". 
 
 ### Refine set of genes and genomes 
 
-We will now use a few functions in `groves` to refine our sets of genomes and genes. 
+We will now use a few functions in `groves` to refine our set of genomes and genes. 
 
 ```{r, message = FALSE}
 library(groves)
 ```
 
+We will start by getting a list of genomes and genes included in our individual alignments. 
+
 ```{r}
-align_path <- system.file("syn_individual_alignments", package = "groves")
-#gene_align_paths <- list.files(align_path)
-#gene_names <- stringr::str_remove(gene_align_paths, "_aln.faa")
-#align1 <- readLines(paste0(align_path, gene_align_paths[1]))
-#tip_names <- stringr::str_remove(align1[seq(1, length(align1), 2)], ">")
+# path to individual protein alignments
+align_path <- paste0(system.file("syn_individual_alignments", package = "groves"), "/")
+gene_paths <- list.files(align_path)
+# get a set of genes
+gene_names <- stringr::str_remove(gene_paths, "_aln.faa")
+n_gene <- length(gene_names)
+n_gene
+# get a set of genomes
+align1 <- readLines(paste0(align_path, gene_paths[1]))
+tip_names <- stringr::str_remove(align1[seq(1, length(align1), 2)], ">")
+n_genome <- length(tip_names)
+n_genome
 ```
 
+Here we can see that our full dataset has 30 genomes and 251 genes. 
 
-library(groves)
+Next we will use the function `get_presence()` to generate a presence/absence matrix of genes in genomes from the individual alignments.
 
-# path to individual protein alignments
-align_path <- "syn-gtotree-example/Syn-GToTree-out/run_files/individual_alignments/"
-gene_align_paths <- list.files(align_path)
-gene_names <- stringr::str_remove(gene_align_paths, "_aln.faa")
-align1 <- readLines(paste0(align_path, gene_align_paths[1]))
-tip_names <- stringr::str_remove(align1[seq(1, length(align1), 2)], ">")
+```{r}
+pres_mat <- get_presence(gene_names = gene_names,
+                         path = align_path,
+                         tail = "_aln.faa")
+mean(rowSums(pres_mat) == length(tip_names))
+mean(colSums(pres_mat) == length(gene_names))
+```
 
-# subsample genes and genomes 
-both_subsample <- subsample(gene_names = gene_names,
-                               path = align_path,
-                               tail = "_aln.faa")
+This presence/absence matrix tells us that $71\%$ of genes are in all $30$ genomes but $0$ genomes contain all $251$ genes. Therefore, we need to refine our genomes and genes to get a complete set. Note that you could do this manually (simply choose a set of genomes and genes such that their presence/absence matrix only contains $1$'s). However this can be a difficult task, so we will use the function `subsample()` to help us. 
 
-rib_genes <- which(stringr::str_detect(gene_names, "Ribosom"))
-rib_subsample <- subsample(gene_names = gene_names,
-                                 path = align_path,
-                                 tail = "_aln.faa",
-                                 genes_to_keep = gene_names[rib_genes])
+By default `subsample()` will sequentially add the gene that is present in the highest number of genomes and then the genome that contains the highest number of present genes until there are no more genes or genomes to add while keeping the set complete. If there are specific genomes or genes that you would like to retain in your refined set of genomes and genes you can use the arguments `genomes_to_keep` and `genes_to_keep` respectively. If you would like to add multiple genes before adding each genome you can increase the argument `gene_weight` to an integer greater than $1$ and if you would like to add multiple genomes before adding each gene you can increase the argument `genome_weight`. We will give a few examples of using `subsample()` with these arguments. 
 
-sample_genomes <- which(stringr::str_detect(tip_names, "GCF"))
-sample_subsample <- subsample(gene_names = gene_names,
+```{r}
+basic_sub <- subsample(gene_names = gene_names,
+                       path = align_path,
+                       tail = "_aln.faa")
+length(basic_sub$complete_set$genome_set)
+length(basic_sub$complete_set$gene_set)
+```
+
+If we run `subsample()` without any additional arguments, we will retain all genomes and $179$ genes. 
+
+Let's say that we would like to retain more of the $251$ genes and don't mind losing some genomes. We can increase the `gene_weight` argument.
+
+```{r}
+basic_sub <- subsample(gene_names = gene_names,
+                       path = align_path,
+                       tail = "_aln.faa",
+                       gene_weight = 10)
+length(basic_sub$complete_set$genome_set)
+length(basic_sub$complete_set$gene_set)
+```
+
+Now we have a set of $22$ genomes and $227$ genes. 
+
+Now imagine we want to specifically analyze all Ribosomal genes in this set. We can use the argument `genes_to_keep`. 
+
+```{r}
+ribs <- which(stringr::str_detect(gene_names, "Ribosom"))
+rib_sub <- subsample(gene_names = gene_names,
+                     path = align_path,
+                     tail = "_aln.faa",
+                     genes_to_keep = gene_names[ribs])
+length(rib_sub$complete_set$genome_set)
+length(rib_sub$complete_set$gene_set)
+```
+
+Here we have a set of $19$ genomes that include $229$ genes, including all Ribosomal genes in the dataset. 
+
+Finally, imagine we want to retain all new genomes in our dataset and don't care as much about retaining every reference genome. 
+
+```{r}
+new_genomes <- which(stringr::str_detect(tip_names, "GCF"))
+new_sub <- subsample(gene_names = gene_names,
                            path = align_path,
                            tail = "_aln.faa",
-                           genomes_to_keep = tip_names[sample_genomes])
-sample_weight_subsample <- subsample(gene_names = gene_names,
-                              path = align_path,
-                              tail = "_aln.faa",
-                              genomes_to_keep = tip_names[sample_genomes],
-                              gene_weight = 250)
+                           genomes_to_keep = tip_names[new_genomes])
+length(new_sub$complete_set$genome_set)
+length(new_sub$complete_set$gene_set)
+```
 
-# make new alignment files 
-genomes_to_rm <- tip_names[!(tip_names %in% rib_subsample$complete_set$genome_set)]
-remove_genomes(target_genes = rib_subsample$complete_set$gene_set,
+It turns out that the same $179$ genes that are in all genomes are the only genes present in all new genomes, so we end up with the full set of genomes and the set of $179$ genes that we got when we ran `subsample()` with no additional arguments. 
+
+Going forward we are going to work with the complete set of genomes and genes that includes all Ribosomal genes. This set includes $19$ genomes and $229$ genes. We will now make new alignment files for these $229$ genes and a concatenated alignment that only include these $19$ genomes. Note that one of the additional arguments to `alignments_to_cat()` is `sep_string`, which is the separator string that will be added between each individual alignment when the gene alignments are concatenated. The default is "XXXXX". 
+
+```{r}
+# remove genomes that are not retained in complete set from alignment files 
+# save the new files in the folder new_alignments
+genomes_to_rm <- tip_names[!(tip_names %in% rib_sub$complete_set$genome_set)]
+new_folder_path <- paste0(system.file("syn_refined_alignments", package = "groves"), "/")
+remove_genomes(target_genes = rib_sub$complete_set$gene_set,
                target_genomes = genomes_to_rm,
                path = align_path,
                tail = "_aln.faa",
-               new_folder_path = "new_alignments/")
+               new_folder_path = new_folder_path)
 # concatenate new alignment files 
-alignments_to_cat(target_genes = rib_subsample$complete_set$gene_set,
-                  path_from = "new_alignments/",
+alignments_to_cat(target_genes = rib_sub$complete_set$gene_set,
+                  path_from = new_folder_path,
                   tail = "_aln.faa",
                   path_to = "")
+```
 
-# estimate trees for all alignments with FastTree or IQTree 
+Now, we have a set of $229$ gene alignments and one alignment concatenated from those $229$ gene alignments, each which contain the same set of $19$ genomes as tips. 
+
+### Estimate trees
+
+The final step is estimating trees, which will be the input to `groves()` visualization functions. We like `IQ-TREE`, but you can use whatever tree estimation software you prefer. To estimate our set of trees, we will use the following shell commands. Note that it will take multiple hours to estimate all of these trees with `IQ-TREE`. If you are interested in a faster implementation, `FastTree` is another good option. 
+
+```
+cd syn_refined_alignments
+for align_file in *
+do
+  IQTREE -s $align_file -mset WAG,LG -bb 1000
+done
+```
+
+Finally, `groves()` requires all Newick tree files to be saved as ".txt" files. As this is a less common output from tree estimation software, these ".txt" files will often need to be created. R code similar to the following can do this (this code will not evaluate because we do not have the IQ-Tree output saved as data). Here, we will assume that the output tree format is ".treefile", output trees are saved in the folder "iqtree_output", and there is an empty folder "txt_tree" to save the ".txt" trees into. 
+
+```
+trees <- list.files(path = "iqtree_output", pattern = ".treefile")
+for (tree_path %in% trees) {
+  tree <- ape::read.tree(paste0("iqtree_output/", tree_path))
+  new_path <- stringr::str_replace(tree_path, pattern = ".treefile",
+                                   replacement = ".txt")
+  ape::write.tree(tree, paste0("txt_tree/", new_path))
+}
+```
+
+### Citations 
+
+Lee MD. GToTree: a user-friendly workflow for phylogenomics. Bioinformatics. 2019; (March):1-3. doi:10.1093/bioinformatics/btz188
+
+See the citations file in the GToTree output to find citations for all the programs that are run as part of GToTree. 
+
+Nguyen LT. et al. (2015) IQ-TREE: A fast and effective stochastic algorithm for estimating maximum likelihood phylogenies. Mol. Biol. Evol., 32, 268-274. (DOI: 10.1093/molbev/msu300)
+
+Price MN. et al. FastTree 2 - approximately maximum-likelihood trees for large alignments. PLoS One. 2010; 5. doi:10.1371/journal.pone.0009490
