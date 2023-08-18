@@ -1,0 +1,116 @@
+---
+title: "Preparing trees for visualization"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Preparing trees for visualization}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+### Introduction 
+
+The main purpose of `groves` is to visualize a set of phylogenetic trees, specifically a set of gene trees and a phylogenomic tree. One requirement of `groves` is that all trees have the same set of tips. This means that we need a set of genomes and genes in which all of our genes are contained in each of our genomes. We will have a larger number of common genes for a set of taxonomically constrained genomes and fewer for a set of more diverse genomes. 
+
+In order to refine our genomes and genes to a set of genomes of interest that contain all genes of interest we will need to subsample either genomes, genes, or both. This vignette will walk through one workflow to go from genome fasta files to estimated gene and phylogenomic trees on a shared set of tips. This vignette provides one set of tools to do this but there are a number of tools that can be used to build phylogenetic and phylogenomic trees and we encourage the user to use methods and tools for gene identification, alignment, estimation, or any other task, that they are comfortable with. 
+
+This vignette has three major steps. 
+
+1. Run `GToTree` to go from genome fasta files to get individual protein alignment files for each gene. 
+
+2. Use functions from `groves` to identify a set of genomes of interest that contain all genes of interest and to generate new alignment files for each gene and a concatenated alignment file for this set of genomes and genes. 
+
+3. Run `IQTree` to estimate all gene trees and the phylogenomic tree. 
+
+### Run `GToTree`
+
+`GToTree` is a user-friend workflow for phylogenomics created by our co-author Mike Lee. It takes in a set of input genomes and target genes and goes through gene identification, alignment, concatenation, and estimation, to output a concatenated phylogenomic tree. Importantly for us, we can also ask it to give us individual protein alignments for each gene, which we need for `groves`. 
+
+In this vignette, we will follow this `GToTree` [tutorial](https://astrobiomike.github.io/genomics/phylogenomics) on phylogenomics. We will work with the set of *Synechococcus* genomes. To follow along, you will need to install GToTree, activate the conda environment, and follow the shell commands from the tutorial that are copied below. However, we also provide the output files so these steps can be skipped. 
+
+```
+# activate gtotree conda environment 
+conda activate gtotree
+
+# get Synechococcus genomes 
+curl -L -o syn-gtotree-example.tar.gz https://ndownloader.figshare.com/files/23629763
+tar -xvzf syn-gtotree-example.tar.gz
+cd syn-gtotree-example/
+
+# provide gtotree a list of fasta files
+ls *.fa > our-genome-fasta-files.txt
+
+# run gtotree, add flag -k to keep individual protein alignments
+GToTree -a ref-syn-accs.txt -f our-genome-fasta-files.txt -H Cyanobacteria -t -L Species -j 4 -o Syn-GToTree-out -k 
+```
+
+The output of this analysis consists of several files, including a concatenated alignment of all target genes found in the genomes and an estimated concatenated tree. We will specifically use the contents of the individual alignments folder, which can be found at the path "Syn-GToTree-out/run_files/individual_alignments". We will work with the contents of this folder. 
+
+### Refine set of genes and genomes 
+
+We will now use a few functions in `groves` to refine our sets of genomes and genes. 
+
+```{r, message = FALSE}
+library(groves)
+```
+
+```{r}
+align_path <- system.file("syn_individual_alignments", package = "groves")
+#gene_align_paths <- list.files(align_path)
+#gene_names <- stringr::str_remove(gene_align_paths, "_aln.faa")
+#align1 <- readLines(paste0(align_path, gene_align_paths[1]))
+#tip_names <- stringr::str_remove(align1[seq(1, length(align1), 2)], ">")
+```
+
+
+library(groves)
+
+# path to individual protein alignments
+align_path <- "syn-gtotree-example/Syn-GToTree-out/run_files/individual_alignments/"
+gene_align_paths <- list.files(align_path)
+gene_names <- stringr::str_remove(gene_align_paths, "_aln.faa")
+align1 <- readLines(paste0(align_path, gene_align_paths[1]))
+tip_names <- stringr::str_remove(align1[seq(1, length(align1), 2)], ">")
+
+# subsample genes and genomes 
+both_subsample <- subsample(gene_names = gene_names,
+                               path = align_path,
+                               tail = "_aln.faa")
+
+rib_genes <- which(stringr::str_detect(gene_names, "Ribosom"))
+rib_subsample <- subsample(gene_names = gene_names,
+                                 path = align_path,
+                                 tail = "_aln.faa",
+                                 genes_to_keep = gene_names[rib_genes])
+
+sample_genomes <- which(stringr::str_detect(tip_names, "GCF"))
+sample_subsample <- subsample(gene_names = gene_names,
+                           path = align_path,
+                           tail = "_aln.faa",
+                           genomes_to_keep = tip_names[sample_genomes])
+sample_weight_subsample <- subsample(gene_names = gene_names,
+                              path = align_path,
+                              tail = "_aln.faa",
+                              genomes_to_keep = tip_names[sample_genomes],
+                              gene_weight = 250)
+
+# make new alignment files 
+genomes_to_rm <- tip_names[!(tip_names %in% rib_subsample$complete_set$genome_set)]
+remove_genomes(target_genes = rib_subsample$complete_set$gene_set,
+               target_genomes = genomes_to_rm,
+               path = align_path,
+               tail = "_aln.faa",
+               new_folder_path = "new_alignments/")
+# concatenate new alignment files 
+alignments_to_cat(target_genes = rib_subsample$complete_set$gene_set,
+                  path_from = "new_alignments/",
+                  tail = "_aln.faa",
+                  path_to = "")
+
+# estimate trees for all alignments with FastTree or IQTree 
