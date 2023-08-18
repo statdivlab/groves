@@ -42,9 +42,9 @@ library(groves)
 
 ## Usage 
 
-This R package primarily produces visualizations of sets of phylogenetic trees. These visualizations can be produced from functions in this R package (see the [vignette](https://github.com/statdivlab/groves/blob/main/vignettes/introduction_to_groves.Rmd) for an example analysis) or from a shiny app (run the function `groves::run_shiny()`). 
+This R package primarily produces visualizations of sets of phylogenetic trees. These visualizations can be produced from functions in this R package (see this [vignette](https://github.com/statdivlab/groves/blob/main/vignettes/introduction_to_groves.Rmd) for an example analysis) or from a shiny app (run the function `groves::run_shiny()`). 
 
-Because many analyses don't use gene-level trees, you may not be familiar with methods to generate them. A vignette is in development to walk through the process of generating gene-level trees as an additional step in a phylogenomic workflow. 
+Because many analyses don't use gene-level trees, you may not be familiar with methods to generate them. See this [vignette](https://github.com/statdivlab/groves/blob/main/vignettes/preparing_trees.Rmd) for a workflow to go from genome fasta files to a refined set of gene trees where all retained genes are included in all retained genomes. 
 
 ## Issues/Requests 
 
