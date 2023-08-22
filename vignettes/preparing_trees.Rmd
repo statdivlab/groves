@@ -50,6 +50,8 @@ ls *.fa > our-genome-fasta-files.txt
 GToTree -a ref-syn-accs.txt -f our-genome-fasta-files.txt -H Cyanobacteria -t -L Species -j 4 -o Syn-GToTree-out -k 
 ```
 
+Note that in `GToTree` you can choose the set of genes to search for in the genomes. In this example, because all genomes come from *Cyanobacteria*, we use the *Cyanobacteria* set of single copy core genes, which are genes that are present in one copy in at least $90\%$ of *Cyanobacteria* from NCBI. `GToTree` contains fifteen different sets of genes at different taxonomic ranks (a list can be found [here](https://github.com/AstrobioMike/GToTree/wiki/scg-sets)).
+
 The output of this analysis consists of several files, including a concatenated alignment of all target genes found in the genomes and an estimated concatenated tree. We will specifically use the contents of the individual alignments folder, which can be found at the path "Syn-GToTree-out/run_files/individual_alignments". 
 
 ### Refine set of genes and genomes 
