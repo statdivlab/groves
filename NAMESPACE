@@ -2,6 +2,7 @@
 
 export(add_vector)
 export(alignments_to_cat)
+export(cat_align_to_gene_align)
 export(check_binary)
 export(check_gene_support)
 export(check_missingness)
