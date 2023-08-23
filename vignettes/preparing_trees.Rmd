@@ -22,7 +22,7 @@ In order to refine our genomes and genes to a complete set of genomes of interes
 
 This vignette has three major steps. 
 
-1. Run `GToTree` to go from genome fasta files to individual protein alignment files for each gene. 
+1. Run `GToTree` to go from genome fasta files to individual protein alignment files for each gene. Or take an existing concatenated alignment that you have from a different software and separate it into individual alignments for each gene.
 
 2. Use functions from `groves` to identify a complete set of genomes of interest that contain all genes of interest and to generate new alignment files for each gene and a concatenated alignment file for this set of genomes and genes. 
 
