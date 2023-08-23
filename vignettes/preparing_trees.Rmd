@@ -30,7 +30,7 @@ This vignette has three major steps.
 
 ### Run `GToTree`
 
-`GToTree` is a user-friend workflow for phylogenomics created by our co-author Mike Lee. It takes in a set of input genomes and target genes and goes through gene identification, alignment, concatenation, and estimation, to output a concatenated phylogenomic tree. Importantly for us, we can also ask it to give us individual protein alignments for each gene, which we need for `groves`. 
+`GToTree` is a user-friend workflow for phylogenomics created by our co-author Mike Lee. It takes in a set of input genomes and target genes and goes through gene identification, alignment, concatenation, and estimation, to output a concatenated phylogenomic tree. Importantly for us, we can also ask it to give us individual protein alignments for each gene, which we need for `groves`, by adding the flag `-k` as seen in the call to `GToTree` below. 
 
 In this vignette, we will follow this `GToTree` [tutorial](https://astrobiomike.github.io/genomics/phylogenomics) on phylogenomics to work with the set of *Synechococcus* genomes. To follow along, you will need to install GToTree, activate the conda environment, and follow the shell commands from the tutorial that are copied below. However, we also provide the output files so these steps can be skipped. 
 
@@ -54,15 +54,33 @@ Note that in `GToTree` you can choose the set of genes to search for in the geno
 
 The output of this analysis consists of several files, including a concatenated alignment of all target genes found in the genomes and an estimated concatenated tree. We will specifically use the contents of the individual alignments folder, which can be found at the path "Syn-GToTree-out/run_files/individual_alignments". 
 
-### Refine set of genes and genomes 
+#### Getting individual alignments from a concatenated alignment
 
-We will now use a few functions in `groves` to refine our set of genomes and genes. 
+In some cases you may already have a concatenated alignment from a different software or workflow that you would like to split out into individual gene specific alignments. As long as you have the concatenated alignment, a set of gene names (in the order in which the genes were concatenated), and the string of characters that separates each gene within the concatenated alignment (in our case "XXXXX"), you can use the function `cat_align_to_gene_align` to generate individual gene level alignments. 
 
 ```{r, message = FALSE}
 library(groves)
 ```
 
-We will start by getting a list of genomes and genes included in our individual alignments. 
+```{r}
+# path to concatenated alignment
+concat_path <- paste0(system.file("syn_concatenated_alignment", package = "groves"), "/")
+# gene names in order they were concatenated 
+gene_names_ord <- stringr::str_split(readLines(paste0(concat_path, "Partitions.txt")), " ")
+gene_names_ord <- unlist(lapply(gene_names_ord, function(x) {x[2]}))
+# separate concatenated alignment into individual gene alignments 
+cat_align_to_gene_align(concat_path = paste0(concat_path, "Aligned_SCGs.faa"),
+                        gene_names = gene_names_ord,
+                        output_path = concat_path,
+                        sep_string = "XXXXX")
+head(list.files(concat_path))
+```
+
+Now this folder contains gene level alignments, which are identical to those that we would get from running `GToTree` with the `-k` flag. 
+
+### Refine set of genes and genomes 
+
+We will now use a few functions in `groves` to refine our set of genomes and genes. We will start by getting a list of genomes and genes included in our individual alignments. 
 
 ```{r}
 # path to individual protein alignments
