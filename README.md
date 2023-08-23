@@ -6,7 +6,7 @@
 
 <span style="font-family:Arial; font-size:2em;"> **G**ene t**R**ee **O**rdination **V**isualization for **E**xploration**S**</span>
 
-`groves` is an `R` package for visualizing a set of gene-level phylogenies.
+:evergreen_tree: `groves` :deciduous_tree: is an `R` package for visualizing a set of gene-level phylogenies.
 
 ## About
 
