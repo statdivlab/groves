@@ -46,6 +46,14 @@ This R package primarily produces visualizations of sets of phylogenetic trees. 
 
 Because many analyses don't use gene-level trees, you may not be familiar with methods to generate them. See this [vignette](https://github.com/statdivlab/groves/blob/main/vignettes/preparing_trees.Rmd) for a workflow to go from genome fasta files to a refined set of gene trees in which all retained genes are included in all retained genomes. 
 
+## Citation 
+
+If you use `groves` in your work, please cite our paper:
+
+Sarah Teichman, Michael D. Lee, and Amy D. Willis. (2023). *Analyzing microbial evolution through gene and genome phylogenies.* Biostatistics, https://doi.org/10.1093/biostatistics/kxad025. 
+
+An open-acess [preprint](https://www.biorxiv.org/content/10.1101/2023.08.15.553440v1) is available on bioRxiv. 
+
 ## Issues/Requests 
 
 If you have any issues using our software or further questions please submit an issue [here](https://github.com/statdivlab/groves/issues). 
