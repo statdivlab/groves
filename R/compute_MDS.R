@@ -16,10 +16,6 @@
 #' @return A list containing an object 'dist_mat' containing distances between each phylogenetic tree
 #' in the multiPhylo object, and an object 'df' containing the desired number of axes in the MDS of the trees.
 #' 
-#' @examples 
-#' #trees_path <- system.file("txt", "small_tree_set.txt", package = "groves")
-#' #compute_MDS(trees_path = trees_path, tree_names = paste0("tree", 1:3))
-#' 
 #' @export
 compute_MDS <- function(trees_path = NULL, dist_metric = "BHV",
                          dist_matrix = NULL, mds_type = "metric", 
